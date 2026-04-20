@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <!-- Enable XML documentation to satisfy SA0001 -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Suppress doc warnings in test projects (SA1600 = Elements should be documented) -->
+    <NoWarn Condition="$(MSBuildProjectName.EndsWith('.Tests'))">$(NoWarn);CS1591;SA1600</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
+</Project>

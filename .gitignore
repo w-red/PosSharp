@@ -49,7 +49,7 @@ bld/
 Generated\ Files/
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
+[Tt]est[Rr]esul*/
 [Bb]uild[Ll]og.*
 *.trx
 
@@ -416,3 +416,15 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# AI Assistant files
+.gemini/
+brain/
+scratch/
+implementation_plan.md
+task.md
+walkthrough.md
+
+# OS files
+.DS_Store
+Thumbs.db
