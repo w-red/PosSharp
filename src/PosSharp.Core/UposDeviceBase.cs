@@ -14,12 +14,16 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     private readonly ReactiveProperty<ControlState> state = new(ControlState.Closed);
     private readonly ReactiveProperty<bool> isBusy = new(false);
     private readonly ReactiveProperty<UposErrorCode> lastError = new(UposErrorCode.Success);
+    protected readonly ReactiveProperty<bool> isDataEventEnabled = new(false);
 
     private readonly Subject<UposDataEventArgs> dataSubject = new();
     private readonly Subject<UposErrorEventArgs> errorSubject = new();
     private readonly Subject<UposStatusUpdateEventArgs> statusUpdateSubject = new();
     private readonly Subject<UposDirectIoEventArgs> directIoSubject = new();
     private readonly Subject<UposOutputCompleteEventArgs> outputCompleteSubject = new();
+
+    /// <summary>Gets or sets a value indicating whether state verification is enabled.</summary>
+    public bool IsStateVerificationEnabled { get; set; } = true;
 
     // ------------------------------------------------------------------
     // Properties
@@ -32,7 +36,22 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     public ReadOnlyReactiveProperty<bool> IsBusy => this.isBusy;
 
     /// <inheritdoc/>
+    public bool IsBusyValue => this.isBusy.Value;
+
+    /// <inheritdoc/>
     public ReadOnlyReactiveProperty<UposErrorCode> LastError => this.lastError;
+
+    /// <summary>Gets a value indicating whether data event notification is enabled.</summary>
+    public ReadOnlyReactiveProperty<bool> IsDataEventEnabled => this.isDataEventEnabled;
+
+    /// <summary>Gets a value indicating whether the device is open.</summary>
+    public bool IsOpen => this.state.Value != ControlState.Closed;
+
+    /// <summary>Gets a value indicating whether the device is claimed.</summary>
+    public bool IsClaimed => this.state.Value is ControlState.Claimed or ControlState.Enabled;
+
+    /// <summary>Gets a value indicating whether the device is enabled.</summary>
+    public bool IsEnabled => this.state.Value == ControlState.Enabled;
 
     /// <inheritdoc/>
     public IObservable<UposDataEventArgs> DataEvents => this.dataSubject.AsSystemObservable();
@@ -156,6 +175,11 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// </exception>
     protected void VerifyState(params ControlState[] allowedStates)
     {
+        if (!this.IsStateVerificationEnabled)
+        {
+            return;
+        }
+
         if (!allowedStates.Contains(this.state.Value))
         {
             throw new UposStateException(this.state.Value, allowedStates);

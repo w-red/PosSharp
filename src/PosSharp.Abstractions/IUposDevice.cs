@@ -16,8 +16,23 @@ public interface IUposDevice : IDisposable
     /// <summary>Gets a value indicating whether the device is currently processing an operation.</summary>
     ReadOnlyReactiveProperty<bool> IsBusy { get; }
 
+    /// <summary>Gets a value indicating whether the device is currently processing an operation (Synchronous).</summary>
+    bool IsBusyValue { get; }
+
     /// <summary>Gets the result code of the last completed operation.</summary>
     ReadOnlyReactiveProperty<UposErrorCode> LastError { get; }
+
+    /// <summary>Gets a value indicating whether data event notification is enabled.</summary>
+    ReadOnlyReactiveProperty<bool> IsDataEventEnabled { get; }
+
+    /// <summary>Gets a value indicating whether the device is open.</summary>
+    bool IsOpen { get; }
+
+    /// <summary>Gets a value indicating whether the device is claimed.</summary>
+    bool IsClaimed { get; }
+
+    /// <summary>Gets a value indicating whether the device is enabled.</summary>
+    bool IsEnabled { get; }
 
     /// <summary>Attempts to open the device for communication.</summary>
     /// <param name="ct">A token to cancel the operation.</param>
