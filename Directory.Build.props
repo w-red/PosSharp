@@ -1,5 +1,14 @@
 <Project>
   <PropertyGroup>
+    <!-- NuGet Metadata -->
+    <Authors>w-red TERASHI, yohei</Authors>
+    <Company>w-red TERASHI, yohei</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2026 w-red TERASHI, yohei</Copyright>
+    <RepositoryUrl>https://github.com/w-red/PosSharp</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/w-red/PosSharp</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+
     <!-- Enable XML documentation to satisfy SA0001 -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- Suppress doc warnings in test projects (SA1600 = Elements should be documented) -->
@@ -10,3 +19,4 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
   </ItemGroup>
 </Project>
+
