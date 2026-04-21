@@ -24,6 +24,11 @@ Each device delegates its state and property management to a `UposMediator`. Thi
 ### Flexible Lifecycle Management
 Device transitions are governed by a `UposLifecycleManager`, allowing developers to implement custom lifecycle handlers or use the `StandardLifecycleHandler` for typical UPOS compliance.
 
+### Responsibility Separation
+PosSharp is designed with a strict separation between the framework and individual device implementations:
+- **Framework (PosSharp.Core)**: Provides the UPOS compliant "template", state transition rules, and automatic power management notifications.
+- **Device Implementation**: Inherits from the base class to provide concrete hardware logic, simulation behaviors, and device-specific members.
+
 ```mermaid
 graph TD
     Device[IUposDevice] --> Base[UposDeviceBase]

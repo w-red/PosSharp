@@ -24,6 +24,11 @@ PosSharp は、UPOS 規格の複雑さを整理し、保守性の高いコード
 ### 柔軟なライフサイクル管理
 デバイスの遷移ルールは `UposLifecycleManager` によって制御されます。開発者はカスタムのライフサイクルハンドラーを実装することも、標準的な `StandardLifecycleHandler` をそのまま利用することも可能です。
 
+### 責務の分離 (Responsibility Separation)
+PosSharp は「フレームワークとしての枠組み」と「具体的なデバイス実装」の責務を厳格に分離しています。
+- **フレームワーク側 (PosSharp.Core)**: UPOS に準拠したテンプレート、状態遷移ルール、および電源管理の自動通知機能を提供します。
+- **デバイス実装側**: 基底クラスを継承し、実際のハードウェア制御やシミュレーションロジック、およびデバイス固有のメンバーを実装します。
+
 ```mermaid
 graph TD
     Device[IUposDevice] --> Base[UposDeviceBase]
