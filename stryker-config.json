@@ -5,8 +5,8 @@
     },
     "project": "src/PosSharp.Core/PosSharp.Core.csproj",
     "mutate": [
-      "src/PosSharp.Core/**/*.cs",
-      "!src/PosSharp.Core/obj/**"
+      "**/*.cs",
+      "!obj/**"
     ],
     "test-projects": [
       "test/PosSharp.Core.Tests/PosSharp.Core.Tests.csproj"
