@@ -1,6 +1,3 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
@@ -10,12 +7,12 @@ namespace PosSharp.Core.Tests;
 public sealed class EventTests
 {
     [Fact]
-    public void PublishDataEvent_SubscriberReceivesEvent()
+    public void PublishDataEventSubscriberReceivesEvent()
     {
         // Arrange
         using var device = new StubUposDevice();
         var received = false;
-        using var sub = device.DataEvents.ToObservable().Subscribe(e =>
+        using var sub = device.DataEvents.Subscribe(e =>
         {
             received = true;
             e.Status.ShouldBe(123);
@@ -29,12 +26,12 @@ public sealed class EventTests
     }
 
     [Fact]
-    public void PublishErrorEvent_SubscriberReceivesEvent()
+    public void PublishErrorEventSubscriberReceivesEvent()
     {
         // Arrange
         using var device = new StubUposDevice();
         var received = false;
-        using var sub = device.ErrorEvents.ToObservable().Subscribe(e =>
+        using var sub = device.ErrorEvents.Subscribe(e =>
         {
             received = true;
             e.ErrorCode.ShouldBe(UposErrorCode.Failure);
@@ -48,13 +45,13 @@ public sealed class EventTests
     }
 
     [Fact]
-    public void Events_AfterDispose_DoNotFire()
+    public void EventsAfterDisposeDoNotFire()
     {
         // Arrange
         var device = new StubUposDevice();
         var sink = (IUposEventSink)device;
         var received = false;
-        using var sub = sink.DataEvents.ToObservable().Subscribe(_ => received = true);
+        using var sub = sink.DataEvents.Subscribe(_ => received = true);
 
         // Act
         device.Dispose();

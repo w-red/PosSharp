@@ -12,17 +12,39 @@ namespace PosSharp.Core.Tests;
 /// </summary>
 internal class StubUposDevice : UposDeviceBase
 {
+    /// <summary>Sets the CapPowerReporting capability for testing.</summary>
+    public PowerReporting TestCapPowerReporting { get; set; } = PowerReporting.None;
+
+    /// <inheritdoc/>
+    public override PowerReporting CapPowerReporting => TestCapPowerReporting;
+
     /// <summary>Exposes the protected BeginOperation method for testing.</summary>
     /// <returns>A disposable to end the operation.</returns>
-    public IDisposable TestBeginOperation() => this.BeginOperation();
+    public IDisposable TestBeginOperation() => BeginOperation();
 
     /// <summary>Exposes the protected PublishDataEvent method for testing.</summary>
     /// <param name="args">Event args.</param>
-    public void TestPublishDataEvent(UposDataEventArgs args) => this.PublishDataEvent(args);
+    public void TestPublishDataEvent(UposDataEventArgs args) => PublishDataEvent(args);
 
     /// <summary>Exposes the protected PublishErrorEvent method for testing.</summary>
     /// <param name="args">Event args.</param>
-    public void TestPublishErrorEvent(UposErrorEventArgs args) => this.PublishErrorEvent(args);
+    public void TestPublishErrorEvent(UposErrorEventArgs args) => PublishErrorEvent(args);
+
+    /// <summary>Exposes the protected UpdatePowerState method for testing.</summary>
+    /// <param name="newState">New power state.</param>
+    public void TestUpdatePowerState(PowerState newState) => UpdatePowerState(newState);
+
+    /// <inheritdoc/>
+    protected override Task<string> OnCheckHealthAsync(HealthCheckLevel level, CancellationToken ct) => Task.FromResult("Internal:OK");
+
+    /// <inheritdoc/>
+    protected override Task OnDirectIOAsync(int command, int data, object obj, CancellationToken ct) => Task.CompletedTask;
+
+    /// <inheritdoc/>
+    protected override Task OnClearInputAsync(CancellationToken ct) => Task.CompletedTask;
+
+    /// <inheritdoc/>
+    protected override Task OnClearOutputAsync(CancellationToken ct) => Task.CompletedTask;
 
     /// <inheritdoc/>
     protected override Task OnOpenAsync(CancellationToken ct) => Task.CompletedTask;

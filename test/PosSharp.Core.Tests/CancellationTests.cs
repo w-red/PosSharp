@@ -1,6 +1,3 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -9,7 +6,7 @@ namespace PosSharp.Core.Tests;
 public sealed class CancellationTests
 {
     [Fact]
-    public async Task OpenAsync_WhenCancelled_ThrowsOperationCanceledException()
+    public async Task OpenAsyncWhenCancelledThrowsOperationCanceledException()
     {
         // Arrange
         using var device = new CancellableStubUposDevice();
@@ -22,7 +19,7 @@ public sealed class CancellationTests
     }
 
     [Fact]
-    public async Task ClaimAsync_WhenCancelled_ThrowsOperationCanceledException()
+    public async Task ClaimAsyncWhenCancelledThrowsOperationCanceledException()
     {
         // Arrange
         using var device = new CancellableStubUposDevice();

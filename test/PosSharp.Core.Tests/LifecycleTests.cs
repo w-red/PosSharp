@@ -1,19 +1,14 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using PosSharp.Abstractions;
 using PosSharp.Core;
 using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
-/// <summary>
-/// Tests for <see cref="UposDeviceBase"/> lifecycle state transitions.
-/// </summary>
+/// <summary>Tests for <see cref="UposDeviceBase"/> lifecycle state transitions.</summary>
 public sealed class LifecycleTests
 {
     [Fact]
-    public async Task OpenAsync_WhenClosed_TransitionsToIdle()
+    public async Task OpenAsyncWhenClosedTransitionsToIdle()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -27,7 +22,7 @@ public sealed class LifecycleTests
     }
 
     [Fact]
-    public async Task ClaimAsync_WhenIdle_TransitionsToClaimed()
+    public async Task ClaimAsyncWhenIdleTransitionsToClaimed()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -41,7 +36,7 @@ public sealed class LifecycleTests
     }
 
     [Fact]
-    public async Task SetEnabledAsync_True_WhenClaimed_TransitionsToEnabled()
+    public async Task SetEnabledAsyncTrueWhenClaimedTransitionsToEnabled()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -56,7 +51,7 @@ public sealed class LifecycleTests
     }
 
     [Fact]
-    public async Task SetEnabledAsync_False_WhenEnabled_TransitionsToClaimed()
+    public async Task SetEnabledAsyncFalseWhenEnabledTransitionsToClaimed()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -72,7 +67,7 @@ public sealed class LifecycleTests
     }
 
     [Fact]
-    public async Task ReleaseAsync_WhenClaimed_TransitionsToIdle()
+    public async Task ReleaseAsyncWhenClaimedTransitionsToIdle()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -87,7 +82,7 @@ public sealed class LifecycleTests
     }
 
     [Fact]
-    public async Task CloseAsync_WhenIdle_TransitionsToClosed()
+    public async Task CloseAsyncWhenIdleTransitionsToClosed()
     {
         // Arrange
         using var device = new StubUposDevice();

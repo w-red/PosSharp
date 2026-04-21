@@ -1,6 +1,3 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 namespace PosSharp.Core.Tests;
 
 /// <summary>

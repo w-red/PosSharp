@@ -1,6 +1,3 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -9,7 +6,7 @@ namespace PosSharp.Core.Tests;
 public sealed class StateExceptionTests
 {
     [Fact]
-    public async Task OpenAsync_WhenAlreadyOpen_ThrowsUposStateException()
+    public async Task OpenAsyncWhenAlreadyOpenThrowsUposStateException()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -22,7 +19,7 @@ public sealed class StateExceptionTests
     }
 
     [Fact]
-    public async Task ClaimAsync_WhenClosed_ThrowsUposStateException()
+    public async Task ClaimAsyncWhenClosedThrowsUposStateException()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -34,7 +31,7 @@ public sealed class StateExceptionTests
     }
 
     [Fact]
-    public async Task SetEnabledAsync_WhenNotClaimed_ThrowsUposStateException()
+    public async Task SetEnabledAsyncWhenNotClaimedThrowsUposStateException()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -47,7 +44,7 @@ public sealed class StateExceptionTests
     }
 
     [Fact]
-    public async Task ReleaseAsync_WhenNotClaimed_ThrowsUposStateException()
+    public async Task ReleaseAsyncWhenNotClaimedThrowsUposStateException()
     {
         // Arrange
         using var device = new StubUposDevice();

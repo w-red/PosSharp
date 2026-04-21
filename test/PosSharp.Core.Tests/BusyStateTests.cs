@@ -1,6 +1,3 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -9,7 +6,7 @@ namespace PosSharp.Core.Tests;
 public sealed class BusyStateTests
 {
     [Fact]
-    public async Task BeginOperation_SetsIsBusyTrue()
+    public async Task BeginOperationSetsIsBusyTrue()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -29,7 +26,7 @@ public sealed class BusyStateTests
     }
 
     [Fact]
-    public async Task BeginOperation_WhenNotEnabled_ThrowsUposStateException()
+    public async Task BeginOperationWhenNotEnabledThrowsUposStateException()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -41,7 +38,7 @@ public sealed class BusyStateTests
     }
 
     [Fact]
-    public async Task BeginOperation_WhenAlreadyBusy_ThrowsInvalidOperationException()
+    public async Task BeginOperationWhenAlreadyBusyThrowsInvalidOperationException()
     {
         // Arrange
         using var device = new StubUposDevice();
