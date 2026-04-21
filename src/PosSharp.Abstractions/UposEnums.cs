@@ -54,3 +54,26 @@ public enum PowerNotify
     /// <summary>Power notification is enabled.</summary>
     Enabled = 1,
 }
+
+/// <summary>Specifies the locus of a device error.</summary>
+public enum UposErrorLocus
+{
+    /// <summary>The error occurred during an output operation.</summary>
+    Output = 1,
+
+    /// <summary>The error occurred during an input operation.</summary>
+    Input = 2,
+
+    /// <summary>The error occurred during an input operation while data was being queued.</summary>
+    InputData = 3,
+}
+
+/// <summary>Specifies the response to a device error.</summary>
+public enum UposErrorResponse
+{
+    /// <summary>The error should be ignored.</summary>
+    Retry = 1,
+
+    /// <summary>The error should be reported as clear.</summary>
+    Clear = 2,
+}

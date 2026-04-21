@@ -4,7 +4,8 @@ using R3;
 namespace PosSharp.Core;
 
 /// <summary>A reactive implementation of the UPOS mediator.</summary>
-public sealed class UposMediator
+/// <summary>A reactive implementation of the UPOS mediator.</summary>
+public class UposMediator
     : IUposMediator
 {
     private readonly ReactiveProperty<ControlState> state = new(Abstractions.ControlState.Closed);
@@ -17,46 +18,46 @@ public sealed class UposMediator
     private bool disposed;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<ControlState> State => state;
+    public virtual ReadOnlyReactiveProperty<ControlState> State => state;
 
     /// <inheritdoc />
-    public ControlState CurrentState => state.Value;
+    public virtual ControlState CurrentState => state.Value;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<bool> IsBusy => isBusy;
+    public virtual ReadOnlyReactiveProperty<bool> IsBusy => isBusy;
 
     /// <inheritdoc />
-    public bool IsBusyValue => isBusy.Value;
+    public virtual bool IsBusyValue => isBusy.Value;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<UposErrorCode> LastError => lastError;
+    public virtual ReadOnlyReactiveProperty<UposErrorCode> LastError => lastError;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<int> LastErrorExtended => lastErrorExtended;
+    public virtual ReadOnlyReactiveProperty<int> LastErrorExtended => lastErrorExtended;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<string> CheckHealthText => checkHealthText;
+    public virtual ReadOnlyReactiveProperty<string> CheckHealthText => checkHealthText;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<PowerState> PowerState => powerState;
+    public virtual ReadOnlyReactiveProperty<PowerState> PowerState => powerState;
 
     /// <inheritdoc />
-    public ReadOnlyReactiveProperty<int> DataCount => dataCount;
+    public virtual ReadOnlyReactiveProperty<int> DataCount => dataCount;
 
     /// <inheritdoc />
-    public void UpdateState(ControlState state)
+    public virtual void UpdateState(ControlState state)
     {
         this.state.Value = state;
     }
 
     /// <inheritdoc />
-    public void SetBusy(bool isBusy)
+    public virtual void SetBusy(bool isBusy)
     {
         this.isBusy.Value = isBusy;
     }
 
     /// <inheritdoc />
-    public IDisposable BeginOperation()
+    public virtual IDisposable BeginOperation()
     {
         if (isBusy.Value)
         {
@@ -73,26 +74,26 @@ public sealed class UposMediator
     }
 
     /// <inheritdoc />
-    public void ReportError(UposErrorCode errorCode, int extendedCode = 0)
+    public virtual void ReportError(UposErrorCode errorCode, int extendedCode = 0)
     {
         lastError.Value = errorCode;
         lastErrorExtended.Value = extendedCode;
     }
 
     /// <inheritdoc />
-    public void UpdateCheckHealthText(string text)
+    public virtual void UpdateCheckHealthText(string text)
     {
         checkHealthText.Value = text;
     }
 
     /// <inheritdoc />
-    public void UpdatePowerState(PowerState powerState)
+    public virtual void UpdatePowerState(PowerState powerState)
     {
         this.powerState.Value = powerState;
     }
 
     /// <inheritdoc />
-    public void UpdateDataCount(int count)
+    public virtual void UpdateDataCount(int count)
     {
         dataCount.Value = count;
     }
@@ -100,18 +101,30 @@ public sealed class UposMediator
     /// <inheritdoc />
     public void Dispose()
     {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary> Releases the unmanaged resources used by the <see cref="UposMediator"/> and optionally releases the managed resources.</summary>
+    /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    protected virtual void Dispose(bool disposing)
+    {
         if (disposed)
         {
             return;
         }
 
-        state.Dispose();
-        isBusy.Dispose();
-        lastError.Dispose();
-        lastErrorExtended.Dispose();
-        checkHealthText.Dispose();
-        powerState.Dispose();
-        dataCount.Dispose();
+        if (disposing)
+        {
+            state.Dispose();
+            isBusy.Dispose();
+            lastError.Dispose();
+            lastErrorExtended.Dispose();
+            checkHealthText.Dispose();
+            powerState.Dispose();
+            dataCount.Dispose();
+        }
+
         disposed = true;
     }
 }

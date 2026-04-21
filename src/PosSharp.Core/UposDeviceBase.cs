@@ -249,20 +249,42 @@ public abstract class UposDeviceBase
         await OnClearOutputAsync(ct);
     }
 
-    /// <inheritdoc/>
-    public virtual void Dispose()
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
     {
-        dataSubject.Dispose();
-        errorSubject.Dispose();
-        statusUpdateSubject.Dispose();
-        directIoSubject.Dispose();
-        outputCompleteSubject.Dispose();
-
-        dataEventEnabled.Dispose();
-        Disposables.Dispose();
-        Mediator.Dispose();
-
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Releases unmanaged and - optionally - managed resources.
+    /// </summary>
+    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            dataSubject.OnCompleted();
+            dataSubject.Dispose();
+
+            errorSubject.OnCompleted();
+            errorSubject.Dispose();
+
+            statusUpdateSubject.OnCompleted();
+            statusUpdateSubject.Dispose();
+
+            directIoSubject.OnCompleted();
+            directIoSubject.Dispose();
+
+            outputCompleteSubject.OnCompleted();
+            outputCompleteSubject.Dispose();
+
+            dataEventEnabled.Dispose();
+            Disposables.Dispose();
+            Mediator.Dispose();
+        }
     }
 
     // ------------------------------------------------------------------
