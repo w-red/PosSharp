@@ -3,6 +3,7 @@
     "project-info": {
       "module": "PosSharp.Core"
     },
+    "project": "src/PosSharp.Core/PosSharp.Core.csproj",
     "mutate": [
       "src/PosSharp.Core/**/*.cs",
       "!src/PosSharp.Core/obj/**"
