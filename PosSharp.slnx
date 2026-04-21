@@ -1,7 +1,7 @@
 <Solution>
-  <Configurations>
-    <Platform Name="Any CPU" />
-  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="src/PosSharp.Abstractions/PosSharp.Abstractions.csproj" />
   <Project Path="src/PosSharp.Core/PosSharp.Core.csproj" />
   <Project Path="test/PosSharp.Core.Tests/PosSharp.Core.Tests.csproj" />
