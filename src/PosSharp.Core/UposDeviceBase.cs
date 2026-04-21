@@ -19,6 +19,8 @@ public abstract class UposDeviceBase
 
     private bool autoDisable;
     private PowerNotify powerNotify = PowerNotify.Disabled;
+    private readonly IDisposable coreDisposables;
+    private DisposableBag extensionDisposables;
 
     /// <summary>Initializes a new instance of the <see cref="UposDeviceBase"/> class with default mediator and handler.</summary>
     protected UposDeviceBase()
@@ -33,6 +35,15 @@ public abstract class UposDeviceBase
     {
         Mediator = mediator;
         Lifecycle = new UposLifecycleManager(mediator, handler);
+
+        coreDisposables = Disposable.Combine(
+            dataSubject,
+            errorSubject,
+            statusUpdateSubject,
+            directIoSubject,
+            outputCompleteSubject,
+            dataEventEnabled,
+            Mediator);
     }
 
     // ------------------------------------------------------------------
@@ -151,9 +162,6 @@ public abstract class UposDeviceBase
     /// <summary>Gets the lifecycle manager that validates state transitions.</summary>
     protected UposLifecycleManager Lifecycle { get; }
 
-    /// <summary>Gets the disposable container for subscriptions managed by this device.</summary>
-    protected CompositeDisposable Disposables { get; } = new();
-
     /// <summary>Gets the internal reactive property for data event enabled state.</summary>
     protected ReactiveProperty<bool> DataEventEnabledInternal => dataEventEnabled;
 
@@ -267,23 +275,13 @@ public abstract class UposDeviceBase
         if (disposing)
         {
             dataSubject.OnCompleted();
-            dataSubject.Dispose();
-
             errorSubject.OnCompleted();
-            errorSubject.Dispose();
-
             statusUpdateSubject.OnCompleted();
-            statusUpdateSubject.Dispose();
-
             directIoSubject.OnCompleted();
-            directIoSubject.Dispose();
-
             outputCompleteSubject.OnCompleted();
-            outputCompleteSubject.Dispose();
 
-            dataEventEnabled.Dispose();
-            Disposables.Dispose();
-            Mediator.Dispose();
+            coreDisposables.Dispose();
+            extensionDisposables.Dispose();
         }
     }
 
@@ -298,6 +296,23 @@ public abstract class UposDeviceBase
     /// <returns>A disposable to end the operation.</returns>
     /// <exception cref="UposStateException">The device is not enabled or already busy.</exception>
     protected IDisposable BeginOperation() => Mediator.BeginOperation();
+
+    /// <summary>Adds a disposable to the extension disposable bag.</summary>
+    /// <param name="disposable">The disposable to add.</param>
+    protected void AddDisposable(IDisposable disposable)
+    {
+        disposable.AddTo(ref extensionDisposables);
+    }
+
+    /// <summary>Adds multiple disposables to the extension disposable bag.</summary>
+    /// <param name="disposables">The disposables to add.</param>
+    protected void AddDisposables(params IDisposable[] disposables)
+    {
+        foreach (var d in disposables)
+        {
+            d.AddTo(ref extensionDisposables);
+        }
+    }
 
     /// <summary>Verifies that the device is in one of the allowed states.</summary>
     /// <param name="allowedStates">The allowed states.</param>
