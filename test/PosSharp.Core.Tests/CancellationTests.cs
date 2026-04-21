@@ -11,7 +11,7 @@ public sealed class CancellationTests
         // Arrange
         using var device = new CancellableStubUposDevice();
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         // Act & Assert
         await Should.ThrowAsync<OperationCanceledException>(() => device.OpenAsync(cts.Token));
@@ -25,7 +25,7 @@ public sealed class CancellationTests
         using var device = new CancellableStubUposDevice();
         await device.OpenAsync();
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         // Act & Assert
         await Should.ThrowAsync<OperationCanceledException>(() => device.ClaimAsync(1000, cts.Token));
