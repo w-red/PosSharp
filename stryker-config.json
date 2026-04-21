@@ -1,0 +1,27 @@
+{
+  "stryker-config": {
+    "project-info": {
+      "module": "PosSharp.Core"
+    },
+    "mutate": [
+      "src/PosSharp.Core/**/*.cs",
+      "!src/PosSharp.Core/obj/**"
+    ],
+    "test-projects": [
+      "test/PosSharp.Core.Tests/PosSharp.Core.Tests.csproj"
+    ],
+    "reporters": [
+      "html",
+      "progress",
+      "cleartext",
+      "json"
+    ],
+    "thresholds": {
+      "break": 80,
+      "low": 90,
+      "high": 95
+    },
+    "log-to-file": true,
+    "concurrency": "auto"
+  }
+}
