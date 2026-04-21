@@ -51,13 +51,20 @@ public class MyCashChanger : UposDeviceBase
 
     // Override required abstract members
     protected override Task OnOpenAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnCloseAsync(CancellationToken ct) => Task.CompletedTask;
     protected override Task OnClaimAsync(int timeout, CancellationToken ct) => Task.CompletedTask;
-    protected override Task OnSetEnabledAsync(bool enabled, CancellationToken ct) => Task.CompletedTask;
-    
-    public override Task<UposCommandResult> CheckHealthAsync(HealthCheckLevel level)
+    protected override Task OnReleaseAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnEnableAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnDisableAsync(CancellationToken ct) => Task.CompletedTask;
+
+    protected override Task<string> OnCheckHealthAsync(HealthCheckLevel level, CancellationToken ct)
     {
-        return Task.FromResult(new UposCommandResult(UposErrorCode.Success));
+        return Task.FromResult("Internal:OK");
     }
+
+    protected override Task OnDirectIOAsync(int command, int data, object obj, CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClearInputAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClearOutputAsync(CancellationToken ct) => Task.CompletedTask;
     
     // Use the protected helper to update internal state
     public void SimulateCashAdded()

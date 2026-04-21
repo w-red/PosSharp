@@ -51,13 +51,20 @@ public class MyCashChanger : UposDeviceBase
 
     // 必須の抽象メソッドをオーバーライド
     protected override Task OnOpenAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnCloseAsync(CancellationToken ct) => Task.CompletedTask;
     protected override Task OnClaimAsync(int timeout, CancellationToken ct) => Task.CompletedTask;
-    protected override Task OnSetEnabledAsync(bool enabled, CancellationToken ct) => Task.CompletedTask;
-    
-    public override Task<UposCommandResult> CheckHealthAsync(HealthCheckLevel level)
+    protected override Task OnReleaseAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnEnableAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnDisableAsync(CancellationToken ct) => Task.CompletedTask;
+
+    protected override Task<string> OnCheckHealthAsync(HealthCheckLevel level, CancellationToken ct)
     {
-        return Task.FromResult(new UposCommandResult(UposErrorCode.Success));
+        return Task.FromResult("Internal:OK");
     }
+
+    protected override Task OnDirectIOAsync(int command, int data, object obj, CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClearInputAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClearOutputAsync(CancellationToken ct) => Task.CompletedTask;
     
     // ヘルパメソッドを使用して内部状態を更新
     public void SimulateCashAdded()
