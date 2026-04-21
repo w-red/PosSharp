@@ -3,6 +3,7 @@
 
 using PosSharp.Abstractions;
 using PosSharp.Core;
+using PosSharp.Core.Lifecycle;
 
 namespace PosSharp.Core.Tests;
 
@@ -12,11 +13,53 @@ namespace PosSharp.Core.Tests;
 /// </summary>
 internal class StubUposDevice : UposDeviceBase
 {
-    /// <summary>Sets the CapPowerReporting capability for testing.</summary>
+    /// <summary>Gets the CapPowerReporting capability for testing.</summary>
+    public override PowerReporting CapPowerReporting => TestCapPowerReporting;
+
+    /// <summary>Gets or sets the CapPowerReporting capability for testing.</summary>
     public PowerReporting TestCapPowerReporting { get; set; } = PowerReporting.None;
 
-    /// <inheritdoc/>
-    public override PowerReporting CapPowerReporting => TestCapPowerReporting;
+    /// <summary>Gets the protected Lifecycle manager for testing.</summary>
+    public new UposLifecycleManager Lifecycle => base.Lifecycle;
+
+    /// <summary>Gets the last DirectIO command.</summary>
+    public int LastDirectIOCommand { get; private set; }
+
+    /// <summary>Gets the last DirectIO data.</summary>
+    public int LastDirectIOData { get; private set; }
+
+    /// <summary>Gets the last DirectIO object.</summary>
+    public object? LastDirectIOObject { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnOpenAsync was called.</summary>
+    public bool OpenCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnCloseAsync was called.</summary>
+    public bool CloseCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnClaimAsync was called.</summary>
+    public bool ClaimCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnReleaseAsync was called.</summary>
+    public bool ReleaseCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnEnableAsync was called.</summary>
+    public bool EnableCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnDisableAsync was called.</summary>
+    public bool DisableCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnCheckHealthAsync was called.</summary>
+    public bool CheckHealthCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnDirectIOAsync was called.</summary>
+    public bool DirectIOCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnClearInputAsync was called.</summary>
+    public bool ClearInputCalled { get; private set; }
+
+    /// <summary>Gets a value indicating whether OnClearOutputAsync was called.</summary>
+    public bool ClearOutputCalled { get; private set; }
 
     /// <summary>Exposes the protected BeginOperation method for testing.</summary>
     /// <returns>A disposable to end the operation.</returns>
@@ -34,33 +77,80 @@ internal class StubUposDevice : UposDeviceBase
     /// <param name="newState">New power state.</param>
     public void TestUpdatePowerState(PowerState newState) => UpdatePowerState(newState);
 
-    /// <inheritdoc/>
-    protected override Task<string> OnCheckHealthAsync(HealthCheckLevel level, CancellationToken ct) => Task.FromResult("Internal:OK");
+    /// <summary>Updates the last error for testing.</summary>
+    /// <param name="code">Error code.</param>
+    public void TestUpdateError(UposErrorCode code) => Mediator.ReportError(code);
 
     /// <inheritdoc/>
-    protected override Task OnDirectIOAsync(int command, int data, object obj, CancellationToken ct) => Task.CompletedTask;
+    protected override Task<string> OnCheckHealthAsync(HealthCheckLevel level, CancellationToken ct)
+    {
+        CheckHealthCalled = true;
+        return Task.FromResult("Internal:OK");
+    }
 
     /// <inheritdoc/>
-    protected override Task OnClearInputAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnDirectIOAsync(int command, int data, object obj, CancellationToken ct)
+    {
+        DirectIOCalled = true;
+        LastDirectIOCommand = command;
+        LastDirectIOData = data;
+        LastDirectIOObject = obj;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnClearOutputAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClearInputAsync(CancellationToken ct)
+    {
+        ClearInputCalled = true;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnOpenAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClearOutputAsync(CancellationToken ct)
+    {
+        ClearOutputCalled = true;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnCloseAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnOpenAsync(CancellationToken ct)
+    {
+        OpenCalled = true;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnClaimAsync(int timeout, CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnCloseAsync(CancellationToken ct)
+    {
+        CloseCalled = true;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnReleaseAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnClaimAsync(int timeout, CancellationToken ct)
+    {
+        ClaimCalled = true;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnEnableAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnReleaseAsync(CancellationToken ct)
+    {
+        ReleaseCalled = true;
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc/>
-    protected override Task OnDisableAsync(CancellationToken ct) => Task.CompletedTask;
+    protected override Task OnEnableAsync(CancellationToken ct)
+    {
+        EnableCalled = true;
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    protected override Task OnDisableAsync(CancellationToken ct)
+    {
+        DisableCalled = true;
+        return Task.CompletedTask;
+    }
 }

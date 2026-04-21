@@ -6,9 +6,7 @@ namespace PosSharp.Core;
 
 /// <summary>A generic base implementation of <see cref="IUposDevice"/> that manages state transitions
 /// via a modular mediator and lifecycle manager.</summary>
-public abstract class UposDeviceBase
-    : IUposDevice,
-    IUposEventSink
+public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 {
     private readonly ReactiveProperty<bool> dataEventEnabled = new(false);
     private readonly Subject<UposDataEventArgs> dataSubject = new();
@@ -16,17 +14,15 @@ public abstract class UposDeviceBase
     private readonly Subject<UposStatusUpdateEventArgs> statusUpdateSubject = new();
     private readonly Subject<UposDirectIoEventArgs> directIoSubject = new();
     private readonly Subject<UposOutputCompleteEventArgs> outputCompleteSubject = new();
-
-    private bool autoDisable;
-    private PowerNotify powerNotify = PowerNotify.Disabled;
     private readonly IDisposable coreDisposables;
+
+    private PowerNotify powerNotify = PowerNotify.Disabled;
+    private bool disposed;
     private DisposableBag extensionDisposables;
 
     /// <summary>Initializes a new instance of the <see cref="UposDeviceBase"/> class with default mediator and handler.</summary>
     protected UposDeviceBase()
-        : this(new UposMediator(), new StandardLifecycleHandler())
-    {
-    }
+        : this(new UposMediator(), new StandardLifecycleHandler()) { }
 
     /// <summary>Initializes a new instance of the <see cref="UposDeviceBase"/> class with provided mediator and handler.</summary>
     /// <param name="mediator">The state mediator.</param>
@@ -43,7 +39,8 @@ public abstract class UposDeviceBase
             directIoSubject,
             outputCompleteSubject,
             dataEventEnabled,
-            Mediator);
+            Mediator
+        );
     }
 
     // ------------------------------------------------------------------
@@ -65,8 +62,16 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public bool DataEventEnabled
     {
-        get => dataEventEnabled.Value;
-        set => dataEventEnabled.Value = value;
+        get
+        {
+            ThrowIfDisposed();
+            return dataEventEnabled.Value;
+        }
+        set
+        {
+            ThrowIfDisposed();
+            dataEventEnabled.Value = value;
+        }
     }
 
     /// <inheritdoc/>
@@ -98,11 +103,7 @@ public abstract class UposDeviceBase
     public int DataCount => Mediator.DataCount.CurrentValue;
 
     /// <inheritdoc/>
-    public bool AutoDisable
-    {
-        get => autoDisable;
-        set => autoDisable = value;
-    }
+    public bool AutoDisable { get; set; }
 
     /// <inheritdoc/>
     public virtual PowerReporting CapPowerReporting => PowerReporting.None;
@@ -172,6 +173,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task OpenAsync(CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         Lifecycle.PreOpen();
         await OnOpenAsync(ct);
         Lifecycle.PostOpen();
@@ -180,6 +184,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task CloseAsync(CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         if (Mediator.CurrentState == ControlState.Closed)
         {
             return;
@@ -193,6 +200,15 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task ClaimAsync(int timeout, CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
+        var currentState = Mediator.CurrentState;
+        if (currentState == ControlState.Claimed || currentState == ControlState.Enabled)
+        {
+            return;
+        }
+
         Lifecycle.PreClaim();
         await OnClaimAsync(timeout, ct);
         Lifecycle.PostClaim();
@@ -201,6 +217,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task ReleaseAsync(CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         Lifecycle.PreRelease();
         await OnReleaseAsync(ct);
         Lifecycle.PostRelease();
@@ -209,6 +228,20 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task SetEnabledAsync(bool enabled, CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
+        var currentState = Mediator.CurrentState;
+        if (enabled && currentState == ControlState.Enabled)
+        {
+            return;
+        }
+
+        if (!enabled && currentState == ControlState.Claimed)
+        {
+            return;
+        }
+
         if (enabled)
         {
             Lifecycle.PreEnable();
@@ -226,6 +259,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task CheckHealthAsync(HealthCheckLevel level, CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         VerifyState(ControlState.Enabled);
         using (BeginOperation())
         {
@@ -237,6 +273,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task DirectIOAsync(int command, int data, object obj, CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         // DirectIO normally allowed in Claimed or Enabled states
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnDirectIOAsync(command, data, obj, ct);
@@ -245,6 +284,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task ClearInputAsync(CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnClearInputAsync(ct);
         Mediator.UpdateDataCount(0);
@@ -253,6 +295,9 @@ public abstract class UposDeviceBase
     /// <inheritdoc/>
     public async Task ClearOutputAsync(CancellationToken ct = default)
     {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnClearOutputAsync(ct);
     }
@@ -272,6 +317,11 @@ public abstract class UposDeviceBase
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
+        if (disposed)
+        {
+            return;
+        }
+
         if (disposing)
         {
             dataSubject.OnCompleted();
@@ -282,6 +332,20 @@ public abstract class UposDeviceBase
 
             coreDisposables.Dispose();
             extensionDisposables.Dispose();
+        }
+
+        disposed = true;
+    }
+
+    /// <summary>Throws an <see cref="ObjectDisposedException"/> if the device is disposed.</summary>
+    protected void ThrowIfDisposed()
+    {
+        if (disposed)
+        {
+            throw new ObjectDisposedException(
+                GetType().FullName,
+                "The UPOS device has been disposed and cannot be accessed."
+            );
         }
     }
 
@@ -343,14 +407,14 @@ public abstract class UposDeviceBase
     /// <param name="newState">The new power state.</param>
     protected void UpdatePowerState(PowerState newState)
     {
-        if (Mediator.PowerState.CurrentValue == newState)
+        if (PowerNotify == PowerNotify.Disabled)
         {
             return;
         }
 
         Mediator.UpdatePowerState(newState);
 
-        if (PowerNotify == PowerNotify.Enabled && CapPowerReporting != PowerReporting.None)
+        if (CapPowerReporting != PowerReporting.None)
         {
             PublishStatusUpdateEvent(new UposStatusUpdateEventArgs((int)newState));
         }
