@@ -15,7 +15,14 @@ public class UposMediator
     private readonly ReactiveProperty<string> checkHealthText = new(string.Empty);
     private readonly ReactiveProperty<PowerState> powerState = new(Abstractions.PowerState.Unknown);
     private readonly ReactiveProperty<int> dataCount = new(0);
+    private readonly IDisposable disposables;
     private bool disposed;
+
+    /// <summary>Initializes a new instance of the <see cref="UposMediator"/> class.</summary>
+    public UposMediator()
+    {
+        disposables = Disposable.Combine(state, isBusy, lastError, lastErrorExtended, checkHealthText, powerState, dataCount);
+    }
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<ControlState> State => state;
@@ -116,13 +123,7 @@ public class UposMediator
 
         if (disposing)
         {
-            state.Dispose();
-            isBusy.Dispose();
-            lastError.Dispose();
-            lastErrorExtended.Dispose();
-            checkHealthText.Dispose();
-            powerState.Dispose();
-            dataCount.Dispose();
+            disposables.Dispose();
         }
 
         disposed = true;
