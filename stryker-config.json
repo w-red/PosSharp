@@ -21,6 +21,6 @@
       "low": 90,
       "high": 95
     },
-    "log-to-file": true
+    "concurrency": 4
   }
 }
