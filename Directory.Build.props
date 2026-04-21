@@ -9,14 +9,9 @@
     <PackageProjectUrl>https://github.com/w-red/PosSharp</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
 
-    <!-- Enable XML documentation to satisfy SA0001 -->
+    <!-- Enable XML documentation for public API -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <!-- Suppress doc warnings in test projects (SA1600 = Elements should be documented) -->
-    <NoWarn Condition="$(MSBuildProjectName.EndsWith('.Tests'))">$(NoWarn);CS1591;SA1600</NoWarn>
+    <!-- Suppress doc warnings in test projects -->
+    <NoWarn Condition="$(MSBuildProjectName.EndsWith('.Tests'))">$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
-  </ItemGroup>
 </Project>
-

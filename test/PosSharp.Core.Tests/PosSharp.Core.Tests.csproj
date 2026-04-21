@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -11,7 +10,7 @@
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="Shouldly" Version="4.2.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.10.0.116381">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -27,5 +26,4 @@
     <ProjectReference Include="..\..\src\PosSharp.Abstractions\PosSharp.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\PosSharp.Core\PosSharp.Core.csproj" />
   </ItemGroup>
-
 </Project>
