@@ -4,7 +4,6 @@ using R3;
 namespace PosSharp.Core;
 
 /// <summary>A reactive implementation of the UPOS mediator.</summary>
-/// <summary>A reactive implementation of the UPOS mediator.</summary>
 public class UposMediator
     : IUposMediator
 {
