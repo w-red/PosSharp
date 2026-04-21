@@ -4,7 +4,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Description>Standard implementation of the PosSharp UPOS framework, including lifecycle management and mediator patterns.</Description>
   </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="PolySharp" Version="1.15.0">
