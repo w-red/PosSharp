@@ -3,8 +3,7 @@ using PosSharp.Abstractions;
 namespace PosSharp.Core;
 
 /// <summary>Exception thrown when a UPOS device is in an invalid state for the requested operation.</summary>
-public sealed class UposStateException
-    : InvalidOperationException
+public sealed class UposStateException : InvalidOperationException
 {
     /// <summary>Initializes a new instance of the <see cref="UposStateException"/> class.</summary>
     /// <param name="message">The exception message.</param>
@@ -18,11 +17,8 @@ public sealed class UposStateException
     /// <summary>Initializes a new instance of the <see cref="UposStateException"/> class.</summary>
     /// <param name="currentState">The current state of the device.</param>
     /// <param name="allowedStates">The states that would have been valid for the operation.</param>
-    public UposStateException(
-        ControlState currentState,
-        IReadOnlyList<ControlState> allowedStates)
-        : base(
-            $"Invalid state transition from {currentState}. Allowed: {string.Join(", ", allowedStates)}")
+    public UposStateException(ControlState currentState, IReadOnlyList<ControlState> allowedStates)
+        : base($"Invalid state transition from {currentState}. Allowed: {string.Join(", ", allowedStates)}")
     {
         CurrentState = currentState;
         AllowedStates = allowedStates;

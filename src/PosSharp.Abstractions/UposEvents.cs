@@ -1,5 +1,3 @@
-#pragma warning disable SA1402 // this file contains multiple types, but they are all related to UPOS events, so it's acceptable in this context.
-
 namespace PosSharp.Abstractions;
 
 /// <summary>Represents the base record for all UPOS event arguments.</summary>
@@ -14,7 +12,12 @@ public sealed record UposDataEventArgs(int Status) : UposEventArgs;
 /// <param name="ExtendedErrorCode">The extended error code.</param>
 /// <param name="ErrorLocus">The locus of the error (where it occurred).</param>
 /// <param name="ErrorResponse">The response to the error.</param>
-public sealed record UposErrorEventArgs(UposErrorCode ErrorCode, int ExtendedErrorCode, UposErrorLocus ErrorLocus, UposErrorResponse ErrorResponse) : UposEventArgs;
+public sealed record UposErrorEventArgs(
+    UposErrorCode ErrorCode,
+    int ExtendedErrorCode,
+    UposErrorLocus ErrorLocus,
+    UposErrorResponse ErrorResponse
+) : UposEventArgs;
 
 /// <summary>Represents arguments for a StatusUpdateEvent.</summary>
 /// <param name="Status">The status information.</param>

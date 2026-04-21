@@ -38,7 +38,7 @@ public sealed class BusyStateTests
     }
 
     [Fact]
-    public async Task BeginOperationWhenAlreadyBusyThrowsInvalidOperationException()
+    public async Task BeginOperationWhenAlreadyBusyThrowsUposStateException()
     {
         // Arrange
         using var device = new StubUposDevice();
@@ -49,6 +49,7 @@ public sealed class BusyStateTests
         using var guard = device.TestBeginOperation();
 
         // Act & Assert
-        Should.Throw<InvalidOperationException>(() => device.TestBeginOperation());
+        var ex = Should.Throw<UposStateException>(() => device.TestBeginOperation());
+        ex.Message.ShouldBe("Device is already busy.");
     }
 }

@@ -4,8 +4,7 @@ using R3;
 namespace PosSharp.Core;
 
 /// <summary>A reactive implementation of the UPOS mediator.</summary>
-public class UposMediator
-    : IUposMediator
+public class UposMediator : IUposMediator
 {
     private readonly ReactiveProperty<ControlState> state = new(Abstractions.ControlState.Closed);
     private readonly ReactiveProperty<bool> isBusy = new(false);
@@ -20,7 +19,15 @@ public class UposMediator
     /// <summary>Initializes a new instance of the <see cref="UposMediator"/> class.</summary>
     public UposMediator()
     {
-        disposables = Disposable.Combine(state, isBusy, lastError, lastErrorExtended, checkHealthText, powerState, dataCount);
+        disposables = Disposable.Combine(
+            state,
+            isBusy,
+            lastError,
+            lastErrorExtended,
+            checkHealthText,
+            powerState,
+            dataCount
+        );
     }
 
     /// <inheritdoc />

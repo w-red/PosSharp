@@ -21,6 +21,7 @@ public sealed class CommonComplianceTests
         device.CapPowerReporting.ShouldBe(PowerReporting.None);
         device.PowerNotify.ShouldBe(PowerNotify.Disabled);
         device.PowerState.ShouldBe(PowerState.Unknown);
+        device.DataEventEnabled.ShouldBeFalse();
         device.ServiceObjectDescription.ShouldNotBeNullOrEmpty();
         device.ServiceObjectVersion.ShouldNotBeNullOrEmpty();
         device.DeviceDescription.ShouldNotBeNullOrEmpty();
@@ -56,6 +57,7 @@ public sealed class CommonComplianceTests
             device.PowerNotify = PowerNotify.Enabled;
         });
         ex.ErrorCode.ShouldBe(UposErrorCode.Illegal);
+        ex.Message.ShouldBe("Power notification is not supported by this device.");
     }
 
     [Fact]
