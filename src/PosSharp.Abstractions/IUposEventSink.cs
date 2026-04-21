@@ -1,25 +1,22 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
+using R3;
 
 namespace PosSharp.Abstractions;
 
-/// <summary>
-/// Defines an interface for a component that produces UPOS events.
-/// </summary>
+/// <summary>Defines an interface for a component that produces UPOS events.</summary>
 public interface IUposEventSink
 {
     /// <summary>Gets a stream of DataEvents.</summary>
-    IObservable<UposDataEventArgs> DataEvents { get; }
+    Observable<UposDataEventArgs> DataEvents { get; }
 
     /// <summary>Gets a stream of ErrorEvents.</summary>
-    IObservable<UposErrorEventArgs> ErrorEvents { get; }
+    Observable<UposErrorEventArgs> ErrorEvents { get; }
 
     /// <summary>Gets a stream of StatusUpdateEvents.</summary>
-    IObservable<UposStatusUpdateEventArgs> StatusUpdateEvents { get; }
+    Observable<UposStatusUpdateEventArgs> StatusUpdateEvents { get; }
 
     /// <summary>Gets a stream of DirectIOEvents.</summary>
-    IObservable<UposDirectIoEventArgs> DirectIoEvents { get; }
+    Observable<UposDirectIoEventArgs> DirectIoEvents { get; }
 
     /// <summary>Gets a stream of OutputCompleteEvents.</summary>
-    IObservable<UposOutputCompleteEventArgs> OutputCompleteEvents { get; }
+    Observable<UposOutputCompleteEventArgs> OutputCompleteEvents { get; }
 }

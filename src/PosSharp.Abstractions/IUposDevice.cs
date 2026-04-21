@@ -1,13 +1,8 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using R3;
 
 namespace PosSharp.Abstractions;
 
-/// <summary>
-/// Basic interface for all UPOS devices, providing common lifecycle and state management.
-/// </summary>
+/// <summary>Basic interface for all UPOS devices, providing common lifecycle and state management.</summary>
 public interface IUposDevice : IDisposable
 {
     /// <summary>Gets the current logical state of the device.</summary>
@@ -23,7 +18,10 @@ public interface IUposDevice : IDisposable
     ReadOnlyReactiveProperty<UposErrorCode> LastError { get; }
 
     /// <summary>Gets a value indicating whether data event notification is enabled.</summary>
-    ReadOnlyReactiveProperty<bool> IsDataEventEnabled { get; }
+    bool DataEventEnabled { get; set; }
+
+    /// <summary>Gets a value indicating whether data event notification is enabled (Reactive).</summary>
+    ReadOnlyReactiveProperty<bool> DataEventEnabledProperty { get; }
 
     /// <summary>Gets a value indicating whether the device is open.</summary>
     bool IsOpen { get; }
@@ -33,6 +31,47 @@ public interface IUposDevice : IDisposable
 
     /// <summary>Gets a value indicating whether the device is enabled.</summary>
     bool IsEnabled { get; }
+
+    // ------------------------------------------------------------------
+    // Common UPOS Properties
+    // ------------------------------------------------------------------
+
+    /// <summary>Gets a text description of the results of the last <see cref="CheckHealthAsync"/> call.</summary>
+    string CheckHealthText { get; }
+
+    /// <summary>Gets the extended result code of the last completed operation.</summary>
+    int ResultCodeExtended { get; }
+
+    /// <summary>Gets the number of data events currently queued.</summary>
+    int DataCount { get; }
+
+    /// <summary>Gets or sets a value indicating whether the device is automatically disabled after a data event is fired.</summary>
+    bool AutoDisable { get; set; }
+
+    /// <summary>Gets the power reporting capabilities of the device.</summary>
+    PowerReporting CapPowerReporting { get; }
+
+    /// <summary>Gets or sets the power notification mode.</summary>
+    PowerNotify PowerNotify { get; set; }
+
+    /// <summary>Gets the current power state of the device.</summary>
+    PowerState PowerState { get; }
+
+    /// <summary>Gets a description of the Service Object.</summary>
+    string ServiceObjectDescription { get; }
+
+    /// <summary>Gets the version of the Service Object.</summary>
+    string ServiceObjectVersion { get; }
+
+    /// <summary>Gets a description of the physical device.</summary>
+    string DeviceDescription { get; }
+
+    /// <summary>Gets the name of the physical device.</summary>
+    string DeviceName { get; }
+
+    // ------------------------------------------------------------------
+    // Common UPOS Methods
+    // ------------------------------------------------------------------
 
     /// <summary>Attempts to open the device for communication.</summary>
     /// <param name="ct">A token to cancel the operation.</param>
@@ -60,4 +99,47 @@ public interface IUposDevice : IDisposable
     /// <param name="ct">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     Task SetEnabledAsync(bool enabled, CancellationToken ct = default);
+
+    /// <summary>Tests the health of the device.</summary>
+    /// <param name="level">The level of health check to perform.</param>
+    /// <param name="ct">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task CheckHealthAsync(HealthCheckLevel level, CancellationToken ct = default);
+
+    /// <summary>Sends a direct command to the device.</summary>
+    /// <param name="command">The command to send.</param>
+    /// <param name="data">Input/output data value.</param>
+    /// <param name="obj">Input/output object.</param>
+    /// <param name="ct">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task DirectIOAsync(int command, int data, object obj, CancellationToken ct = default);
+
+    /// <summary>Clears all pending input data.</summary>
+    /// <param name="ct">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task ClearInputAsync(CancellationToken ct = default);
+
+    /// <summary>Clears all pending buffered output data.</summary>
+    /// <param name="ct">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task ClearOutputAsync(CancellationToken ct = default);
+
+    // ------------------------------------------------------------------
+    // Common UPOS Events
+    // ------------------------------------------------------------------
+
+    /// <summary>Gets the sequence of data events fired by the device.</summary>
+    Observable<UposDataEventArgs> DataEvents { get; }
+
+    /// <summary>Gets the sequence of error events fired by the device.</summary>
+    Observable<UposErrorEventArgs> ErrorEvents { get; }
+
+    /// <summary>Gets the sequence of status update events fired by the device.</summary>
+    Observable<UposStatusUpdateEventArgs> StatusUpdateEvents { get; }
+
+    /// <summary>Gets the sequence of direct IO events fired by the device.</summary>
+    Observable<UposDirectIoEventArgs> DirectIoEvents { get; }
+
+    /// <summary>Gets the sequence of output complete events fired by the device.</summary>
+    Observable<UposOutputCompleteEventArgs> OutputCompleteEvents { get; }
 }
