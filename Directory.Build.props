@@ -11,6 +11,11 @@
 
     <!-- Enable XML documentation for public API -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Code Analysis & Style Enforcement -->
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    
     <!-- Suppress doc warnings in test projects -->
     <NoWarn Condition="$(MSBuildProjectName.EndsWith('.Tests'))">$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>

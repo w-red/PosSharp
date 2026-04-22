@@ -71,6 +71,9 @@ public enum UposErrorLocus
 /// <summary>Specifies the response to a device error.</summary>
 public enum UposErrorResponse
 {
+    /// <summary>No specific response or default.</summary>
+    None = 0,
+
     /// <summary>The error should be ignored.</summary>
     Retry = 1,
 
