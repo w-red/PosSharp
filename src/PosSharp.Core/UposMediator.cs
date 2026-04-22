@@ -14,6 +14,7 @@ public class UposMediator : IUposMediator
     private readonly ReactiveProperty<PowerState> powerState = new(Abstractions.PowerState.Unknown);
     private readonly ReactiveProperty<int> dataCount = new(0);
     private readonly IDisposable disposables;
+    private int busyFlag;
     private bool disposed;
 
     /// <summary>Initializes a new instance of the <see cref="UposMediator"/> class.</summary>
@@ -66,24 +67,43 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void SetBusy(bool isBusy)
     {
+        Interlocked.Exchange(ref busyFlag, isBusy ? 1 : 0);
         this.isBusy.Value = isBusy;
     }
 
     /// <inheritdoc />
     public virtual IDisposable BeginOperation()
     {
-        if (isBusy.Value)
+        if (Interlocked.CompareExchange(ref busyFlag, 1, 0) != 0)
         {
             throw new UposStateException("Device is already busy.");
         }
 
-        if (state.Value != ControlState.Enabled)
+        // Now we are atomically marked as busy.
+        isBusy.Value = true;
+
+        try
         {
-            throw new UposStateException($"Operation requires Enabled state, but current state is {state.Value}.");
+            if (state.Value != ControlState.Enabled)
+            {
+                throw new UposStateException(
+                    $"Operation requires Enabled state, but current state is {state.Value}."
+                );
+            }
+        }
+        catch
+        {
+            // Reset if validation fails
+            Interlocked.Exchange(ref busyFlag, 0);
+            isBusy.Value = false;
+            throw;
         }
 
-        isBusy.Value = true;
-        return Disposable.Create(() => isBusy.Value = false);
+        return Disposable.Create(() =>
+        {
+            Interlocked.Exchange(ref busyFlag, 0);
+            isBusy.Value = false;
+        });
     }
 
     /// <inheritdoc />
