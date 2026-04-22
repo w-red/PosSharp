@@ -14,6 +14,11 @@ public class UposMediator : IUposMediator
     private readonly ReactiveProperty<PowerState> powerState = new(Abstractions.PowerState.Unknown);
     private readonly ReactiveProperty<int> dataCount = new(0);
     private readonly IDisposable disposables;
+
+    private int currentState = (int)Abstractions.ControlState.Closed;
+    private int currentLastError = (int)UposErrorCode.Success;
+    private int currentLastErrorExtended;
+    private int currentDataCount;
     private int busyFlag;
     private bool disposed;
 
@@ -35,13 +40,13 @@ public class UposMediator : IUposMediator
     public virtual ReadOnlyReactiveProperty<ControlState> State => state;
 
     /// <inheritdoc />
-    public virtual ControlState CurrentState => state.Value;
+    public virtual ControlState CurrentState => (ControlState)Volatile.Read(ref currentState);
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<bool> IsBusy => isBusy;
 
     /// <inheritdoc />
-    public virtual bool IsBusyValue => isBusy.Value;
+    public virtual bool IsBusyValue => Volatile.Read(ref busyFlag) == 1;
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<UposErrorCode> LastError => lastError;
@@ -61,14 +66,20 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void UpdateState(ControlState state)
     {
-        this.state.Value = state;
+        if (Interlocked.Exchange(ref currentState, (int)state) != (int)state)
+        {
+            this.state.Value = state;
+        }
     }
 
     /// <inheritdoc />
     public virtual void SetBusy(bool isBusy)
     {
-        Interlocked.Exchange(ref busyFlag, isBusy ? 1 : 0);
-        this.isBusy.Value = isBusy;
+        int newVal = isBusy ? 1 : 0;
+        if (Interlocked.Exchange(ref busyFlag, newVal) != newVal)
+        {
+            this.isBusy.Value = isBusy;
+        }
     }
 
     /// <inheritdoc />
@@ -84,10 +95,10 @@ public class UposMediator : IUposMediator
 
         try
         {
-            if (state.Value != ControlState.Enabled)
+            if (currentState != (int)ControlState.Enabled)
             {
                 throw new UposStateException(
-                    $"Operation requires Enabled state, but current state is {state.Value}."
+                    $"Operation requires Enabled state, but current state is {(ControlState)currentState}."
                 );
             }
         }
@@ -109,8 +120,18 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void ReportError(UposErrorCode errorCode, int extendedCode = 0)
     {
-        lastError.Value = errorCode;
-        lastErrorExtended.Value = extendedCode;
+        bool changed = false;
+        if (Interlocked.Exchange(ref currentLastError, (int)errorCode) != (int)errorCode)
+        {
+            lastError.Value = errorCode;
+            changed = true;
+        }
+
+        if (Interlocked.Exchange(ref currentLastErrorExtended, extendedCode) != extendedCode)
+        {
+            lastErrorExtended.Value = extendedCode;
+            changed = true;
+        }
     }
 
     /// <inheritdoc />
@@ -128,7 +149,10 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void UpdateDataCount(int count)
     {
-        dataCount.Value = count;
+        if (Interlocked.Exchange(ref currentDataCount, count) != count)
+        {
+            dataCount.Value = count;
+        }
     }
 
     /// <inheritdoc />
