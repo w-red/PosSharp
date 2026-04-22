@@ -21,7 +21,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     private PowerNotify powerNotify = PowerNotify.Disabled;
     private UposCapabilities capabilities = UposCapabilities.Empty;
     private int dataEventEnabledFlag;
-    private int isFlushing;
+    private int isFlushingFlag;
     private bool disposed;
     private DisposableBag extensionDisposables;
 
@@ -180,7 +180,11 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     protected UposLifecycleManager Lifecycle { get; }
 
     /// <summary>Gets a value indicating whether buffered data events are currently being flushed.</summary>
-    protected bool IsFlushing => Volatile.Read(ref isFlushing) == 1;
+    protected bool IsFlushing
+    {
+        get => Volatile.Read(ref isFlushingFlag) == 1;
+        private set => Interlocked.Exchange(ref isFlushingFlag, value ? 1 : 0);
+    }
 
     // ------------------------------------------------------------------
     // Public Methods
@@ -424,7 +428,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <summary>Flushes buffered data events to subscribers.</summary>
     protected void FlushDataEvents()
     {
-        if (Interlocked.CompareExchange(ref isFlushing, 1, 0) != 0)
+        if (Interlocked.CompareExchange(ref isFlushingFlag, 1, 0) != 0)
         {
             return;
         }
@@ -445,12 +449,12 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
                     }
                 }
 
-                Interlocked.Exchange(ref isFlushing, 0);
+                IsFlushing = false;
 
                 if (
                     !DataEventEnabled
                     || dataEventQueue.IsEmpty
-                    || Interlocked.CompareExchange(ref isFlushing, 1, 0) != 0
+                    || Interlocked.CompareExchange(ref isFlushingFlag, 1, 0) != 0
                 )
                 {
                     break;
@@ -459,7 +463,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         }
         finally
         {
-            Interlocked.Exchange(ref isFlushing, 0);
+            IsFlushing = false;
         }
     }
 

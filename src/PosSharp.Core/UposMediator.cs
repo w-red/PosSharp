@@ -19,7 +19,7 @@ public class UposMediator : IUposMediator
     private int currentLastError = (int)UposErrorCode.Success;
     private int currentLastErrorExtended;
     private int currentDataCount;
-    private int busyFlag;
+    private int isBusyFlag;
     private bool disposed;
 
     /// <summary>Initializes a new instance of the <see cref="UposMediator"/> class.</summary>
@@ -46,7 +46,7 @@ public class UposMediator : IUposMediator
     public virtual ReadOnlyReactiveProperty<bool> IsBusy => isBusy;
 
     /// <inheritdoc />
-    public virtual bool IsBusyValue => Volatile.Read(ref busyFlag) == 1;
+    public virtual bool IsBusyValue => Volatile.Read(ref isBusyFlag) == 1;
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<UposErrorCode> LastError => lastError;
@@ -76,7 +76,7 @@ public class UposMediator : IUposMediator
     public virtual void SetBusy(bool isBusy)
     {
         int newVal = isBusy ? 1 : 0;
-        if (Interlocked.Exchange(ref busyFlag, newVal) != newVal)
+        if (Interlocked.Exchange(ref isBusyFlag, newVal) != newVal)
         {
             this.isBusy.Value = isBusy;
         }
@@ -85,7 +85,7 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual IDisposable BeginOperation()
     {
-        if (Interlocked.CompareExchange(ref busyFlag, 1, 0) != 0)
+        if (Interlocked.CompareExchange(ref isBusyFlag, 1, 0) != 0)
         {
             throw new UposStateException("Device is already busy.");
         }
@@ -105,14 +105,14 @@ public class UposMediator : IUposMediator
         catch
         {
             // Reset if validation fails
-            Interlocked.Exchange(ref busyFlag, 0);
+            Interlocked.Exchange(ref isBusyFlag, 0);
             isBusy.Value = false;
             throw;
         }
 
         return Disposable.Create(() =>
         {
-            Interlocked.Exchange(ref busyFlag, 0);
+            Interlocked.Exchange(ref isBusyFlag, 0);
             isBusy.Value = false;
         });
     }
