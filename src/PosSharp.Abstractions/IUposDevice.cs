@@ -8,6 +8,9 @@ public interface IUposDevice : IDisposable
     /// <summary>Gets the current logical state of the device.</summary>
     ReadOnlyReactiveProperty<ControlState> State { get; }
 
+    /// <summary>Gets the frozen capabilities of the device.</summary>
+    UposCapabilities Capabilities { get; }
+
     /// <summary>Gets a value indicating whether the device is currently processing an operation.</summary>
     ReadOnlyReactiveProperty<bool> IsBusy { get; }
 
