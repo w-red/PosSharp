@@ -19,6 +19,9 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     private readonly IDisposable coreDisposables;
 
     private PowerNotify powerNotify = PowerNotify.Disabled;
+    private UposCapabilities capabilities = UposCapabilities.Empty;
+    private int dataEventEnabledFlag;
+    private int isFlushing;
     private bool disposed;
     private DisposableBag extensionDisposables;
 
@@ -51,6 +54,9 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 
     /// <inheritdoc/>
     public ReadOnlyReactiveProperty<ControlState> State => Mediator.State;
+    
+    /// <inheritdoc/>
+    public UposCapabilities Capabilities => capabilities;
 
     /// <inheritdoc/>
     public ReadOnlyReactiveProperty<bool> IsBusy => Mediator.IsBusy;
@@ -67,20 +73,19 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         get
         {
             ThrowIfDisposed();
-            return dataEventEnabled.Value;
+            return Volatile.Read(ref dataEventEnabledFlag) == 1;
         }
         set
         {
             ThrowIfDisposed();
-            if (dataEventEnabled.Value == value)
+            int newVal = value ? 1 : 0;
+            if (Interlocked.Exchange(ref dataEventEnabledFlag, newVal) != newVal)
             {
-                return;
-            }
-
-            dataEventEnabled.Value = value;
-            if (value)
-            {
-                FlushDataEvents();
+                dataEventEnabled.Value = value;
+                if (value)
+                {
+                    FlushDataEvents();
+                }
             }
         }
     }
@@ -174,8 +179,8 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <summary>Gets the lifecycle manager that validates state transitions.</summary>
     protected UposLifecycleManager Lifecycle { get; }
 
-    /// <summary>Gets the internal reactive property for data event enabled state.</summary>
-    protected ReactiveProperty<bool> DataEventEnabledInternal => dataEventEnabled;
+    /// <summary>Gets a value indicating whether buffered data events are currently being flushed.</summary>
+    protected bool IsFlushing => Volatile.Read(ref isFlushing) == 1;
 
     // ------------------------------------------------------------------
     // Public Methods
@@ -374,6 +379,13 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <exception cref="UposStateException">The device is not enabled or already busy.</exception>
     protected IDisposable BeginOperation() => Mediator.BeginOperation();
 
+    /// <summary>Initializes the device capabilities with a frozen collection.</summary>
+    /// <param name="caps">The capabilities to freeze.</param>
+    protected void InitializeCapabilities(IDictionary<string, object> caps)
+    {
+        capabilities = new UposCapabilities(caps);
+    }
+
     /// <summary>Adds a disposable to the extension disposable bag.</summary>
     /// <param name="disposable">The disposable to add.</param>
     protected void AddDisposable(IDisposable disposable)
@@ -400,34 +412,54 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <param name="args">The event arguments.</param>
     protected void PublishDataEvent(UposDataEventArgs args)
     {
+        dataEventQueue.Enqueue(args);
+        Mediator.UpdateDataCount(dataEventQueue.Count);
+
         if (DataEventEnabled)
         {
-            dataSubject.OnNext(args);
-            if (AutoDisable)
-            {
-                DataEventEnabled = false;
-            }
-        }
-        else
-        {
-            dataEventQueue.Enqueue(args);
-            Mediator.UpdateDataCount(dataEventQueue.Count);
+            FlushDataEvents();
         }
     }
 
     /// <summary>Flushes buffered data events to subscribers.</summary>
     protected void FlushDataEvents()
     {
-        while (DataEventEnabled && dataEventQueue.TryDequeue(out var args))
+        if (Interlocked.CompareExchange(ref isFlushing, 1, 0) != 0)
         {
-            dataSubject.OnNext(args);
-            Mediator.UpdateDataCount(dataEventQueue.Count);
+            return;
+        }
 
-            if (AutoDisable)
+        try
+        {
+            while (true)
             {
-                DataEventEnabled = false;
-                break;
+                while (DataEventEnabled && dataEventQueue.TryDequeue(out var args))
+                {
+                    dataSubject.OnNext(args);
+                    Mediator.UpdateDataCount(dataEventQueue.Count);
+
+                    if (AutoDisable)
+                    {
+                        DataEventEnabled = false;
+                        return;
+                    }
+                }
+
+                Interlocked.Exchange(ref isFlushing, 0);
+
+                if (
+                    !DataEventEnabled
+                    || dataEventQueue.IsEmpty
+                    || Interlocked.CompareExchange(ref isFlushing, 1, 0) != 0
+                )
+                {
+                    break;
+                }
             }
+        }
+        finally
+        {
+            Interlocked.Exchange(ref isFlushing, 0);
         }
     }
 
