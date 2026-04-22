@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using PosSharp.Abstractions;
 using PosSharp.Core.Lifecycle;
 using R3;
@@ -10,6 +11,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 {
     private readonly ReactiveProperty<bool> dataEventEnabled = new(false);
     private readonly Subject<UposDataEventArgs> dataSubject = new();
+    private readonly ConcurrentQueue<UposDataEventArgs> dataEventQueue = new();
     private readonly Subject<UposErrorEventArgs> errorSubject = new();
     private readonly Subject<UposStatusUpdateEventArgs> statusUpdateSubject = new();
     private readonly Subject<UposDirectIoEventArgs> directIoSubject = new();
@@ -70,7 +72,16 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         set
         {
             ThrowIfDisposed();
+            if (dataEventEnabled.Value == value)
+            {
+                return;
+            }
+
             dataEventEnabled.Value = value;
+            if (value)
+            {
+                FlushDataEvents();
+            }
         }
     }
 
@@ -289,6 +300,8 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnClearInputAsync(ct);
+
+        while (dataEventQueue.TryDequeue(out _)) { }
         Mediator.UpdateDataCount(0);
     }
 
@@ -383,9 +396,40 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <exception cref="UposStateException">Thrown when verification fails.</exception>
     protected void VerifyState(params ControlState[] allowedStates) => Lifecycle.VerifyState(allowedStates);
 
-    /// <summary>Publishes a DataEvent to subscribers.</summary>
+    /// <summary>Publishes a DataEvent to subscribers or buffers it if notification is disabled.</summary>
     /// <param name="args">The event arguments.</param>
-    protected void PublishDataEvent(UposDataEventArgs args) => dataSubject.OnNext(args);
+    protected void PublishDataEvent(UposDataEventArgs args)
+    {
+        if (DataEventEnabled)
+        {
+            dataSubject.OnNext(args);
+            if (AutoDisable)
+            {
+                DataEventEnabled = false;
+            }
+        }
+        else
+        {
+            dataEventQueue.Enqueue(args);
+            Mediator.UpdateDataCount(dataEventQueue.Count);
+        }
+    }
+
+    /// <summary>Flushes buffered data events to subscribers.</summary>
+    protected void FlushDataEvents()
+    {
+        while (DataEventEnabled && dataEventQueue.TryDequeue(out var args))
+        {
+            dataSubject.OnNext(args);
+            Mediator.UpdateDataCount(dataEventQueue.Count);
+
+            if (AutoDisable)
+            {
+                DataEventEnabled = false;
+                break;
+            }
+        }
+    }
 
     /// <summary>Publishes an ErrorEvent to subscribers.</summary>
     /// <param name="args">The event arguments.</param>

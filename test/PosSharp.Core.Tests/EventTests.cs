@@ -11,6 +11,7 @@ public sealed class EventTests
     {
         // Arrange
         using var device = new StubUposDevice();
+        device.DataEventEnabled = true;
         var received = false;
         using var sub = device.DataEvents.Subscribe(e =>
         {
