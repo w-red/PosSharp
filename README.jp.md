@@ -90,6 +90,36 @@ public class MyCashChanger : UposDeviceBase
 }
 ```
 
+### デバイスの利用（クライアント側）
+
+UI 層やビジネスロジック層など、デバイスを利用する側では **PosSharp.Abstractions** のみを参照し、インターフェースを介したリアクティブな操作が可能です：
+
+```csharp
+using PosSharp.Abstractions;
+using R3;
+
+public class DeviceMonitor(IUposDevice device)
+{
+    public void Initialize()
+    {
+        // 状態変化を監視
+        device.State
+            .Subscribe(state => Console.WriteLine($"デバイス状態: {state}"));
+
+        // データイベントを購読
+        device.DataEvents
+            .Subscribe(e => Console.WriteLine($"データ受信: {e.Status}"));
+    }
+
+    public async Task StartAsync()
+    {
+        await device.OpenAsync();
+        await device.ClaimAsync(1000);
+        await device.SetEnabledAsync(true);
+    }
+}
+```
+
 ## 🧪 テスト
 
 PosSharp は高いテスト容易性を備えています。包括的なテストスイートに加え、独自のデバイス実装の検証に役立つスタブ（Stub）も提供しています。

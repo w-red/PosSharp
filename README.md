@@ -84,7 +84,38 @@ public class MyCashChanger : UposDeviceBase
     // Use the protected helpers to update internal state
     public void SimulateCashAdded()
     {
+        // DataCount is automatically synchronized via the Mediator
         UpdateDataCount(DataCount + 1);
+    }
+}
+```
+
+### Consuming a Device (Client-Side)
+
+If you are just consuming a device (e.g., in a UI or business logic layer), you only need to depend on **PosSharp.Abstractions** and use the reactive interfaces:
+
+```csharp
+using PosSharp.Abstractions;
+using R3;
+
+public class DeviceMonitor(IUposDevice device)
+{
+    public void Initialize()
+    {
+        // React to state changes
+        device.State
+            .Subscribe(state => Console.WriteLine($"Device state: {state}"));
+
+        // Handle data events
+        device.DataEvents
+            .Subscribe(e => Console.WriteLine($"Data received: {e.Status}"));
+    }
+
+    public async Task StartAsync()
+    {
+        await device.OpenAsync();
+        await device.ClaimAsync(1000);
+        await device.SetEnabledAsync(true);
     }
 }
 ```
