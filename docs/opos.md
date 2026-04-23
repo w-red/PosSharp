@@ -1,4 +1,4 @@
-# OPOS (OLE for Retail POS) Mapping Matrix
+# OPOS (OLE for Retail POS) Mapping Table
 
 [Japanese (日本語)](opos.jp.md)
 

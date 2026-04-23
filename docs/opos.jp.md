@@ -1,4 +1,4 @@
-# OPOS 対応マトリクス
+# OPOS 対応表
 
 [English (英語)](opos.md)
 

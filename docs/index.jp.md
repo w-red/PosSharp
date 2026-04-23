@@ -13,7 +13,7 @@
 ### [POS for .NET 対応表](pos_for_dotnet.jp.md)
 Microsoft POS for .NET (Point of Service SDK) のクラスや概念と、PosSharp での対応関係をまとめています。
 
-### [OPOS 対応マトリクス](opos.jp.md)
+### [OPOS 対応表](opos.jp.md)
 レガシーな OPOS (ActiveX/OCX) コントロールから PosSharp へ移行するためのガイドです。
 
 ### [JavaPOS (JPOS) 対応表](jpos.jp.md)

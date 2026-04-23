@@ -13,7 +13,7 @@ Full list of public classes, interfaces, enums, and event types.
 ### [POS for .NET Compatibility](pos_for_dotnet.md)
 Mapping between Microsoft POS for .NET (Point of Service SDK) classes/concepts and PosSharp equivalents.
 
-### [OPOS (OLE for Retail POS) Mapping](opos.md)
+### [OPOS (OLE for Retail POS) Mapping Table](opos.md)
 Translation guide for developers moving from legacy OPOS (ActiveX/OCX) controls to PosSharp.
 
 ### [JavaPOS (JPOS) Mapping](jpos.md)
