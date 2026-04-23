@@ -316,7 +316,10 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnClearInputAsync(ct);
 
-        while (dataEventQueue.TryDequeue(out _)) { }
+        while (dataEventQueue.TryDequeue(out _))
+        {
+            // Empty
+        }
         Mediator.UpdateDataCount(0);
     }
 

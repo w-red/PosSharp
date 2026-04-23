@@ -22,14 +22,14 @@ public class ConcurrencyTests
         // Act
         for (int i = 0; i < taskCount; i++)
         {
-            tasks[i] = Task.Run(() =>
+            tasks[i] = Task.Run(async () =>
             {
                 try
                 {
                     using (mediator.BeginOperation())
                     {
                         // Simulate some work
-                        Thread.Sleep(10);
+                        await Task.Delay(10);
                         Interlocked.Increment(ref successCount);
                         return true;
                     }
