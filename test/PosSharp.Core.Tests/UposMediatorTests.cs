@@ -1,6 +1,3 @@
-// Copyright (c) PosSharp Project. All rights reserved.
-// Licensed under the MIT License.
-
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
