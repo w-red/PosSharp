@@ -88,13 +88,26 @@ if (currentState == ControlState.Idle)
 ```csharp
 public void PrintReceipt(string data)
 {
-    // デバイスが Enabled かつ Busy でないことを一括チェック
-    mediator.ValidateEnabled();
-    mediator.ValidateNotBusy();
-
-    using (mediator.BeginOperation())
+    try 
     {
-        // 実際の印字処理
+        // 1. 操作前に状態を検証 (BeginOperation 内部でもチェックされますが、事前検証として有用)
+        mediator.ValidateEnabled();
+        mediator.ValidateNotBusy();
+
+        // 2. 操作の開始 (Busy ロックを取得し、終了時に自動解放)
+        using (mediator.BeginOperation())
+        {
+            // 実際の印字処理
+        }
+    }
+    catch (UposStateException ex)
+    {
+        // 投げられた例外から UPOS 標準エラーコードを取得して報告
+        mediator.ReportError(ex.ErrorCode);
+        throw;
     }
 }
 ```
+
+> [!TIP]
+> `BeginOperation()` は内部で `ValidateEnabled()` と `ValidateNotBusy()` を自動的に実行します。追加のバリデーションが不要な場合は、`BeginOperation()` の呼び出しだけで十分です。

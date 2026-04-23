@@ -88,13 +88,26 @@ Use these in your device implementation classes to check preconditions before pe
 ```csharp
 public void PrintReceipt(string data)
 {
-    // Ensure the device is enabled and not already busy
-    mediator.ValidateEnabled();
-    mediator.ValidateNotBusy();
-
-    using (mediator.BeginOperation())
+    try 
     {
-        // Actual printing logic here
+        // 1. Validate state before operation (BeginOperation also does this, but explicit check is useful)
+        mediator.ValidateEnabled();
+        mediator.ValidateNotBusy();
+
+        // 2. Start the operation (acquires busy lock, automatically released on dispose)
+        using (mediator.BeginOperation())
+        {
+            // Actual printing logic here
+        }
+    }
+    catch (UposStateException ex)
+    {
+        // Report the standard UPOS error code derived from the exception
+        mediator.ReportError(ex.ErrorCode);
+        throw;
     }
 }
 ```
+
+> [!TIP]
+> `BeginOperation()` automatically performs `ValidateEnabled()` and `ValidateNotBusy()` internally. If no additional custom validation is needed, simply calling `BeginOperation()` is sufficient.
