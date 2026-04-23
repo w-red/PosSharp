@@ -10,6 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <Version>1.0.1</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>pos;upos;retail;reactive;dotnet;csharp;opos;unifiedpos;r3;platform-agnostic</PackageTags>
 
     <!-- Enable XML documentation for public API -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
