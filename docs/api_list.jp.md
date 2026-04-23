@@ -77,3 +77,24 @@ if (currentState == ControlState.Idle)
 
 ## 拡張メソッド
 - **`UposMediatorExtensions`**: メディエーター内での状態検証を補助するヘルパーメソッド。
+  - `ValidateOpen()`: デバイスが Open 状態か確認。
+  - `ValidateClaimed()`: デバイスが Claimed 状態か確認。
+  - `ValidateEnabled()`: デバイスが Enabled 状態か確認。
+  - `ValidateNotBusy()`: デバイスが Busy 状態でないか確認。
+
+### 利用例
+デバイスの実装クラス内で、操作の前提条件をチェックする際に使用します。
+
+```csharp
+public void PrintReceipt(string data)
+{
+    // デバイスが Enabled かつ Busy でないことを一括チェック
+    mediator.ValidateEnabled();
+    mediator.ValidateNotBusy();
+
+    using (mediator.BeginOperation())
+    {
+        // 実際の印字処理
+    }
+}
+```
