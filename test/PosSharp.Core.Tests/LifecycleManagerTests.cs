@@ -142,6 +142,39 @@ public sealed class LifecycleManagerTests
     }
 
     [Fact]
+    public void IsStateVerificationEnabled_TogglesValidation()
+    {
+        // Arrange
+        var mediator = new UposMediator();
+        var handler = new StandardLifecycleHandler();
+        var manager = new UposLifecycleManager(mediator, handler);
+        manager.TransitionTo(ControlState.Idle); // Current is Idle
+
+        // Act & Assert (Enabled: Should throw)
+        manager.IsStateVerificationEnabled = true;
+        Should.Throw<UposStateException>(() => manager.TransitionTo(ControlState.Enabled));
+
+        // Act & Assert (Disabled: Should NOT throw, even if transition is invalid)
+        manager.IsStateVerificationEnabled = false;
+        Should.NotThrow(() => manager.TransitionTo(ControlState.Enabled));
+        mediator.CurrentState.ShouldBe(ControlState.Enabled);
+    }
+
+    [Fact]
+    public void PreMethods_SkipValidation_WhenDisabled()
+    {
+        // Arrange
+        var mediator = new UposMediator();
+        var handler = new StandardLifecycleHandler();
+        var manager = new UposLifecycleManager(mediator, handler);
+        manager.IsStateVerificationEnabled = false;
+
+        // Act & Assert (Should NOT throw even if state is invalid)
+        Should.NotThrow(() => manager.PreClaim()); // Closed -> Claimed is normally invalid
+        Should.NotThrow(() => manager.PreEnable());
+    }
+
+    [Fact]
     public void LifecycleMethods_ThrowWhenInvalidState_AndEnabled()
     {
         // Arrange
@@ -193,6 +226,34 @@ public sealed class LifecycleManagerTests
 
         // Assert - Should not access mediator.CurrentState or anything
         // (Just verifying it doesn't throw or do work)
+    }
+
+    [Fact]
+    public void PostMethods_UpdateMediatorStateCorrectly()
+    {
+        // Arrange
+        var mediator = new UposMediator();
+        var handler = new StandardLifecycleHandler();
+        var manager = new UposLifecycleManager(mediator, handler);
+
+        // Act & Assert
+        manager.PostOpen();
+        mediator.CurrentState.ShouldBe(ControlState.Idle);
+
+        manager.PostClaim();
+        mediator.CurrentState.ShouldBe(ControlState.Claimed);
+
+        manager.PostEnable();
+        mediator.CurrentState.ShouldBe(ControlState.Enabled);
+
+        manager.PostDisable();
+        mediator.CurrentState.ShouldBe(ControlState.Claimed);
+
+        manager.PostRelease();
+        mediator.CurrentState.ShouldBe(ControlState.Idle);
+
+        manager.PostClose();
+        mediator.CurrentState.ShouldBe(ControlState.Closed);
     }
 
     private sealed class MockLifecycleHandler : IUposLifecycleHandler
