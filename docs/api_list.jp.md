@@ -2,7 +2,7 @@
 
 [English (英語)](api_list.md)
 
-**PosSharp** フレームワークで公開されているパブリック API の網羅的な一覧です。
+**PosSharp** フレームワークで公開されているパブリック API のリファレンスです。
 
 ## PosSharp.Abstractions
 

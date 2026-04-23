@@ -2,7 +2,7 @@
 
 [Japanese (日本語)](api_list.jp.md)
 
-This document provides a comprehensive list of public APIs in the **PosSharp** framework.
+Reference guide for public APIs in the **PosSharp** framework.
 
 ## PosSharp.Abstractions
 

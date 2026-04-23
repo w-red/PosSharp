@@ -1,6 +1,6 @@
 # PosSharp Documentation
 
-Welcome to the official documentation for **PosSharp**, the platform-agnostic, reactive UPOS framework for .NET.
+Official documentation for **PosSharp**, the platform-agnostic, reactive UPOS framework for .NET.
 
 ## 📚 Table of Contents
 
