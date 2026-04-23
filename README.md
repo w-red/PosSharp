@@ -2,18 +2,36 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Core](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download)
+[![NuGet](https://img.shields.io/nuget/v/PosSharp.Core.svg)](https://www.nuget.org/packages/PosSharp.Core/)
 [![CI](https://github.com/w-red/PosSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/ci.yml)
 
-**PosSharp** is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET. It provides a modern implementation of the UPOS standard, decoupling core POS logic from platform-specific SDK dependencies like the legacy POS for .NET (OPOS).
+**PosSharp** is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET. It provides a modern implementation of the UPOS standard, decoupling core POS logic from platform-specific SDK dependencies like the legacy POS for .NET (OPOS) or Windows-only components.
 
 ## 🚀 Key Features
 
-- **Platform-Agnostic Core**: Target `.net10.0` with support for older platforms via [PolySharp](https://github.com/Sergio0694/PolySharp). No dependency on legacy SDKs in the core library, with plans to support other .NET versions in the future.
+- **Modern C# Implementation**: Fully utilizes C# 12+ features (Primary Constructors, etc.) and targets `.net10.0`. Supports older platforms via [PolySharp](https://github.com/Sergio0694/PolySharp).
 - **Reactive State Management**: Built-in state synchronization using [R3](https://github.com/Cysharp/R3). Properties like `State`, `PowerState`, and `ResultCode` are exposed as reactive observables.
-- **Mediator Architecture**: Centralized "Single Source of Truth" via the Mediator pattern, ensuring all properties (`DataCount`, `IsOpen`, etc.) stay perfectly in sync.
-- **Modern Lifecycle**: Task-based asynchronous API for standard UPOS operations (`OpenAsync`, `ClaimAsync`, `SetEnabledAsync`).
-- **Power Management**: Built-in support for power reporting and state notifications (`PowerNotify`), integrated directly into the base hardware abstraction.
-- **High Testability**: Simplified testing with stubs and explicit state verification toggles.
+- **Mediator Architecture**: Centralized "Single Source of Truth" via the Mediator pattern, ensuring all properties (`DataCount`, `IsOpen`, etc.) stay perfectly in sync across asynchronous operations.
+- **Task-Based Asynchronous API**: Modern asynchronous implementation of standard UPOS operations (`OpenAsync`, `ClaimAsync`, `SetEnabledAsync`).
+- **Power Management**: Comprehensive support for power reporting and state notifications (`PowerNotify`) integrated directly into the base abstraction.
+- **Zero Build Warnings**: Maintained at the highest quality with 100% XML documentation and strict static analysis.
+
+## 📦 Packages
+
+| Package | Description |
+| ------- | ----------- |
+| **PosSharp.Abstractions** | Core interfaces, enums, and event records. Perfect for client-side dependencies. |
+| **PosSharp.Core** | The engine. Includes base classes, lifecycle management, and reactive mediator. |
+
+### Installation
+
+```bash
+# To implement a device
+dotnet add package PosSharp.Core
+
+# For pure abstractions
+dotnet add package PosSharp.Abstractions
+```
 
 ## 🏗️ Architecture
 
@@ -24,11 +42,6 @@ Each device delegates its state and property management to a `UposMediator`. Thi
 
 ### Flexible Lifecycle Management
 Device transitions are governed by a `UposLifecycleManager`, allowing developers to implement custom lifecycle handlers or use the `StandardLifecycleHandler` for typical UPOS compliance.
-
-### Responsibility Separation
-PosSharp is designed with a strict separation between the framework and individual device implementations:
-- **Framework (PosSharp.Core)**: Provides the UPOS compliant "template", state transition rules, and automatic power management notifications.
-- **Device Implementation**: Inherits from the base class to provide concrete hardware logic, simulation behaviors, and device-specific members.
 
 ```mermaid
 graph TD
@@ -44,11 +57,12 @@ graph TD
 To create a new UPOS device, simply inherit from `UposDeviceBase`:
 
 ```csharp
+using PosSharp.Abstractions;
+using PosSharp.Core;
+
 // Example implementation of a CashChanger
 public class MyCashChanger : UposDeviceBase
 {
-    public MyCashChanger() : base() { }
-
     // Override required abstract members
     protected override Task OnOpenAsync(CancellationToken ct) => Task.CompletedTask;
     protected override Task OnCloseAsync(CancellationToken ct) => Task.CompletedTask;
@@ -66,7 +80,7 @@ public class MyCashChanger : UposDeviceBase
     protected override Task OnClearInputAsync(CancellationToken ct) => Task.CompletedTask;
     protected override Task OnClearOutputAsync(CancellationToken ct) => Task.CompletedTask;
     
-    // Use the protected helper to update internal state
+    // Use the protected helpers to update internal state
     public void SimulateCashAdded()
     {
         UpdateDataCount(DataCount + 1);
@@ -76,13 +90,11 @@ public class MyCashChanger : UposDeviceBase
 
 ## 🧪 Testing
 
-PosSharp comes with a comprehensive test suite using **Shouldly** and **xUnit**. 
+PosSharp is built with testability in mind. It includes a comprehensive test suite and provides stubs to help you test your own implementations.
 
 ```bash
 dotnet test
 ```
-
-We include granular compliance tests to ensure that all common UPOS properties and Power Management logic behave as expected according to the specification.
 
 ## 📄 License
 

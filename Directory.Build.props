@@ -8,6 +8,8 @@
     <RepositoryUrl>https://github.com/w-red/PosSharp</RepositoryUrl>
     <PackageProjectUrl>https://github.com/w-red/PosSharp</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
+    <Version>1.0.1</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <!-- Enable XML documentation for public API -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
