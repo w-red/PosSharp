@@ -6,8 +6,10 @@ using R3;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for concurrency and event queuing logic.</summary>
 public class ConcurrencyTests
 {
+    /// <summary>Verifies that only one operation can succeed when multiple threads call BeginOperation concurrently.</summary>
     [Fact]
     public async Task BeginOperation_ConcurrentCalls_OnlyOneSucceeds()
     {
@@ -51,6 +53,7 @@ public class ConcurrencyTests
         Assert.Equal(1, successCount);
     }
 
+    /// <summary>Verifies that data events are queued when DataEventEnabled is false.</summary>
     [Fact]
     public void PublishDataEvent_WhenDisabled_QueuesEvents()
     {
@@ -69,6 +72,7 @@ public class ConcurrencyTests
         Assert.Equal(2, device.DataCount);
     }
 
+    /// <summary>Verifies that queued events are flushed when DataEventEnabled is set to true.</summary>
     [Fact]
     public void DataEventEnabled_SetToTrue_FlushesQueue()
     {
@@ -91,6 +95,7 @@ public class ConcurrencyTests
         Assert.Equal(0, device.DataCount);
     }
 
+    /// <summary>Verifies that ClearInputAsync correctly clears the event queue.</summary>
     [Fact]
     public async Task ClearInput_ClearsQueue()
     {
@@ -110,6 +115,7 @@ public class ConcurrencyTests
         Assert.Equal(0, device.DataCount);
     }
     
+    /// <summary>Verifies that AutoDisable correctly stops event firing and leaves remaining events in the queue.</summary>
     [Fact]
     public void AutoDisable_WorksWithQueuedEvents()
     {

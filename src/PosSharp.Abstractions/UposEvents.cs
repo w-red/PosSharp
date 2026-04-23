@@ -1,7 +1,7 @@
 namespace PosSharp.Abstractions;
 
 /// <summary>Represents the base record for all UPOS event arguments.</summary>
-public abstract class UposEventArgs : System.EventArgs;
+public abstract class UposEventArgs : EventArgs;
 
 /// <summary>Represents arguments for a DataEvent.</summary>
 public sealed class UposDataEventArgs(int status) : UposEventArgs

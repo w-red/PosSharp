@@ -4,8 +4,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for various state-related exception scenarios in <see cref="UposDeviceBase"/>.</summary>
 public sealed class StateExceptionTests
 {
+    /// <summary>Verifies that OpenAsync throws UposStateException when the device is already open.</summary>
     [Fact]
     public async Task OpenAsyncWhenAlreadyOpenThrowsUposStateException()
     {
@@ -19,6 +21,7 @@ public sealed class StateExceptionTests
         ex.AllowedStates.ShouldContain(ControlState.Closed);
     }
 
+    /// <summary>Verifies that ClaimAsync throws UposStateException when the device is not open.</summary>
     [Fact]
     public async Task ClaimAsyncWhenClosedThrowsUposStateException()
     {
@@ -31,6 +34,7 @@ public sealed class StateExceptionTests
         ex.AllowedStates.ShouldContain(ControlState.Idle);
     }
 
+    /// <summary>Verifies that enabling the device throws UposStateException when the device is not claimed.</summary>
     [Fact]
     public async Task SetEnabledAsyncWhenNotClaimedThrowsUposStateException()
     {
@@ -44,6 +48,7 @@ public sealed class StateExceptionTests
         ex.AllowedStates.ShouldContain(ControlState.Claimed);
     }
 
+    /// <summary>Verifies that ReleaseAsync throws UposStateException when the device is not claimed.</summary>
     [Fact]
     public async Task ReleaseAsyncWhenNotClaimedThrowsUposStateException()
     {
@@ -58,6 +63,7 @@ public sealed class StateExceptionTests
         ex.AllowedStates.ShouldContain(ControlState.Enabled);
     }
 
+    /// <summary>Verifies that SetEnabledAsync throws UposStateException when the device is not claimed (redundant check for clarity).</summary>
     [Fact]
     public async Task EnableAsyncWhenNotClaimedThrowsUposStateException()
     {
@@ -71,6 +77,9 @@ public sealed class StateExceptionTests
         ex.AllowedStates.ShouldBe(new[] { ControlState.Claimed });
     }
 
+    /// <summary>Verifies that StandardLifecycleHandler.ValidateTransition throws UposStateException for invalid transitions.</summary>
+    /// <param name="from">The starting state.</param>
+    /// <param name="to">The target state.</param>
     [Theory]
     [InlineData(ControlState.Closed, ControlState.Enabled)]
     [InlineData(ControlState.Idle, ControlState.Enabled)]
@@ -81,6 +90,7 @@ public sealed class StateExceptionTests
         ex.CurrentState.ShouldBe(from);
     }
 
+    /// <summary>Verifies that StandardLifecycleHandler.VerifyState throws UposStateException when the required state level is higher than the current state.</summary>
     [Fact]
     public void StandardLifecycleHandler_VerifyState_ThrowsWhenStateTooLow()
     {

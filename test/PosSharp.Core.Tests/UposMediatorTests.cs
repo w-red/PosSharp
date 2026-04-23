@@ -7,8 +7,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for the <see cref="UposMediator"/> class.</summary>
 public sealed class UposMediatorTests
 {
+    /// <summary>Verifies that the initial state of the mediator is correct.</summary>
     [Fact]
     public void InitialState_IsCorrect()
     {
@@ -27,6 +29,7 @@ public sealed class UposMediatorTests
         mediator.CheckHealthText.CurrentValue.ShouldBe(string.Empty);
     }
 
+    /// <summary>Verifies that UpdateState fires events only when the state actually changes.</summary>
     [Fact]
     public void UpdateState_FiresEvent_OnlyWhenChanged()
     {
@@ -44,6 +47,7 @@ public sealed class UposMediatorTests
         callCount.ShouldBe(2); // 1 (initial) + 1 (change)
     }
 
+    /// <summary>Verifies that SetBusy fires events only when the busy status actually changes.</summary>
     [Fact]
     public void SetBusy_FiresEvent_OnlyWhenChanged()
     {
@@ -61,6 +65,7 @@ public sealed class UposMediatorTests
         callCount.ShouldBe(2); // Initial (false) + Change (true)
     }
 
+    /// <summary>Verifies that BeginOperation acquires the lock and resets it when disposed.</summary>
     [Fact]
     public void BeginOperation_AcquiresLock_AndResetsOnDispose()
     {
@@ -81,6 +86,7 @@ public sealed class UposMediatorTests
         mediator.IsBusyValue.ShouldBeFalse();
     }
 
+    /// <summary>Verifies that BeginOperation throws an exception when the device is not enabled.</summary>
     [Fact]
     public void BeginOperation_Throws_WhenNotEnabled()
     {
@@ -94,6 +100,7 @@ public sealed class UposMediatorTests
         mediator.IsBusy.CurrentValue.ShouldBeFalse(); // Logic kill: check reactive property reset
     }
 
+    /// <summary>Verifies that UpdateCheckHealthText correctly updates the property.</summary>
     [Fact]
     public void UpdateCheckHealthText_UpdatesProperty()
     {
@@ -108,6 +115,7 @@ public sealed class UposMediatorTests
         mediator.CheckHealthText.CurrentValue.ShouldBe(text);
     }
 
+    /// <summary>Verifies that ReportError updates the error-related properties.</summary>
     [Fact]
     public void ReportError_UpdatesProperties()
     {
@@ -122,6 +130,7 @@ public sealed class UposMediatorTests
         mediator.LastErrorExtended.CurrentValue.ShouldBe(101);
     }
 
+    /// <summary>Verifies that UpdateDataCount fires events only when the count changes.</summary>
     [Fact]
     public void UpdateDataCount_FiresEvent_OnlyWhenChanged()
     {

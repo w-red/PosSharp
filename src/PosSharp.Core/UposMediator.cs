@@ -6,7 +6,7 @@ namespace PosSharp.Core;
 /// <summary>A reactive implementation of the UPOS mediator.</summary>
 public class UposMediator : IUposMediator
 {
-    private readonly ReactiveProperty<ControlState> state = new(Abstractions.ControlState.Closed);
+    private readonly ReactiveProperty<ControlState> state = new(ControlState.Closed);
     private readonly ReactiveProperty<bool> isBusy = new(false);
     private readonly ReactiveProperty<UposErrorCode> lastError = new(UposErrorCode.Success);
     private readonly ReactiveProperty<int> lastErrorExtended = new(0);
@@ -15,7 +15,7 @@ public class UposMediator : IUposMediator
     private readonly ReactiveProperty<int> dataCount = new(0);
     private readonly IDisposable disposables;
 
-    private int currentState = (int)Abstractions.ControlState.Closed;
+    private int currentState = (int)ControlState.Closed;
     private int currentLastError = (int)UposErrorCode.Success;
     private int currentLastErrorExtended;
     private int currentDataCount;

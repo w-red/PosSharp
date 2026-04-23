@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using PosSharp.Abstractions;
-using PosSharp.Core;
 using PosSharp.Core.Lifecycle;
 
 namespace PosSharp.Core.Tests;

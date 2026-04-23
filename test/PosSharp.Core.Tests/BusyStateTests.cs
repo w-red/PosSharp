@@ -1,10 +1,11 @@
-using PosSharp.Abstractions;
 using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for the busy state management in <see cref="UposDeviceBase"/>.</summary>
 public sealed class BusyStateTests
 {
+    /// <summary>Verifies that BeginOperation correctly sets the busy status and resets it upon disposal.</summary>
     [Fact]
     public async Task BeginOperationSetsIsBusyTrue()
     {
@@ -25,6 +26,7 @@ public sealed class BusyStateTests
         device.IsBusy.CurrentValue.ShouldBeFalse();
     }
 
+    /// <summary>Verifies that BeginOperation throws UposStateException when the device is not enabled.</summary>
     [Fact]
     public async Task BeginOperationWhenNotEnabledThrowsUposStateException()
     {
@@ -37,6 +39,7 @@ public sealed class BusyStateTests
         await Should.ThrowAsync<UposStateException>(() => Task.FromResult(device.TestBeginOperation()));
     }
 
+    /// <summary>Verifies that BeginOperation throws UposStateException when the device is already busy.</summary>
     [Fact]
     public async Task BeginOperationWhenAlreadyBusyThrowsUposStateException()
     {

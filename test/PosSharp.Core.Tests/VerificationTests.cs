@@ -4,9 +4,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
-/// <summary>Tests for state verification toggle and property synchronization.</summary>
+/// <summary>Tests for state verification toggle and property synchronization in <see cref="UposDeviceBase"/>.</summary>
 public sealed class VerificationTests
 {
+    /// <summary>Verifies that state verification can be disabled to allow normally illegal transitions.</summary>
     [Fact]
     public async Task StateVerificationCanBeDisabled()
     {
@@ -32,6 +33,7 @@ public sealed class VerificationTests
         device.State.CurrentValue.ShouldBe(ControlState.Claimed);
     }
 
+    /// <summary>Verifies that the DataEventEnabled property correctly synchronizes with its reactive counterpart.</summary>
     [Fact]
     public void DataEventEnabledPropertySyncs()
     {
@@ -55,6 +57,7 @@ public sealed class VerificationTests
         reactiveValue.ShouldBeFalse();
     }
 
+    /// <summary>Verifies that synchronization properties return the correct initial values.</summary>
     [Fact]
     public void SyncPropertiesReturnCorrectValues()
     {
@@ -71,6 +74,7 @@ public sealed class VerificationTests
         // but we can check after Open
     }
 
+    /// <summary>Verifies that synchronization properties reflect the actual state after lifecycle transitions.</summary>
     [Fact]
     public async Task SyncPropertiesReflectActualState()
     {

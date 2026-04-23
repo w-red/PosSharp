@@ -1,13 +1,13 @@
 using PosSharp.Abstractions;
-using PosSharp.Core;
 using PosSharp.Core.Lifecycle;
-using R3;
 using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for the <see cref="UposLifecycleManager"/> class.</summary>
 public sealed class LifecycleManagerTests
 {
+    /// <summary>Verifies that Reset resets all state-related properties in the mediator.</summary>
     [Fact]
     public async Task Reset_ResetsAllStateProperties()
     {
@@ -32,6 +32,7 @@ public sealed class LifecycleManagerTests
         }
     }
 
+    /// <summary>Verifies that TransitionTo correctly updates the mediator state.</summary>
     [Fact]
     public void TransitionTo_UpdatesMediatorState()
     {
@@ -47,6 +48,7 @@ public sealed class LifecycleManagerTests
         mediator.CurrentState.ShouldBe(ControlState.Idle);
     }
 
+    /// <summary>Verifies that TransitionTo bypasses validation when state verification is disabled.</summary>
     [Fact]
     public void TransitionTo_WhenDisabled_BypassesValidation()
     {
@@ -61,6 +63,7 @@ public sealed class LifecycleManagerTests
         mediator.CurrentState.ShouldBe(ControlState.Enabled);
     }
 
+    /// <summary>Verifies that IsStateVerificationEnabled effectively bypasses validation in asynchronous operations.</summary>
     [Fact]
     public async Task IsStateVerificationEnabled_WhenFalse_BypassesValidation()
     {
@@ -75,6 +78,7 @@ public sealed class LifecycleManagerTests
         await Should.NotThrowAsync(() => device.SetEnabledAsync(true));
     }
 
+    /// <summary>Verifies that IsStateVerificationEnabled can be toggled correctly.</summary>
     [Fact]
     public void IsStateVerificationEnabled_TogglesCorrectly()
     {
@@ -87,6 +91,7 @@ public sealed class LifecycleManagerTests
         manager.IsStateVerificationEnabled.ShouldBeFalse();
     }
 
+    /// <summary>Verifies that VerifyState bypasses validation for a single state when disabled.</summary>
     [Fact]
     public void VerifyState_WithSingleState_BypassesWhenDisabled()
     {
@@ -100,6 +105,7 @@ public sealed class LifecycleManagerTests
         Should.NotThrow(() => manager.VerifyState(ControlState.Enabled));
     }
 
+    /// <summary>Verifies that VerifyState throws UposStateException when the current state is not among the multiple allowed states.</summary>
     [Fact]
     public void VerifyState_WithMultipleStates_ThrowsWhenInvalid()
     {
@@ -116,6 +122,7 @@ public sealed class LifecycleManagerTests
         ex.AllowedStates.ShouldBe(new[] { ControlState.Claimed, ControlState.Enabled });
     }
 
+    /// <summary>Verifies that VerifyState succeeds when the current state is among the multiple allowed states.</summary>
     [Fact]
     public void VerifyState_WithMultipleStates_SucceedsWhenValid()
     {
@@ -129,6 +136,7 @@ public sealed class LifecycleManagerTests
         Should.NotThrow(() => manager.VerifyState(ControlState.Claimed, ControlState.Enabled));
     }
 
+    /// <summary>Verifies that VerifyState throws an exception for a single invalid required state.</summary>
     [Fact]
     public void VerifyState_WithSingleState_ThrowsWhenInvalid()
     {
@@ -141,6 +149,7 @@ public sealed class LifecycleManagerTests
         Should.Throw<UposStateException>(() => manager.VerifyState(ControlState.Idle));
     }
 
+    /// <summary>Verifies that toggling IsStateVerificationEnabled correctly affects validation behavior during transitions.</summary>
     [Fact]
     public void IsStateVerificationEnabled_TogglesValidation()
     {
@@ -160,6 +169,7 @@ public sealed class LifecycleManagerTests
         mediator.CurrentState.ShouldBe(ControlState.Enabled);
     }
 
+    /// <summary>Verifies that Pre-lifecycle methods skip validation when state verification is disabled.</summary>
     [Fact]
     public void PreMethods_SkipValidation_WhenDisabled()
     {
@@ -174,6 +184,7 @@ public sealed class LifecycleManagerTests
         Should.NotThrow(() => manager.PreEnable());
     }
 
+    /// <summary>Verifies that lifecycle methods throw UposStateException when called in forbidden states with verification enabled.</summary>
     [Fact]
     public void LifecycleMethods_ThrowWhenInvalidState_AndEnabled()
     {
@@ -189,6 +200,7 @@ public sealed class LifecycleManagerTests
         Should.Throw<UposStateException>(() => manager.PreDisable()); // Closed -> Claimed (Forbidden)
     }
 
+    /// <summary>Verifies that lifecycle methods correctly call the underlying validator when enabled.</summary>
     [Fact]
     public void LifecycleMethods_CallValidator_WhenEnabled()
     {
@@ -212,6 +224,7 @@ public sealed class LifecycleManagerTests
         handler.StateVerifications.Count.ShouldBe(1);
     }
 
+    /// <summary>Verifies that the params overload of VerifyState bypasses logic when verification is disabled.</summary>
     [Fact]
     public void VerifyState_Params_BypassesWhenDisabled()
     {
@@ -228,6 +241,7 @@ public sealed class LifecycleManagerTests
         // (Just verifying it doesn't throw or do work)
     }
 
+    /// <summary>Verifies that Post-lifecycle methods correctly synchronize the mediator state.</summary>
     [Fact]
     public void PostMethods_UpdateMediatorStateCorrectly()
     {
@@ -256,6 +270,7 @@ public sealed class LifecycleManagerTests
         mediator.CurrentState.ShouldBe(ControlState.Closed);
     }
 
+    /// <summary>A mock implementation of <see cref="IUposLifecycleHandler"/> for testing purpose.</summary>
     private sealed class MockLifecycleHandler : IUposLifecycleHandler
     {
         public List<(ControlState Current, ControlState Target)> ValidatedTransitions { get; } = new();

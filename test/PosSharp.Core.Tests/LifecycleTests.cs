@@ -1,5 +1,4 @@
 using PosSharp.Abstractions;
-using PosSharp.Core;
 using Shouldly;
 
 namespace PosSharp.Core.Tests;
@@ -7,6 +6,7 @@ namespace PosSharp.Core.Tests;
 /// <summary>Tests for <see cref="UposDeviceBase"/> lifecycle state transitions.</summary>
 public sealed class LifecycleTests
 {
+    /// <summary>Verifies that OpenAsync transitions the device from Closed to Idle state.</summary>
     [Fact]
     public async Task OpenAsyncWhenClosedTransitionsToIdle()
     {
@@ -21,6 +21,7 @@ public sealed class LifecycleTests
         device.State.CurrentValue.ShouldBe(ControlState.Idle);
     }
 
+    /// <summary>Verifies that ClaimAsync transitions the device from Idle to Claimed state.</summary>
     [Fact]
     public async Task ClaimAsyncWhenIdleTransitionsToClaimed()
     {
@@ -35,6 +36,7 @@ public sealed class LifecycleTests
         device.State.CurrentValue.ShouldBe(ControlState.Claimed);
     }
 
+    /// <summary>Verifies that enabling the device transitions it from Claimed to Enabled state.</summary>
     [Fact]
     public async Task SetEnabledAsyncTrueWhenClaimedTransitionsToEnabled()
     {
@@ -50,6 +52,7 @@ public sealed class LifecycleTests
         device.State.CurrentValue.ShouldBe(ControlState.Enabled);
     }
 
+    /// <summary>Verifies that disabling the device transitions it from Enabled back to Claimed state.</summary>
     [Fact]
     public async Task SetEnabledAsyncFalseWhenEnabledTransitionsToClaimed()
     {
@@ -66,6 +69,7 @@ public sealed class LifecycleTests
         device.State.CurrentValue.ShouldBe(ControlState.Claimed);
     }
 
+    /// <summary>Verifies that ReleaseAsync transitions the device from Claimed back to Idle state.</summary>
     [Fact]
     public async Task ReleaseAsyncWhenClaimedTransitionsToIdle()
     {
@@ -81,6 +85,7 @@ public sealed class LifecycleTests
         device.State.CurrentValue.ShouldBe(ControlState.Idle);
     }
 
+    /// <summary>Verifies that CloseAsync transitions the device from Idle back to Closed state.</summary>
     [Fact]
     public async Task CloseAsyncWhenIdleTransitionsToClosed()
     {

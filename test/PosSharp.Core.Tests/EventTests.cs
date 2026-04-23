@@ -4,8 +4,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for UPOS event handling logic in <see cref="UposDeviceBase"/>.</summary>
 public sealed class EventTests
 {
+    /// <summary>Verifies that DataEventEnabled is false by default.</summary>
     [Fact]
     public void InitialState_DataEventEnabledIsFalse()
     {
@@ -17,6 +19,7 @@ public sealed class EventTests
         device.DataEventEnabledProperty.CurrentValue.ShouldBeFalse();
     }
 
+    /// <summary>Verifies that a subscriber receives a DataEvent when published and enabled.</summary>
     [Fact]
     public void PublishDataEventSubscriberReceivesEvent()
     {
@@ -37,6 +40,7 @@ public sealed class EventTests
         received.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that a subscriber receives an ErrorEvent when published.</summary>
     [Fact]
     public void PublishErrorEventSubscriberReceivesEvent()
     {
@@ -56,6 +60,7 @@ public sealed class EventTests
         received.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that events are not fired after the device is disposed.</summary>
     [Fact]
     public void EventsAfterDisposeDoNotFire()
     {
@@ -72,6 +77,7 @@ public sealed class EventTests
         received.ShouldBeFalse();
     }
 
+    /// <summary>Verifies the atomic locking mechanism of TryBeginFlushing.</summary>
     [Fact]
     public void TryBeginFlushing_AtomicLockWorks()
     {
@@ -90,6 +96,7 @@ public sealed class EventTests
         // without reflection or calling internal flush, but this verifies the atomic guard)
     }
 
+    /// <summary>Verifies that FlushDataEvents handles multiple events and correctly resets the flushing flag.</summary>
     [Fact]
     public void FlushDataEvents_CanBeCalledMultipleTimes()
     {

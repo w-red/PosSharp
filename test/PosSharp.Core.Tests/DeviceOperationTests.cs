@@ -3,8 +3,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for standard UPOS device operations in <see cref="UposDeviceBase"/>.</summary>
 public sealed class DeviceOperationTests
 {
+    /// <summary>Verifies that DirectIO calls are correctly propagated to the hook method.</summary>
     [Fact]
     public async Task DirectIOAsync_PropagatesCallsCorrectly()
     {
@@ -27,6 +29,7 @@ public sealed class DeviceOperationTests
         device.LastDirectIOObject.ShouldBe(obj);
     }
 
+    /// <summary>Verifies that ClearInputAsync is correctly propagated to the hook method.</summary>
     [Fact]
     public async Task ClearInputAsync_PropagatesCall()
     {
@@ -42,6 +45,7 @@ public sealed class DeviceOperationTests
         device.ClearInputCalled.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that ClearOutputAsync is correctly propagated to the hook method.</summary>
     [Fact]
     public async Task ClearOutputAsync_PropagatesCall()
     {
@@ -57,6 +61,7 @@ public sealed class DeviceOperationTests
         device.ClearOutputCalled.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that operations throw UposStateException when called in an invalid state.</summary>
     [Fact]
     public async Task Operations_ThrowException_WhenInvalidState()
     {
@@ -70,6 +75,7 @@ public sealed class DeviceOperationTests
         await Should.ThrowAsync<UposStateException>(() => device.ClearOutputAsync());
     }
 
+    /// <summary>Verifies that OpenAsync calls the internal hook method when the device is closed.</summary>
     [Fact]
     public async Task OpenAsync_CallsHook_WhenClosed()
     {
@@ -83,6 +89,7 @@ public sealed class DeviceOperationTests
         device.OpenCalled.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that CloseAsync returns early if the device is already closed.</summary>
     [Fact]
     public async Task CloseAsync_EarlyReturns_WhenAlreadyClosed()
     {
@@ -96,6 +103,7 @@ public sealed class DeviceOperationTests
         device.CloseCalled.ShouldBeFalse();
     }
 
+    /// <summary>Verifies that CloseAsync calls the internal hook method when the device is open.</summary>
     [Fact]
     public async Task CloseAsync_CallsHook_WhenOpen()
     {
@@ -110,6 +118,7 @@ public sealed class DeviceOperationTests
         device.CloseCalled.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that ClaimAsync returns early if the device is already claimed or enabled.</summary>
     [Fact]
     public async Task ClaimAsync_EarlyReturns_WhenAlreadyClaimedOrEnabled()
     {
@@ -118,10 +127,6 @@ public sealed class DeviceOperationTests
         await device.OpenAsync();
         await device.ClaimAsync(100);
         device.ClaimCalled.ShouldBeTrue();
-
-        // Reset flag for second call
-        // StubUposDevice doesn't have a reset, but we can check it didn't change if we used a mock.
-        // For now, we'll just check it returns successfully without throwing.
 
         // Act & Assert
         // First claim
@@ -141,6 +146,7 @@ public sealed class DeviceOperationTests
         device.ClaimCallCount.ShouldBe(1); // Still 1
     }
 
+    /// <summary>Verifies that SetEnabledAsync returns early if the requested state matches the current state.</summary>
     [Fact]
     public async Task SetEnabledAsync_EarlyReturns_WhenStateMatches()
     {
@@ -169,6 +175,7 @@ public sealed class DeviceOperationTests
         device.DisableCallCount.ShouldBe(1); // Still 1
     }
 
+    /// <summary>Verifies that CheckHealthAsync calls the internal hook method.</summary>
     [Fact]
     public async Task HealthCheck_CallsHook()
     {
@@ -185,6 +192,7 @@ public sealed class DeviceOperationTests
         device.CheckHealthCalled.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that all asynchronous operations respect the provided CancellationToken.</summary>
     [Fact]
     public async Task Operations_RespectCancellationToken()
     {
@@ -213,6 +221,7 @@ public sealed class DeviceOperationTests
         await Should.ThrowAsync<OperationCanceledException>(async () => await device.ClearOutputAsync(cts.Token));
     }
 
+    /// <summary>Verifies that setting PowerNotify throws UposException when power reporting is not supported.</summary>
     [Fact]
     public void PowerNotify_ThrowsWhenNotSupported()
     {
