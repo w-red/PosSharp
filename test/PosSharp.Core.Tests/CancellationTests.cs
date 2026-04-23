@@ -3,8 +3,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for cancellation behavior in <see cref="UposDeviceBase"/> operations.</summary>
 public sealed class CancellationTests
 {
+    /// <summary>Verifies that OpenAsync throws OperationCanceledException when the provided token is cancelled.</summary>
     [Fact]
     public async Task OpenAsyncWhenCancelledThrowsOperationCanceledException()
     {
@@ -18,6 +20,7 @@ public sealed class CancellationTests
         device.State.CurrentValue.ShouldBe(ControlState.Closed);
     }
 
+    /// <summary>Verifies that ClaimAsync throws OperationCanceledException when the provided token is cancelled.</summary>
     [Fact]
     public async Task ClaimAsyncWhenCancelledThrowsOperationCanceledException()
     {
