@@ -22,6 +22,12 @@ internal class StubUposDevice : UposDeviceBase
     /// <summary>Gets the protected Lifecycle manager for testing.</summary>
     public new UposLifecycleManager Lifecycle => base.Lifecycle;
 
+    /// <summary>Gets a value indicating whether buffered data events are currently being flushed.</summary>
+    public new bool IsFlushing => base.IsFlushing;
+
+    /// <summary>Tries to acquire the flushing lock atomically for testing.</summary>
+    public bool TestTryBeginFlushing() => TryBeginFlushing();
+
     /// <summary>Gets the last DirectIO command.</summary>
     public int LastDirectIOCommand { get; private set; }
 
@@ -60,6 +66,21 @@ internal class StubUposDevice : UposDeviceBase
 
     /// <summary>Gets a value indicating whether OnClearOutputAsync was called.</summary>
     public bool ClearOutputCalled { get; private set; }
+
+    /// <summary>Gets the number of times OnOpenAsync was called.</summary>
+    public int OpenCallCount { get; private set; }
+
+    /// <summary>Gets the number of times OnCloseAsync was called.</summary>
+    public int CloseCallCount { get; private set; }
+
+    /// <summary>Gets the number of times OnClaimAsync was called.</summary>
+    public int ClaimCallCount { get; private set; }
+
+    /// <summary>Gets the number of times OnEnableAsync was called.</summary>
+    public int EnableCallCount { get; private set; }
+
+    /// <summary>Gets the number of times OnDisableAsync was called.</summary>
+    public int DisableCallCount { get; private set; }
 
     /// <summary>Exposes the protected BeginOperation method for testing.</summary>
     /// <returns>A disposable to end the operation.</returns>
@@ -116,6 +137,7 @@ internal class StubUposDevice : UposDeviceBase
     protected override Task OnOpenAsync(CancellationToken ct)
     {
         OpenCalled = true;
+        OpenCallCount++;
         return Task.CompletedTask;
     }
 
@@ -123,6 +145,7 @@ internal class StubUposDevice : UposDeviceBase
     protected override Task OnCloseAsync(CancellationToken ct)
     {
         CloseCalled = true;
+        CloseCallCount++;
         return Task.CompletedTask;
     }
 
@@ -130,6 +153,7 @@ internal class StubUposDevice : UposDeviceBase
     protected override Task OnClaimAsync(int timeout, CancellationToken ct)
     {
         ClaimCalled = true;
+        ClaimCallCount++;
         return Task.CompletedTask;
     }
 
@@ -144,6 +168,7 @@ internal class StubUposDevice : UposDeviceBase
     protected override Task OnEnableAsync(CancellationToken ct)
     {
         EnableCalled = true;
+        EnableCallCount++;
         return Task.CompletedTask;
     }
 
@@ -151,6 +176,7 @@ internal class StubUposDevice : UposDeviceBase
     protected override Task OnDisableAsync(CancellationToken ct)
     {
         DisableCalled = true;
+        DisableCallCount++;
         return Task.CompletedTask;
     }
 }
