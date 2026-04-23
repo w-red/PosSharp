@@ -17,7 +17,7 @@ Core interfaces and types with zero dependencies on the implementation.
 ### Enumerations
 - **`ControlState`**: `Closed`, `Idle`, `Busy`.
 - **`UposErrorCode`**: Standard UPOS error codes (`Success`, `Closed`, `Claimed`, `Enabled`, `Failure`, etc.).
-- **`PowerState`**: `Unknown`, `Online`, `Off`, `Offline`, `Offline`.
+- **`PowerState`**: `Unknown`, `Online`, `Off`, `Offline`, `OffOffline`.
 - **`PowerNotify`**: `Disabled`, `Enabled`.
 - **`HealthCheckLevel`**: `Internal`, `External`, `Interactive`.
 

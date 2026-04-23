@@ -2,7 +2,7 @@
 
 [English (英語)](api_list.md)
 
-**PosSharp** フレームワークで公開されているパブリック API のリファレンスです。
+本書は、**PosSharp** フレームワークで公開されているパブリック API のリファレンスです。
 
 ## PosSharp.Abstractions
 
@@ -17,7 +17,7 @@
 ### 列挙型 (Enums)
 - **`ControlState`**: デバイスの基本状態 (`Closed`, `Idle`, `Busy`)。
 - **`UposErrorCode`**: 標準 UPOS エラーコード (`Success`, `Closed`, `Claimed`, `Enabled`, `Failure` 等)。
-- **`PowerState`**: 電源状態 (`Unknown`, `Online`, `Off`, `Offline`, `Offline`)。
+- **`PowerState`**: 電源状態 (`Unknown`, `Online`, `Off`, `Offline`, `OffOffline`)。
 - **`PowerNotify`**: 電源通知設定 (`Disabled`, `Enabled`)。
 - **`HealthCheckLevel`**: ヘルスチェックレベル (`Internal`, `External`, `Interactive`)。
 
