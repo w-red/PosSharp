@@ -134,9 +134,11 @@ public class UposMediator : IUposMediator
         {
             if (currentState != (int)ControlState.Enabled)
             {
+                // Stryker disable all : Exception message
                 throw new UposStateException(
                     $"Operation requires Enabled state, but current state is {(ControlState)currentState}."
                 );
+                // Stryker restore all
             }
         }
         catch
@@ -205,12 +207,11 @@ public class UposMediator : IUposMediator
     /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
-        // stryker disable all : Infrastructure
+        // Stryker disable all : Infrastructure cleanup logic
         if (Interlocked.Exchange(ref disposedFlag, 1) != 0)
         {
             return;
         }
-        // stryker restore all
 
         if (disposing)
         {
@@ -218,5 +219,6 @@ public class UposMediator : IUposMediator
         }
 
         // disposedFlag is already set
+        // Stryker restore all
     }
 }

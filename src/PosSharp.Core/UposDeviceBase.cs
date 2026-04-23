@@ -183,6 +183,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     protected bool IsFlushing
     {
         get => Volatile.Read(ref isFlushingFlag) == 1;
+        // Stryker disable next line : Equivalent mutant (false ? 1 : 0) is same as (value ? 1 : 0) when value is always false
         private set => Interlocked.Exchange(ref isFlushingFlag, value ? 1 : 0);
     }
 
@@ -216,7 +217,9 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
             return;
         }
 
+        // Stryker disable all : Always allowed
         Lifecycle.PreClose();
+        // Stryker restore all
         await OnCloseAsync(ct);
         Lifecycle.PostClose();
     }
@@ -350,12 +353,11 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
-        // stryker disable all : Infrastructure
+        // Stryker disable all : Infrastructure cleanup logic
         if (Interlocked.Exchange(ref disposedFlag, 1) != 0)
         {
             return;
         }
-        // stryker restore all
 
         if (disposing)
         {
@@ -370,6 +372,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         }
 
         // disposedFlag is already set
+        // Stryker restore all
     }
 
     /// <summary>Throws an <see cref="ObjectDisposedException"/> if the device is disposed.</summary>

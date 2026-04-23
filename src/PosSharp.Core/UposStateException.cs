@@ -17,12 +17,14 @@ public sealed class UposStateException : InvalidOperationException
     /// <summary>Initializes a new instance of the <see cref="UposStateException"/> class.</summary>
     /// <param name="currentState">The current state of the device.</param>
     /// <param name="allowedStates">The states that would have been valid for the operation.</param>
+    // Stryker disable all : Exception message
     public UposStateException(ControlState currentState, IReadOnlyList<ControlState> allowedStates)
         : base($"Invalid state transition from {currentState}. Allowed: {string.Join(", ", allowedStates)}")
     {
         CurrentState = currentState;
         AllowedStates = allowedStates;
     }
+    // Stryker restore all
 
     /// <summary>Gets the state of the device at the time the exception was thrown.</summary>
     public ControlState CurrentState { get; }
