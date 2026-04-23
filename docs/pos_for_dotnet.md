@@ -2,7 +2,13 @@
 
 [Japanese (日本語)](pos_for_dotnet.jp.md)
 
-This document provides a mapping between **Microsoft POS for .NET SDK** concepts and **PosSharp** equivalents.
+This document provides a mapping between **Microsoft POS for .NET SDK** concepts
+and **PosSharp** equivalents.
+
+## External References
+
+- [Microsoft POS for .NET SDK (Microsoft Learn)](https://learn.microsoft.com/en-us/previous-versions/dotnet/pos-for-net/ms828062(v=msdn.10))
+- [UnifiedPOS Specification (OMG)](https://www.omg.org/spec/UPOS/)
 
 ## Class Mapping
 
@@ -20,9 +26,18 @@ This document provides a mapping between **Microsoft POS for .NET SDK** concepts
 | **Open** | `void Open()` | `Task OpenAsync(ct)` |
 | **Claim** | `void Claim(timeout)` | `Task ClaimAsync(timeout, ct)` |
 | **Enable** | `bool DeviceEnabled { get; set; }` | `Task SetEnabledAsync(bool, ct)` |
-| **Status** | `ControlState State { get; }` | `ReadOnlyReactiveProperty<ControlState> State` |
-| **Error** | `int ResultCode { get; }` | `ReadOnlyReactiveProperty<UposErrorCode> ResultCode` |
-| **IO** | `DirectIO(command, data, obj)` | `Task DirectIOAsync(command, data, obj, ct)` |
+| **State** | `ControlState State { get; }` | `ReadOnlyReactiveProperty<ControlState> State` |
+| **Result Code** | `int ResultCode { get; }` | `ReadOnlyReactiveProperty<UposErrorCode> ResultCode` |
+| **Extended Code** | `int ResultCodeExtended { get; }` | `int ResultCodeExtended` |
+| **Busy State** | (Limited direct access in POS for .NET) | `ReadOnlyReactiveProperty<bool> IsBusy` |
+| **Health Check** | `void CheckHealth(level)` | `Task CheckHealthAsync(level, ct)` |
+| **Health Text** | `string CheckHealthText { get; }` | `string CheckHealthText` |
+| **DirectIO** | `DirectIO(command, data, obj)` | `Task DirectIOAsync(command, data, obj, ct)` |
+| **Clear Input** | `void ClearInput()` | `Task ClearInputAsync(ct)` |
+| **Clear Output** | `void ClearOutput()` | `Task ClearOutputAsync(ct)` |
+| **Data Count** | `int DataCount { get; }` | `int DataCount` |
+| **Auto Disable** | `bool AutoDisable { get; set; }` | `bool AutoDisable` |
+| **Power State** | `PowerState PowerState { get; }` | `ReadOnlyReactiveProperty<PowerState> PowerState` |
 
 ## Event Mapping
 
@@ -34,6 +49,10 @@ This document provides a mapping between **Microsoft POS for .NET SDK** concepts
 
 ## Key Differences
 
-1. **Async-First**: All blocking operations in POS for .NET are asynchronous tasks in PosSharp.
-2. **Reactive State**: Instead of polling or simple getters, use `Subscribe` or `CurrentValue` from R3 reactive properties.
-3. **Mediator Pattern**: PosSharp uses a centralized `UposMediator` to ensure thread-safe state synchronization, whereas POS for .NET often relies on manual state management in Service Objects.
+1. **Fully Asynchronous**: While POS for .NET primarily used blocking calls, PosSharp
+   is built on `Task`-based asynchronous patterns with full `CancellationToken` support.
+2. **Reactive State**: No need for polling. Use R3's `Subscribe` to react to state
+   changes in real-time and in a declarative manner.
+3. **Mediator-Driven Integration**: PosSharp uses `UposMediator` to coordinate state,
+   drastically reducing the need for manual synchronization or state consistency
+   management within the Service Object.
