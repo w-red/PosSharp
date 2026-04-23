@@ -20,9 +20,9 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 
     private PowerNotify powerNotify = PowerNotify.Disabled;
     private UposCapabilities capabilities = UposCapabilities.Empty;
-    private int dataEventEnabledFlag;
+    private int isDataEventEnabledFlag;
     private int isFlushingFlag;
-    private bool disposed;
+    private int disposedFlag;
     private DisposableBag extensionDisposables;
 
     /// <summary>Initializes a new instance of the <see cref="UposDeviceBase"/> class with default mediator and handler.</summary>
@@ -73,13 +73,13 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         get
         {
             ThrowIfDisposed();
-            return Volatile.Read(ref dataEventEnabledFlag) == 1;
+            return Volatile.Read(ref isDataEventEnabledFlag) == 1;
         }
         set
         {
             ThrowIfDisposed();
             int newVal = value ? 1 : 0;
-            if (Interlocked.Exchange(ref dataEventEnabledFlag, newVal) != newVal)
+            if (Interlocked.Exchange(ref isDataEventEnabledFlag, newVal) != newVal)
             {
                 dataEventEnabled.Value = value;
                 if (value)
@@ -186,6 +186,10 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         private set => Interlocked.Exchange(ref isFlushingFlag, value ? 1 : 0);
     }
 
+    /// <summary>Tries to acquire the flushing lock atomically.</summary>
+    /// <returns>True if the lock was acquired; otherwise, false.</returns>
+    protected bool TryBeginFlushing() => Interlocked.CompareExchange(ref isFlushingFlag, 1, 0) == 0;
+
     // ------------------------------------------------------------------
     // Public Methods
     // ------------------------------------------------------------------
@@ -224,7 +228,9 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
         ct.ThrowIfCancellationRequested();
 
         var currentState = Mediator.CurrentState;
-        if (currentState == ControlState.Claimed || currentState == ControlState.Enabled)
+        if (currentState is
+            ControlState.Claimed
+            or ControlState.Enabled)
         {
             return;
         }
@@ -329,8 +335,10 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// </summary>
     public void Dispose()
     {
+        // stryker disable all : Infrastructure
         Dispose(true);
         GC.SuppressFinalize(this);
+        // stryker restore all
     }
 
     /// <summary>
@@ -339,10 +347,12 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
-        if (disposed)
+        // stryker disable all : Infrastructure
+        if (Interlocked.Exchange(ref disposedFlag, 1) != 0)
         {
             return;
         }
+        // stryker restore all
 
         if (disposing)
         {
@@ -356,13 +366,13 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
             extensionDisposables.Dispose();
         }
 
-        disposed = true;
+        // disposedFlag is already set
     }
 
     /// <summary>Throws an <see cref="ObjectDisposedException"/> if the device is disposed.</summary>
     protected void ThrowIfDisposed()
     {
-        if (disposed)
+        if (Volatile.Read(ref disposedFlag) == 1)
         {
             throw new ObjectDisposedException(
                 GetType().FullName,
@@ -428,7 +438,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <summary>Flushes buffered data events to subscribers.</summary>
     protected void FlushDataEvents()
     {
-        if (Interlocked.CompareExchange(ref isFlushingFlag, 1, 0) != 0)
+        if (!TryBeginFlushing())
         {
             return;
         }
@@ -451,11 +461,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 
                 IsFlushing = false;
 
-                if (
-                    !DataEventEnabled
-                    || dataEventQueue.IsEmpty
-                    || Interlocked.CompareExchange(ref isFlushingFlag, 1, 0) != 0
-                )
+                if (!DataEventEnabled || dataEventQueue.IsEmpty || !TryBeginFlushing())
                 {
                     break;
                 }

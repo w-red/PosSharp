@@ -123,13 +123,22 @@ public sealed class DeviceOperationTests
         // StubUposDevice doesn't have a reset, but we can check it didn't change if we used a mock.
         // For now, we'll just check it returns successfully without throwing.
 
-        // Act
+        // Act & Assert
+        // First claim
         await device.ClaimAsync(100);
-        await device.SetEnabledAsync(true);
-        await device.ClaimAsync(100);
+        device.ClaimCallCount.ShouldBe(1);
 
-        // Assert
-        // (Just verifying no exceptions and it returns early as intended)
+        // Second claim (already claimed) -> should early return
+        await device.ClaimAsync(100);
+        device.ClaimCallCount.ShouldBe(1); // Still 1
+
+        // Enable
+        await device.SetEnabledAsync(true);
+        device.EnableCallCount.ShouldBe(1);
+
+        // Claim while enabled -> should early return
+        await device.ClaimAsync(100);
+        device.ClaimCallCount.ShouldBe(1); // Still 1
     }
 
     [Fact]
@@ -144,18 +153,20 @@ public sealed class DeviceOperationTests
         await device.SetEnabledAsync(true);
         device.EnableCalled.ShouldBeTrue();
 
-        // Act - Call again with true
+        // Act - Call again with true (already enabled) -> should early return
         await device.SetEnabledAsync(true);
 
-        // Assert - DisableCalled should still be false
-        device.DisableCalled.ShouldBeFalse();
+        // Assert - EnableCallCount should still be 1
+        device.EnableCallCount.ShouldBe(1);
+        device.DisableCallCount.ShouldBe(0);
 
         // Act - Disable
         await device.SetEnabledAsync(false);
-        device.DisableCalled.ShouldBeTrue();
+        device.DisableCallCount.ShouldBe(1);
 
-        // Act - Call again with false
+        // Act - Call again with false (already disabled/claimed) -> should early return
         await device.SetEnabledAsync(false);
+        device.DisableCallCount.ShouldBe(1); // Still 1
     }
 
     [Fact]
@@ -200,5 +211,21 @@ public sealed class DeviceOperationTests
         );
         await Should.ThrowAsync<OperationCanceledException>(async () => await device.ClearInputAsync(cts.Token));
         await Should.ThrowAsync<OperationCanceledException>(async () => await device.ClearOutputAsync(cts.Token));
+    }
+
+    [Fact]
+    public void PowerNotify_ThrowsWhenNotSupported()
+    {
+        // Arrange
+        using var device = new StubUposDevice();
+        device.TestCapPowerReporting = PowerReporting.None;
+
+        // Act & Assert
+        // Setting to Disabled should be allowed even if reporting is None
+        Should.NotThrow(() => device.PowerNotify = PowerNotify.Disabled);
+
+        // Setting to Enabled should throw when reporting is None
+        var ex = Should.Throw<UposException>(() => device.PowerNotify = PowerNotify.Enabled);
+        ex.ErrorCode.ShouldBe(UposErrorCode.Illegal);
     }
 }
