@@ -2,13 +2,18 @@
 
 [Japanese (日本語)](opos.jp.md)
 
-This document provides a translation guide for developers migrating from legacy **OPOS (ActiveX/OCX)** controls to **PosSharp**.
+Official migration guide for developers moving from legacy **OPOS (ActiveX/OCX)** controls to **PosSharp**.
+
+## External References
+
+- [OPOS (ActiveX) Official Resources (Monroe Consulting)](http://www.monroecs.com/opos.htm)
+- [UnifiedPOS Specification (OMG)](https://www.omg.org/spec/UPOS/)
 
 ## Method Mapping
 
 | OPOS Method | PosSharp Equivalent | Note |
 | ----------- | ------------------- | ---- |
-| `Open(device)` | `OpenAsync(ct)` | `device` name is managed via implementation or config. |
+| `Open(device)` | `OpenAsync(ct)` | Device names are handled during instantiation (e.g., via DI), so no argument is needed here. |
 | `Close()` | `CloseAsync(ct)` | |
 | `ClaimDevice(timeout)` | `ClaimAsync(timeout, ct)` | |
 | `ReleaseDevice()` | `ReleaseAsync(ct)` | |
@@ -23,12 +28,19 @@ This document provides a translation guide for developers migrating from legacy 
 | ------------- | ------------------- | ------------- |
 | `DeviceEnabled` | `SetEnabledAsync(bool)` | `ReadOnlyReactiveProperty<bool>` |
 | `State` | `State` | `ReadOnlyReactiveProperty<ControlState>` |
+| `Claimed` | `IsClaimed` | `bool` |
 | `ResultCode` | `ResultCode` | `ReadOnlyReactiveProperty<UposErrorCode>` |
-| `ResultCodeExtended` | `ResultCodeExtended` | `ReadOnlyReactiveProperty<int>` |
-| `DataCount` | `DataCount` | `ReadOnlyReactiveProperty<int>` |
-| `DataEventEnabled` | `DataEventEnabled` | `ReactiveProperty<bool>` |
-| `PowerNotify` | `PowerNotify` | `ReactiveProperty<PowerNotify>` |
+| `ResultCodeExtended` | `ResultCodeExtended` | `int` |
+| `CheckHealthText` | `CheckHealthText` | `string` |
+| `DataCount` | `DataCount` | `int` |
+| `DataEventEnabled` | `DataEventEnabled` | `bool` (Mutable) |
+| `AutoDisable` | `AutoDisable` | `bool` |
+| `PowerNotify` | `PowerNotify` | `PowerNotify` (Mutable) |
 | `PowerState` | `PowerState` | `ReadOnlyReactiveProperty<PowerState>` |
+| `DeviceDescription` | `DeviceDescription` | `string` |
+| `DeviceName` | `DeviceName` | `string` |
+| `ServiceObjectDescription` | `ServiceObjectDescription` | `string` |
+| `ServiceObjectVersion` | `ServiceObjectVersion` | `string` |
 
 ## Event Mapping
 
@@ -42,6 +54,10 @@ This document provides a translation guide for developers migrating from legacy 
 
 ## Migration Notes
 
-- **COM to .NET**: PosSharp is a pure .NET 10.0 implementation. There is no need for COM Interop or `regsvr32` for the core logic.
-- **Synchronous to Asynchronous**: OPOS was strictly synchronous (blocking). PosSharp is asynchronous, allowing for responsive UIs and better resource management.
+- **COM to .NET**: PosSharp is a pure .NET 10.0 implementation.
+  There is no need for COM Interop or `regsvr32` for the core logic.
+- **Synchronous to Asynchronous**: OPOS was strictly synchronous (blocking).
+  PosSharp is asynchronous, allowing for responsive UIs and better resource management.
 - **Events**: Instead of responding to ActiveX event fires, you "subscribe" to event streams.
+- **Device Naming**: While OPOS required a logical name in the `Open` method, PosSharp
+  associates the device identity during instantiation or via Dependency Injection (DI).
