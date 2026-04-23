@@ -428,3 +428,6 @@ walkthrough.md
 # OS files
 .DS_Store
 Thumbs.db
+
+# Test results
+StrykerOutput/
