@@ -4,8 +4,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for the disposal behavior of <see cref="UposDeviceBase"/>.</summary>
 public sealed class DeviceDisposeTests
 {
+    /// <summary>Verifies that disposing the device completes all reactive event streams.</summary>
     [Fact]
     public void Dispose_CompletesAllEventStreams()
     {
@@ -34,6 +36,7 @@ public sealed class DeviceDisposeTests
         outputCompleted.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that calling Dispose multiple times is safe and idempotent.</summary>
     [Fact]
     public void Dispose_IsIdempotent()
     {
@@ -48,6 +51,7 @@ public sealed class DeviceDisposeTests
         });
     }
 
+    /// <summary>Verifies that the standard Dispose call correctly completes streams.</summary>
     [Fact]
     public void Dispose_WithFalse_DoesNotCompleteStreams()
     {
@@ -67,6 +71,7 @@ public sealed class DeviceDisposeTests
         dataCompleted.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that all public members throw ObjectDisposedException when accessed after the device is disposed.</summary>
     [Fact]
     public async Task Members_ThrowObjectDisposedException_AfterDispose()
     {

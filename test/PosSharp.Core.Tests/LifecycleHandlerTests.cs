@@ -4,10 +4,14 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
+/// <summary>Tests for the <see cref="StandardLifecycleHandler"/> class.</summary>
 public sealed class LifecycleHandlerTests
 {
     private readonly StandardLifecycleHandler handler = new();
 
+    /// <summary>Verifies that VerifyState does not throw when the current state is equal to the required state.</summary>
+    /// <param name="current">The current state.</param>
+    /// <param name="required">The required state.</param>
     [Theory]
     [InlineData(ControlState.Closed, ControlState.Closed)]
     [InlineData(ControlState.Idle, ControlState.Idle)]
@@ -19,6 +23,9 @@ public sealed class LifecycleHandlerTests
         Should.NotThrow(() => handler.VerifyState(current, required));
     }
 
+    /// <summary>Verifies that VerifyState throws UposStateException when the current state is logically less than the required state.</summary>
+    /// <param name="current">The current state.</param>
+    /// <param name="required">The required state.</param>
     [Theory]
     [InlineData(ControlState.Closed, ControlState.Idle)]
     [InlineData(ControlState.Idle, ControlState.Claimed)]
@@ -29,6 +36,9 @@ public sealed class LifecycleHandlerTests
         Should.Throw<UposStateException>(() => handler.VerifyState(current, required));
     }
 
+    /// <summary>Verifies that VerifyState does not throw when the current state is logically greater than the required state.</summary>
+    /// <param name="current">The current state.</param>
+    /// <param name="required">The required state.</param>
     [Theory]
     [InlineData(ControlState.Idle, ControlState.Closed)]
     [InlineData(ControlState.Claimed, ControlState.Idle)]
@@ -39,6 +49,10 @@ public sealed class LifecycleHandlerTests
         Should.NotThrow(() => handler.VerifyState(current, required));
     }
 
+    /// <summary>Verifies all state transition rules defined in the handler.</summary>
+    /// <param name="from">The starting state.</param>
+    /// <param name="to">The target state.</param>
+    /// <param name="allowed">Whether the transition should be allowed.</param>
     [Theory]
     // Closed transitions
     [InlineData(ControlState.Closed, ControlState.Idle, true)] // Open

@@ -4,9 +4,10 @@ using Shouldly;
 
 namespace PosSharp.Core.Tests;
 
-/// <summary>Tests to ensure UPOS common compliance for properties and methods.</summary>
+/// <summary>Tests to ensure UPOS common compliance for properties and methods in <see cref="UposDeviceBase"/>.</summary>
 public sealed class CommonComplianceTests
 {
+    /// <summary>Verifies that all common UPOS properties have the correct initial values as defined by the specification.</summary>
     [Fact]
     public void CommonPropertiesHaveCorrectInitialValues()
     {
@@ -28,6 +29,7 @@ public sealed class CommonComplianceTests
         device.DeviceName.ShouldBe(nameof(StubUposDevice));
     }
 
+    /// <summary>Verifies that CheckHealthAsync correctly updates the CheckHealthText property.</summary>
     [Fact]
     public async Task CheckHealthAsyncUpdatesCheckHealthText()
     {
@@ -44,6 +46,7 @@ public sealed class CommonComplianceTests
         device.CheckHealthText.ShouldBe("Internal:OK");
     }
 
+    /// <summary>Verifies that setting PowerNotify to Enabled throws UposException when power reporting is not supported.</summary>
     [Fact]
     public void PowerNotifyThrowsOnIllegalSetup()
     {
@@ -60,6 +63,7 @@ public sealed class CommonComplianceTests
         ex.Message.ShouldBe("Power notification is not supported by this device.");
     }
 
+    /// <summary>Verifies that setting PowerNotify to Enabled succeeds when power reporting is supported.</summary>
     [Fact]
     public void PowerNotifySucceedsWhenSupported()
     {
@@ -74,6 +78,7 @@ public sealed class CommonComplianceTests
         device.PowerNotify.ShouldBe(PowerNotify.Enabled);
     }
 
+    /// <summary>Verifies that a PowerState change fires a StatusUpdateEvent when power notification is enabled.</summary>
     [Fact]
     public void PowerStateChangeFiresEventWhenEnabled()
     {
@@ -93,6 +98,7 @@ public sealed class CommonComplianceTests
         lastStatus.ShouldBe((int)PowerState.Online);
     }
 
+    /// <summary>Verifies that ClearInputAsync correctly resets the DataCount property.</summary>
     [Fact]
     public async Task ClearInputResetsDataCount()
     {
