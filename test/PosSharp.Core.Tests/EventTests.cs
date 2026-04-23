@@ -127,4 +127,25 @@ public sealed class EventTests
         eventCount.ShouldBe(4);
         device.IsFlushing.ShouldBeFalse();
     }
+
+    /// <summary>Verifies that AutoDisable=true automatically disables data events after one delivery.</summary>
+    [Fact]
+    public void FlushDataEvents_AutoDisable_Works()
+    {
+        // Arrange
+        var device = new StubUposDevice();
+        device.AutoDisable = true;
+        var eventCount = 0;
+        device.DataEvents.Subscribe(_ => eventCount++);
+
+        device.TestPublishDataEvent(new UposDataEventArgs(1));
+        device.TestPublishDataEvent(new UposDataEventArgs(2));
+
+        // Act
+        device.DataEventEnabled = true;
+
+        // Assert
+        eventCount.ShouldBe(1);
+        device.DataEventEnabled.ShouldBeFalse();
+    }
 }

@@ -125,25 +125,46 @@ public sealed class DeviceOperationTests
         // Arrange
         using var device = new StubUposDevice();
         await device.OpenAsync();
-        await device.ClaimAsync(100);
-        device.ClaimCalled.ShouldBeTrue();
 
-        // Act & Assert
-        // First claim
+        // Act
         await device.ClaimAsync(100);
+
+        // Assert
+        device.ClaimCalled.ShouldBeTrue();
         device.ClaimCallCount.ShouldBe(1);
 
-        // Second claim (already claimed) -> should early return
+        // Act - Second claim (already claimed) -> should early return
         await device.ClaimAsync(100);
+
+        // Assert
         device.ClaimCallCount.ShouldBe(1); // Still 1
 
         // Enable
         await device.SetEnabledAsync(true);
         device.EnableCallCount.ShouldBe(1);
 
-        // Claim while enabled -> should early return
+        // Act - Claim while enabled -> should early return
         await device.ClaimAsync(100);
+
+        // Assert
         device.ClaimCallCount.ShouldBe(1); // Still 1
+    }
+
+    /// <summary>Verifies that ReleaseAsync calls the internal hook method.</summary>
+    [Fact]
+    public async Task ReleaseAsync_CallsHook()
+    {
+        // Arrange
+        using var device = new StubUposDevice();
+        await device.OpenAsync();
+        await device.ClaimAsync(100);
+        device.ReleaseCalled.ShouldBeFalse();
+
+        // Act
+        await device.ReleaseAsync();
+
+        // Assert
+        device.ReleaseCalled.ShouldBeTrue();
     }
 
     /// <summary>Verifies that SetEnabledAsync returns early if the requested state matches the current state.</summary>
@@ -155,9 +176,12 @@ public sealed class DeviceOperationTests
         await device.OpenAsync();
         await device.ClaimAsync(100);
 
-        // Enable
+        // Act - Enable
         await device.SetEnabledAsync(true);
+
+        // Assert
         device.EnableCalled.ShouldBeTrue();
+        device.EnableCallCount.ShouldBe(1);
 
         // Act - Call again with true (already enabled) -> should early return
         await device.SetEnabledAsync(true);
@@ -168,10 +192,15 @@ public sealed class DeviceOperationTests
 
         // Act - Disable
         await device.SetEnabledAsync(false);
+
+        // Assert
+        device.DisableCalled.ShouldBeTrue();
         device.DisableCallCount.ShouldBe(1);
 
         // Act - Call again with false (already disabled/claimed) -> should early return
         await device.SetEnabledAsync(false);
+
+        // Assert
         device.DisableCallCount.ShouldBe(1); // Still 1
     }
 
