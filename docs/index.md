@@ -16,6 +16,9 @@ Mapping between Microsoft POS for .NET (Point of Service SDK) classes/concepts a
 ### [OPOS (OLE for Retail POS) Mapping](opos.md)
 Translation guide for developers moving from legacy OPOS (ActiveX/OCX) controls to PosSharp.
 
+### [JavaPOS (JPOS) Mapping](jpos.md)
+Mapping between JavaPOS standards and PosSharp equivalents for developers from the Java ecosystem.
+
 ---
 
 ## 🌐 Language Versions

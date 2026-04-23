@@ -16,6 +16,9 @@ Microsoft POS for .NET (Point of Service SDK) のクラスや概念と、PosShar
 ### [OPOS 対応マトリクス](opos.jp.md)
 レガシーな OPOS (ActiveX/OCX) コントロールから PosSharp へ移行するためのガイドです。
 
+### [JavaPOS (JPOS) 対応表](jpos.jp.md)
+JavaPOS 規格と PosSharp における対応関係をまとめています。
+
 ---
 
 ## 🌐 言語 / Language
