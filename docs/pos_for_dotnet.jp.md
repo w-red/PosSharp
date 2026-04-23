@@ -1,5 +1,7 @@
 # POS for .NET 対応表
 
+[English (英語)](pos_for_dotnet.md)
+
 本書は、**Microsoft POS for .NET SDK** の概念と **PosSharp** における対応関係をまとめたものです。
 
 ## クラス・概念の対応

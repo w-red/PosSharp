@@ -1,5 +1,7 @@
 # OPOS 対応マトリクス
 
+[English (英語)](opos.md)
+
 本書は、レガシーな **OPOS (ActiveX/OCX)** コントロールから **PosSharp** へ移行する開発者のための変換ガイドです。
 
 ## メソッドの対応

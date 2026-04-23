@@ -1,5 +1,7 @@
 # OPOS (OLE for Retail POS) Mapping Matrix
 
+[Japanese (日本語)](opos.jp.md)
+
 This document provides a translation guide for developers migrating from legacy **OPOS (ActiveX/OCX)** controls to **PosSharp**.
 
 ## Method Mapping

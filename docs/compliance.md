@@ -1,5 +1,7 @@
 # UPOS Compliance Matrix
 
+[Japanese (日本語)](compliance.jp.md)
+
 This document outlines the level of compliance with the **UnifiedPOS (UPOS) v1.16** specification for common properties and methods.
 
 ## Common Properties
