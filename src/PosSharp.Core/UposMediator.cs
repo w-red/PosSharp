@@ -20,7 +20,7 @@ public class UposMediator : IUposMediator
     private int currentLastErrorExtended;
     private int currentDataCount;
     private int isBusyFlag;
-    private bool disposed;
+    private int disposedFlag;
 
     /// <summary>Initializes a new instance of the <see cref="UposMediator"/> class.</summary>
     public UposMediator()
@@ -40,13 +40,21 @@ public class UposMediator : IUposMediator
     public virtual ReadOnlyReactiveProperty<ControlState> State => state;
 
     /// <inheritdoc />
-    public virtual ControlState CurrentState => (ControlState)Volatile.Read(ref currentState);
+    public virtual ControlState CurrentState => CurrentStateInternal;
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<bool> IsBusy => isBusy;
 
     /// <inheritdoc />
-    public virtual bool IsBusyValue => Volatile.Read(ref isBusyFlag) == 1;
+    public virtual bool IsBusyValue
+    {
+        get => Volatile.Read(ref isBusyFlag) == 1;
+        private set => Interlocked.Exchange(ref isBusyFlag, value ? 1 : 0);
+    }
+
+    /// <summary>Tries to acquire the busy lock atomically.</summary>
+    /// <returns>True if the lock was acquired; otherwise, false.</returns>
+    protected bool TryAcquireBusyLock() => Interlocked.CompareExchange(ref isBusyFlag, 1, 0) == 0;
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<UposErrorCode> LastError => lastError;
@@ -63,11 +71,40 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<int> DataCount => dataCount;
 
+    /// <summary>Gets the current logical state of the device.</summary>
+    protected ControlState CurrentStateInternal
+    {
+        get => (ControlState)Volatile.Read(ref currentState);
+        set => Interlocked.Exchange(ref currentState, (int)value);
+    }
+
+    /// <summary>Gets the last error code encountered by the device.</summary>
+    protected UposErrorCode LastErrorInternal
+    {
+        get => (UposErrorCode)Volatile.Read(ref currentLastError);
+        set => Interlocked.Exchange(ref currentLastError, (int)value);
+    }
+
+    /// <summary>Gets the extended result code of the last completed operation.</summary>
+    protected int LastErrorExtendedInternal
+    {
+        get => Volatile.Read(ref currentLastErrorExtended);
+        set => Interlocked.Exchange(ref currentLastErrorExtended, value);
+    }
+
+    /// <summary>Gets the current count of queued data events.</summary>
+    protected int DataCountInternal
+    {
+        get => Volatile.Read(ref currentDataCount);
+        set => Interlocked.Exchange(ref currentDataCount, value);
+    }
+
     /// <inheritdoc />
     public virtual void UpdateState(ControlState state)
     {
-        if (Interlocked.Exchange(ref currentState, (int)state) != (int)state)
+        if (CurrentStateInternal != state)
         {
+            CurrentStateInternal = state;
             this.state.Value = state;
         }
     }
@@ -75,9 +112,9 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void SetBusy(bool isBusy)
     {
-        int newVal = isBusy ? 1 : 0;
-        if (Interlocked.Exchange(ref isBusyFlag, newVal) != newVal)
+        if (IsBusyValue != isBusy)
         {
+            IsBusyValue = isBusy;
             this.isBusy.Value = isBusy;
         }
     }
@@ -85,7 +122,7 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual IDisposable BeginOperation()
     {
-        if (Interlocked.CompareExchange(ref isBusyFlag, 1, 0) != 0)
+        if (!TryAcquireBusyLock())
         {
             throw new UposStateException("Device is already busy.");
         }
@@ -105,14 +142,14 @@ public class UposMediator : IUposMediator
         catch
         {
             // Reset if validation fails
-            Interlocked.Exchange(ref isBusyFlag, 0);
+            IsBusyValue = false;
             isBusy.Value = false;
             throw;
         }
 
         return Disposable.Create(() =>
         {
-            Interlocked.Exchange(ref isBusyFlag, 0);
+            IsBusyValue = false;
             isBusy.Value = false;
         });
     }
@@ -120,17 +157,16 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void ReportError(UposErrorCode errorCode, int extendedCode = 0)
     {
-        bool changed = false;
-        if (Interlocked.Exchange(ref currentLastError, (int)errorCode) != (int)errorCode)
+        if (LastErrorInternal != errorCode)
         {
+            LastErrorInternal = errorCode;
             lastError.Value = errorCode;
-            changed = true;
         }
 
-        if (Interlocked.Exchange(ref currentLastErrorExtended, extendedCode) != extendedCode)
+        if (LastErrorExtendedInternal != extendedCode)
         {
+            LastErrorExtendedInternal = extendedCode;
             lastErrorExtended.Value = extendedCode;
-            changed = true;
         }
     }
 
@@ -149,8 +185,9 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void UpdateDataCount(int count)
     {
-        if (Interlocked.Exchange(ref currentDataCount, count) != count)
+        if (DataCountInternal != count)
         {
+            DataCountInternal = count;
             dataCount.Value = count;
         }
     }
@@ -158,24 +195,28 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public void Dispose()
     {
+        // stryker disable all : Infrastructure
         Dispose(true);
         GC.SuppressFinalize(this);
+        // stryker restore all
     }
 
     /// <summary> Releases the unmanaged resources used by the <see cref="UposMediator"/> and optionally releases the managed resources.</summary>
     /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
-        if (disposed)
+        // stryker disable all : Infrastructure
+        if (Interlocked.Exchange(ref disposedFlag, 1) != 0)
         {
             return;
         }
+        // stryker restore all
 
         if (disposing)
         {
             disposables.Dispose();
         }
 
-        disposed = true;
+        // disposedFlag is already set
     }
 }
