@@ -7,6 +7,9 @@ Welcome to the official documentation for **PosSharp**, the platform-agnostic, r
 ### [Compliance Matrix](compliance.md)
 Detailed breakdown of supported UPOS common properties, methods, and events.
 
+### [API Reference](api_list.md)
+Full list of public classes, interfaces, enums, and event types.
+
 ### [POS for .NET Compatibility](pos_for_dotnet.md)
 Mapping between Microsoft POS for .NET (Point of Service SDK) classes/concepts and PosSharp equivalents.
 

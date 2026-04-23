@@ -7,6 +7,9 @@
 ### [UPOS 準拠性マトリクス](compliance.jp.md)
 サポートされている UPOS 共通プロパティ、メソッド、イベントの詳細な一覧です。
 
+### [API リファレンス](api_list.jp.md)
+パブリックなクラス、インターフェース、列挙型、イベント型の一覧です。
+
 ### [POS for .NET 対応表](pos_for_dotnet.jp.md)
 Microsoft POS for .NET (Point of Service SDK) のクラスや概念と、PosSharp での対応関係をまとめています。
 
