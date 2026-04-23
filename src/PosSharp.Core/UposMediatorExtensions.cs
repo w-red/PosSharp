@@ -12,7 +12,7 @@ public static class UposMediatorExtensions
     {
         if (mediator.CurrentState == ControlState.Closed)
         {
-            throw new UposStateException("Device must be open to perform this operation.");
+            throw new UposStateException("Device must be open to perform this operation.", UposErrorCode.Closed);
         }
     }
 
@@ -24,7 +24,7 @@ public static class UposMediatorExtensions
         ValidateOpen(mediator);
         if (mediator.CurrentState < ControlState.Claimed)
         {
-            throw new UposStateException("Device must be claimed to perform this operation.");
+            throw new UposStateException("Device must be claimed to perform this operation.", UposErrorCode.NotClaimed);
         }
     }
 
@@ -36,7 +36,7 @@ public static class UposMediatorExtensions
         ValidateClaimed(mediator);
         if (mediator.CurrentState < ControlState.Enabled)
         {
-            throw new UposStateException("Device must be enabled to perform this operation.");
+            throw new UposStateException("Device must be enabled to perform this operation.", UposErrorCode.Disabled);
         }
     }
 
@@ -47,7 +47,7 @@ public static class UposMediatorExtensions
     {
         if (mediator.IsBusyValue)
         {
-            throw new UposStateException("Device is currently busy.");
+            throw new UposStateException("Device is currently busy.", UposErrorCode.Busy);
         }
     }
 }

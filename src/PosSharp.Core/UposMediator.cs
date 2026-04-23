@@ -124,7 +124,7 @@ public class UposMediator : IUposMediator
     {
         if (!TryAcquireBusyLock())
         {
-            throw new UposStateException("Device is already busy.");
+            throw new UposStateException("Device is already busy.", UposErrorCode.Busy);
         }
 
         // Now we are atomically marked as busy.
@@ -136,7 +136,8 @@ public class UposMediator : IUposMediator
             {
                 // Stryker disable all : Exception message
                 throw new UposStateException(
-                    $"Operation requires Enabled state, but current state is {(ControlState)currentState}."
+                    $"Operation requires Enabled state, but current state is {(ControlState)currentState}.",
+                    UposErrorCode.Disabled
                 );
                 // Stryker restore all
             }

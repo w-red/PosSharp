@@ -77,10 +77,10 @@ if (currentState == ControlState.Idle)
 
 ## Extension Methods
 - **`UposMediatorExtensions`**: Helper methods for validating states within the mediator.
-  - `ValidateOpen()`: Checks if the device is Open.
-  - `ValidateClaimed()`: Checks if the device is Claimed.
-  - `ValidateEnabled()`: Checks if the device is Enabled.
-  - `ValidateNotBusy()`: Checks if the device is not Busy.
+  - `ValidateOpen()`: Checks if the device is Open. Throws `UposErrorCode.Closed` on failure.
+  - `ValidateClaimed()`: Checks if the device is Claimed. Throws `UposErrorCode.NotClaimed` on failure.
+  - `ValidateEnabled()`: Checks if the device is Enabled. Throws `UposErrorCode.Disabled` on failure.
+  - `ValidateNotBusy()`: Checks if the device is not Busy. Throws `UposErrorCode.Busy` on failure.
 
 ### Usage Example
 Use these in your device implementation classes to check preconditions before performing operations.
