@@ -47,5 +47,33 @@
 
 ---
 
+## リアクティブプロパティの利用方法 (R3)
+
+PosSharp のプロパティは [R3](https://github.com/Cysharp/R3) をベースにしており、以下の方法で利用できます。
+
+### 1. 状態の変化を購読する (`Subscribe`)
+デバイスの状態変化をリアルタイムにハンドリングする標準的な方法です。
+
+```csharp
+// 状態が変化するたびに実行される
+device.State.Subscribe(state => 
+{
+    Console.WriteLine($"現在の状態: {state}");
+});
+```
+
+### 2. 現在の値を直接取得する (`Value`)
+現在のスナップショットを即座に取得したい場合に使用します。
+
+```csharp
+var currentState = device.State.Value;
+if (currentState == ControlState.Idle) 
+{
+    // 待機中の処理
+}
+```
+
+---
+
 ## 拡張メソッド
 - **`UposMediatorExtensions`**: メディエーター内での状態検証を補助するヘルパーメソッド。

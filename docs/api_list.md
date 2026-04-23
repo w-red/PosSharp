@@ -47,5 +47,33 @@ Standard implementation of the framework.
 
 ---
 
+## How to use Reactive Properties (R3)
+
+Properties in PosSharp are powered by [R3](https://github.com/Cysharp/R3). You can interact with them in two primary ways:
+
+### 1. Subscribing to Changes (`Subscribe`)
+The standard way to react to state transitions in real-time.
+
+```csharp
+// Executed whenever the state changes
+device.State.Subscribe(state => 
+{
+    Console.WriteLine($"Current state: {state}");
+});
+```
+
+### 2. Getting the Current Value (`Value`)
+Use this when you need an immediate snapshot of the current value.
+
+```csharp
+var currentState = device.State.Value;
+if (currentState == ControlState.Idle) 
+{
+    // Do something when idle
+}
+```
+
+---
+
 ## Extension Methods
 - **`UposMediatorExtensions`**: Helper methods for validating states within the mediator.
