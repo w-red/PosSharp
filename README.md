@@ -5,6 +5,7 @@
 [![NuGet Core](https://img.shields.io/nuget/v/PosSharp.Core.svg?label=NuGet%20Core)](https://www.nuget.org/packages/PosSharp.Core/)
 [![NuGet Abstractions](https://img.shields.io/nuget/v/PosSharp.Abstractions.svg?label=NuGet%20Abstractions)](https://www.nuget.org/packages/PosSharp.Abstractions/)
 [![CI](https://github.com/w-red/PosSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/ci.yml)
+[![CD](https://github.com/w-red/PosSharp/actions/workflows/release.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/release.yml)
 
 **PosSharp** is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET. It provides a modern implementation of the UPOS standard, decoupling core POS logic from platform-specific SDK dependencies like the legacy POS for .NET (OPOS) or Windows-only components.
 
