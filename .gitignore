@@ -435,3 +435,4 @@ StrykerOutput/
 # DocFX
 obj/
 api/
+docs/reference/
