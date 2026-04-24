@@ -4,13 +4,13 @@ This section provides detailed API documentation for the PosSharp framework, gen
 
 ## Core Components
 
-- **[PosSharp.Abstractions](xref:PosSharp.Abstractions)**: Fundamental interfaces and types for UPOS devices.
-- **[PosSharp.Core](xref:PosSharp.Core)**: Base classes and common implementations for building UPOS devices.
+- **[PosSharp.Abstractions](PosSharp.Abstractions.yml)**: Fundamental interfaces and types for UPOS devices.
+- **[PosSharp.Core](PosSharp.Core.yml)**: Base classes and common implementations for building UPOS devices.
 
 ## Namespaces
 
-- **[PosSharp.Abstractions](xref:PosSharp.Abstractions)**: The root namespace for all PosSharp abstractions.
-- **[PosSharp.Core](xref:PosSharp.Core)**: The root namespace for core framework logic.
-- **[PosSharp.Core.Lifecycle](xref:PosSharp.Core.Lifecycle)**: Classes for managing device lifecycle and state transitions.
+- **[PosSharp.Abstractions](PosSharp.Abstractions.yml)**: The root namespace for all PosSharp abstractions.
+- **[PosSharp.Core](PosSharp.Core.yml)**: The root namespace for core framework logic.
+- **[PosSharp.Core.Lifecycle](PosSharp.Core.Lifecycle.yml)**: Classes for managing device lifecycle and state transitions.
 
 Refer to the [Documentation Index](../docs/index.md) for high-level guides and examples.
