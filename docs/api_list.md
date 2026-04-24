@@ -10,11 +10,11 @@ Core interfaces and types with zero dependencies on the implementation.
 
 ### Interfaces
 
-- **`IUposDevice`**: The primary interface for all UPOS devices.
+- **`IUposDevice`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Abstractions.IUposDevice.html): The primary interface for all UPOS devices.
   Contains reactive properties (`State`, `Claimed`, etc.) and asynchronous methods (`OpenAsync`, `ClaimAsync`, etc.).
-- **`IUposMediator`**: Internal state management interface used for synchronization.
-- **`IUposLifecycleManager`**: Interface for governing device state transitions.
-- **`IUposEventSink`**: Interface for devices that can receive and process UPOS events.
+- **`IUposMediator`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Abstractions.IUposMediator.html): Internal state management interface used for synchronization.
+- **`IUposLifecycleManager`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.Lifecycle.IUposLifecycleManager.html): Interface for governing device state transitions.
+- **`IUposEventSink`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Abstractions.IUposEventSink.html): Interface for devices that can receive and process UPOS events.
 
 ### Events (Reactive Streams)
 
@@ -81,10 +81,10 @@ Standard implementation of the framework.
 
 ### Base Classes
 
-- **`UposDeviceBase`**: The base class for implementing any UPOS device.
+- **`UposDeviceBase`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.UposDeviceBase.html): The base class for implementing any UPOS device.
   Provides automatic property synchronization, power management, and lifecycle handling.
-- **`UposMediator`**: Standard implementation of the state mediator.
-- **`UposLifecycleManager`**: Standard implementation of the lifecycle coordinator.
+- **`UposMediator`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.UposMediator.html): Standard implementation of the state mediator.
+- **`UposLifecycleManager`** [[Details]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.Lifecycle.UposLifecycleManager.html): Standard implementation of the lifecycle coordinator.
 
 ### Lifecycle Handlers
 

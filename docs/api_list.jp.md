@@ -10,11 +10,11 @@
 
 ### インターフェース
 
-- **`IUposDevice`**: すべての UPOS デバイスの主要インターフェース。
+- **`IUposDevice`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Abstractions.IUposDevice.html): すべての UPOS デバイスの主要インターフェース。
   リアクティブなプロパティ (`State`, `Claimed` 等) と非同期メソッド (`OpenAsync`, `ClaimAsync` 等) を含みます。
-- **`IUposMediator`**: 状態同期に使用される内部メディエーターインターフェース。
-- **`IUposLifecycleManager`**: デバイスの状態遷移を統括するインターフェース。
-- **`IUposEventSink`**: UPOS イベントを受信・処理可能なデバイスを示すインターフェース。
+- **`IUposMediator`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Abstractions.IUposMediator.html): 状態同期に使用される内部メディエーターインターフェース。
+- **`IUposLifecycleManager`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.Lifecycle.IUposLifecycleManager.html): デバイスの状態遷移を統括するインターフェース。
+- **`IUposEventSink`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Abstractions.IUposEventSink.html): UPOS イベントを受信・処理可能なデバイスを示すインターフェース。
 
 ### イベント (リアクティブストリーム)
 
@@ -81,10 +81,10 @@
 
 ### 基底クラス
 
-- **`UposDeviceBase`**: UPOS デバイス実装の基底となる抽象クラス。
+- **`UposDeviceBase`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.UposDeviceBase.html): UPOS デバイス実装の基底となる抽象クラス。
   プロパティの自動同期、電源管理、ライフサイクル制御を提供します。
-- **`UposMediator`**: 状態メディエーターの標準実装。
-- **`UposLifecycleManager`**: ライフサイクルコーディネーターの標準実装。
+- **`UposMediator`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.UposMediator.html): 状態メディエーターの標準実装。
+- **`UposLifecycleManager`** [[詳細]](https://w-red.github.io/PosSharp/docs/reference/api/PosSharp.Core.Lifecycle.UposLifecycleManager.html): ライフサイクルコーディネーターの標準実装。
 
 ### ライフサイクルハンドラー
 
