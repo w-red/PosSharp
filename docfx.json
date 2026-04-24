@@ -28,7 +28,8 @@
       {
         "files": [
           "index.md",
-          "README.md"
+          "README.md",
+          "docs/**.md"
         ]
       }
     ],
@@ -36,7 +37,8 @@
       {
         "files": [
           "docs/images/**",
-          "public/**"
+          "public/**",
+          "LICENSE"
         ]
       }
     ],
