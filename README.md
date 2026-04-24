@@ -2,7 +2,7 @@
 
 <img src="docs/images/mainlogo.svg" style="width: 80px !important; height: auto !important;" alt="PosSharp Logo" />
 
-[Documentation Index](docs/index.md) | [日本語ドキュメント](docs/index.jp.md)
+[Documentation Index](docs/index.md) | [日本語ドキュメント](docs/index.jp.md) | [API Reference](api/index.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Core](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download)
@@ -10,6 +10,8 @@
 [![NuGet Abstractions](https://img.shields.io/nuget/v/PosSharp.Abstractions.svg?label=NuGet%20Abstractions)](https://www.nuget.org/packages/PosSharp.Abstractions/)
 [![CI](https://github.com/w-red/PosSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/ci.yml)
 [![CD](https://github.com/w-red/PosSharp/actions/workflows/release.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/release.yml)
+
+- **[🚀 Online Documentation](https://w-red.github.io/PosSharp/docs/reference/index.html)**: Interactive API reference and guides.
 
 **PosSharp** is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET. It provides a modern implementation of the UPOS standard, decoupling core POS logic from platform-specific SDK dependencies like the legacy POS for .NET (OPOS) or Windows-only components.
 
