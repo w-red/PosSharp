@@ -437,3 +437,4 @@ obj/
 api/*
 !api/*.md
 docs/reference/
+docs/dist/
