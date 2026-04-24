@@ -1,4 +1,13 @@
-﻿.navbar-brand img {
+.navbar-brand img {
     height: 40px !important;
+    width: auto !important;
+}
+
+article img {
+    max-width: 100%;
+    width: auto;
+}
+
+article img[style*="height"] {
     width: auto !important;
 }
