@@ -1,13 +1,13 @@
 # PosSharp API Documentation
 
-<img src="docs/images/mainlogo.svg" width="300" alt="PosSharp Logo" />
+<img src="docs/images/mainlogo.svg" width="120" alt="PosSharp Logo" />
 
 Welcome to the PosSharp API documentation. This library provides a modern, reactive, and platform-agnostic framework for UPOS (UnifiedPOS) device development in .NET.
 
 ## Quick Links
 
-- <a href="https://www.nuget.org/packages/PosSharp.Core"><img src="docs/images/nugetlogo.png" width="120" alt="NuGet" /></a> **NuGet**: Get the latest version.
-- <a href="https://github.com/w-red/PosSharp"><img src="docs/images/githublogo.png" width="120" alt="GitHub" /></a> **GitHub**: Source code and issues.
+- <a href="https://www.nuget.org/packages/PosSharp.Core"><img src="docs/images/nugetlogo.png" height="24" alt="NuGet" /></a> **NuGet**: Get the latest version.
+- <a href="https://github.com/w-red/PosSharp"><img src="docs/images/githublogo.png" height="24" alt="GitHub" /></a> **GitHub**: Source code and issues.
 - **[API Reference](api/PosSharp.Abstractions.html)**: Explore the namespaces, classes, and interfaces.
 
 ---
