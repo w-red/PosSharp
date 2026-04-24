@@ -431,3 +431,7 @@ Thumbs.db
 
 # Test results
 StrykerOutput/
+
+# DocFX
+obj/
+api/
