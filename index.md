@@ -1,6 +1,6 @@
 # PosSharp API Documentation
 
-<img src="docs/images/mainlogo.svg" width="120" alt="PosSharp Logo" />
+<img src="docs/images/mainlogo.svg" style="width: 120px; height: auto;" alt="PosSharp Logo" />
 
 Welcome to the PosSharp API documentation. This library provides a modern, reactive, and platform-agnostic framework for UPOS (UnifiedPOS) device development in .NET.
 
