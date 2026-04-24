@@ -578,6 +578,16 @@
         }
       },
       "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "public/main.css",
+      "output": {
+        "resource": {
+          "relative_path": "public/main.css"
+        }
+      },
+      "version": ""
     }
   ],
   "groups": [
