@@ -434,6 +434,6 @@ StrykerOutput/
 
 # DocFX
 obj/
-api/
+api/*
 !api/*.md
 docs/reference/
