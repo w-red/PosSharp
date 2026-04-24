@@ -42,6 +42,8 @@
     "dest": "docs/reference",
     "globalMetadata": {
       "_appTitle": "PosSharp API Reference",
+      "_appLogoPath": "docs/images/mainlogo.svg",
+      "_appFaviconPath": "docs/images/docfx.svg",
       "_enableSearch": true,
       "_enableNewTab": true,
       "_disableContribution": false,

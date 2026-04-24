@@ -510,6 +510,66 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "docs/images/docfx.png",
+      "output": {
+        "resource": {
+          "relative_path": "docs/images/docfx.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "docs/images/docfx.svg",
+      "output": {
+        "resource": {
+          "relative_path": "docs/images/docfx.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "docs/images/githublogo.png",
+      "output": {
+        "resource": {
+          "relative_path": "docs/images/githublogo.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "docs/images/mainlogo.png",
+      "output": {
+        "resource": {
+          "relative_path": "docs/images/mainlogo.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "docs/images/mainlogo.svg",
+      "output": {
+        "resource": {
+          "relative_path": "docs/images/mainlogo.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "docs/images/nugetlogo.png",
+      "output": {
+        "resource": {
+          "relative_path": "docs/images/nugetlogo.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
