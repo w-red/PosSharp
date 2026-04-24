@@ -11,7 +11,7 @@
 [![CI](https://github.com/w-red/PosSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/ci.yml)
 [![CD](https://github.com/w-red/PosSharp/actions/workflows/release.yml/badge.svg)](https://github.com/w-red/PosSharp/actions/workflows/release.yml)
 
-- **[🚀 Online Documentation (Coming Soon)](https://w-red.github.io/PosSharp/docs/reference/index.html)**: Interactive API reference and guides.
+
 
 **PosSharp** is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET. It provides a modern implementation of the UPOS standard, decoupling core POS logic from platform-specific SDK dependencies like the legacy POS for .NET (OPOS) or Windows-only components.
 
