@@ -9,9 +9,9 @@ for .NET.
 
 Detailed breakdown of supported UPOS common properties, methods, and events.
 
-### [API Reference](api_list.md)
+### [API Reference (Overview)](api_list.md)
 
-Full list of public classes, interfaces, enums, and event types.
+Overview of key public classes and reactive streams. For a complete, auto-generated technical reference, see the **[Full API Reference](../api/index.md)**.
 
 ### [POS for .NET Compatibility](pos_for_dotnet.md)
 
