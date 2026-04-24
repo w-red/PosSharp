@@ -8,7 +8,7 @@ Welcome to the PosSharp API documentation. This library provides a modern, react
 
 - <a href="https://www.nuget.org/packages/PosSharp.Core"><img src="docs/images/nugetlogo.png" style="height: 24px !important; width: auto !important; vertical-align: middle;" alt="NuGet" /></a> **NuGet**: Get the latest version.
 - <a href="https://github.com/w-red/PosSharp"><img src="docs/images/githublogo.png" style="height: 24px !important; width: auto !important; vertical-align: middle;" alt="GitHub" /></a> **GitHub**: Source code and issues.
-- **[API Reference](api/PosSharp.Abstractions.html)**: Explore the namespaces, classes, and interfaces.
+- **[API Reference](api/index.md)**: Explore the namespaces, classes, and interfaces.
 
 ---
 
