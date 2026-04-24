@@ -1,5 +1,7 @@
 # PosSharp
 
+<img src="docs/images/mainlogo.svg" style="width: 80px !important; height: auto !important;" alt="PosSharp Logo" />
+
 [Documentation Index](docs/index.md) | [日本語ドキュメント](docs/index.jp.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
