@@ -24,6 +24,12 @@
           "api/**.yml",
           "api/index.md"
         ]
+      },
+      {
+        "files": [
+          "index.md",
+          "README.md"
+        ]
       }
     ],
     "resource": [
