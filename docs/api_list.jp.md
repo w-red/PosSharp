@@ -35,9 +35,9 @@
 
 | プロパティ名 | 型 | 説明 |
 | :--- | :--- | :--- |
-| `State` | `ReadOnlyReactiveProperty<`[`ControlState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)`>` | デバイスの現在の論理状態 (Closed, Idle, Busy)。 |
-| `IsBusy` | `ReadOnlyReactiveProperty<bool>` | デバイスが現在操作を実行中かどうか。 |
-| `LastError` | `ReadOnlyReactiveProperty<`[`UposErrorCode`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)`>` | 最後に実行された操作の結果コード。 |
+| `State` | ReadOnlyReactiveProperty<[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)> | デバイスの現在の論理状態 (Closed, Idle, Busy)。 |
+| `IsBusy` | ReadOnlyReactiveProperty<bool> | デバイスが現在操作を実行中かどうか。 |
+| `LastError` | ReadOnlyReactiveProperty<[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)> | 最後に実行された操作の結果コード。 |
 | `ResultCodeExtended` | `int` | 最後に実行された操作の拡張結果コード。 |
 | `IsOpen` | `bool` | デバイスがオープンされているか。 |
 | `IsClaimed` | `bool` | デバイスが排他占有されているか。 |
@@ -56,7 +56,7 @@
 
 | プロパティ名 | 型 | 説明 |
 | :--- | :--- | :--- |
-| `PowerState` | `ReadOnlyReactiveProperty<`[`PowerState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)`>` | デバイスの現在の電源状態。 |
+| `PowerState` | ReadOnlyReactiveProperty<[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)> | デバイスの現在の電源状態。 |
 | `PowerNotify` | [`PowerNotify`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify) | 電源状態の通知モード (Disabled/Enabled)。 |
 | `CapPowerReporting` | [`PowerReporting`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting) | デバイスの電源報告能力。 |
 | `DeviceName` | `string` | デバイスの論理名。 |

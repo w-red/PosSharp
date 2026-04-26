@@ -35,9 +35,9 @@ Main properties provided by [`IUposDevice`](https://github.com/w-red/PosSharp/wi
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `State` | `ReadOnlyReactiveProperty<`[`ControlState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)`>` | Current logical state (Closed, Idle, Busy). |
-| `IsBusy` | `ReadOnlyReactiveProperty<bool>` | Indicates if an operation is currently in progress. |
-| `LastError` | `ReadOnlyReactiveProperty<`[`UposErrorCode`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)`>` | Result code of the last completed operation. |
+| `State` | ReadOnlyReactiveProperty<[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)> | Current logical state (Closed, Idle, Busy). |
+| `IsBusy` | ReadOnlyReactiveProperty<bool> | Indicates if an operation is currently in progress. |
+| `LastError` | ReadOnlyReactiveProperty<[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)> | Result code of the last completed operation. |
 | `ResultCodeExtended` | `int` | Extended result code of the last completed operation. |
 | `IsOpen` | `bool` | Indicates if the device is open. |
 | `IsClaimed` | `bool` | Indicates if the device is claimed. |
@@ -56,7 +56,7 @@ Main properties provided by [`IUposDevice`](https://github.com/w-red/PosSharp/wi
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `PowerState` | `ReadOnlyReactiveProperty<`[`PowerState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)`>` | Current power state of the device. |
+| `PowerState` | ReadOnlyReactiveProperty<[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)> | Current power state of the device. |
 | `PowerNotify` | [`PowerNotify`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify) | Power notification mode (Disabled/Enabled). |
 | `CapPowerReporting` | [`PowerReporting`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting) | Power reporting capabilities. |
 | `DeviceName` | `string` | Logical name of the device. |
