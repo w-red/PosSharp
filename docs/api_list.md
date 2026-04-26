@@ -1,4 +1,4 @@
-# API Reference (Full List)
+# API Reference (Overview)
 
 [Japanese (日本語)](api_list.jp.md)
 

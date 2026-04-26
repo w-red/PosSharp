@@ -1,4 +1,4 @@
-# API リファレンス (全一覧)
+# API リファレンス (概要)
 
 [English (英語)](api_list.md)
 
