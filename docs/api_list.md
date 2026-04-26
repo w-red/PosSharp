@@ -10,27 +10,26 @@ Core interfaces and types with zero dependencies on the implementation.
 
 ### Interfaces
 
-- **`IUposDevice`** [[Source]](../src/PosSharp.Abstractions/IUposDevice.cs): The primary interface for all UPOS devices.
-  Contains reactive properties (`State`, `Claimed`, etc.) and asynchronous methods (`OpenAsync`, `ClaimAsync`, etc.).
-- **`IUposMediator`** [[Source]](../src/PosSharp.Abstractions/IUposMediator.cs): Internal state management interface used for synchronization.
-- **`UposLifecycleManager`** [[Source]](../src/PosSharp.Core/Lifecycle/UposLifecycleManager.cs): Class for governing device state transitions.
-- **`IUposEventSink`** [[Source]](../src/PosSharp.Abstractions/IUposEventSink.cs): Interface for devices that can receive and process UPOS events.
+- **`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)`**: The primary interface for all UPOS devices. Includes reactive properties (`State`, `Claimed`, etc.) and asynchronous methods (`[OpenAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken))`, `[ClaimAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken))`, etc.).
+- **`[IUposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposMediator)`**: Internal state management interface used for synchronization.
+- **`[UposLifecycleManager](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)`**: Class for governing device state transitions.
+- **`[IUposEventSink](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposEventSink)`**: Interface for devices that can receive and process UPOS events.
 
 ### Events (Reactive Streams)
 
-Standard UPOS event streams provided by `IUposDevice` and their corresponding argument types.
+Standard UPOS event streams provided by `[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)` and their corresponding argument types.
 
 | Event Stream | Corresponding Event Args | Description |
 | :--- | :--- | :--- |
-| `DataEvents` | `UposDataEventArgs` | Fired when input data is received from the device. |
-| `ErrorEvents` | `UposErrorEventArgs` | Fired when an error occurs during asynchronous processing. |
-| `StatusUpdateEvents` | `UposStatusUpdateEventArgs` | Fired when the device status (e.g., power state) changes. |
-| `DirectIoEvents` | `UposDirectIoEventArgs` | Fired when a device-specific DirectIO event occurs. |
-| `OutputCompleteEvents` | `UposOutputCompleteEventArgs` | Fired when an asynchronous output operation completes. |
+| `[DataEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.DataEvents)` | `[UposDataEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDataEventArgs)` | Fired when input data is received from the device. |
+| `[ErrorEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ErrorEvents)` | `[UposErrorEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorEventArgs)` | Fired when an error occurs during asynchronous processing. |
+| `[StatusUpdateEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.StatusUpdateEvents)` | `[UposStatusUpdateEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposStatusUpdateEventArgs)` | Fired when the device status (e.g., power state) changes. |
+| `[DirectIoEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.DirectIoEvents)` | `[UposDirectIoEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDirectIoEventArgs)` | Fired when a device-specific DirectIO event occurs. |
+| `[OutputCompleteEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OutputCompleteEvents)` | `[UposOutputCompleteEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposOutputCompleteEventArgs)` | Fired when an asynchronous output operation completes. |
 
 ### Properties
 
-Main properties provided by `IUposDevice`. Many are exposed as [R3](https://github.com/Cysharp/R3) reactive properties for real-time monitoring.
+Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)`. Many are exposed as [R3](https://github.com/Cysharp/R3) reactive properties for real-time monitoring.
 
 #### Status & Control
 

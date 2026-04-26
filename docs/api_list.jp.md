@@ -10,27 +10,26 @@
 
 ### インターフェース
 
-- **`IUposDevice`** [[ソース]](../src/PosSharp.Abstractions/IUposDevice.cs): すべての UPOS デバイスの主要インターフェース。
-  リアクティブなプロパティ (`State`, `Claimed` 等) と非同期メソッド (`OpenAsync`, `ClaimAsync` 等) を含みます。
-- **`IUposMediator`** [[ソース]](../src/PosSharp.Abstractions/IUposMediator.cs): 状態同期に使用される内部メディエーターインターフェース。
-- **`UposLifecycleManager`** [[ソース]](../src/PosSharp.Core/Lifecycle/UposLifecycleManager.cs): デバイスの状態遷移を統括するクラス。
-- **`IUposEventSink`** [[ソース]](../src/PosSharp.Abstractions/IUposEventSink.cs): UPOS イベントを受信・処理可能なデバイスを示すインターフェース。
+- **`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)`**: すべての UPOS デバイスの主要なインターフェース。リアクティブなプロパティ (`State`, `Claimed` 等) と非同期メソッド (`[OpenAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken))`, `[ClaimAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken))` 等) を含みます。
+- **`[IUposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposMediator)`**: 同期に使用される内部状態管理インターフェース。
+- **`[UposLifecycleManager](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)`**: デバイスの状態遷移を管理するクラス。
+- **`[IUposEventSink](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposEventSink)`**: UPOS イベントを受信して処理できるデバイス用のインターフェース。
 
 ### イベント (リアクティブストリーム)
 
-`IUposDevice` で提供される標準的な UPOS イベントのストリームと、それに対応する引数の型です。
+`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)` で提供される標準的な UPOS イベントのストリームと、それに対応する引数の型です。
 
 | イベントストリーム | 対応するイベント引数 | 説明 |
 | :--- | :--- | :--- |
-| `DataEvents` | `UposDataEventArgs` | デバイスから入力データを受信したときに発火します。 |
-| `ErrorEvents` | `UposErrorEventArgs` | 非同期処理中などにエラーが発生したときに発火します。 |
-| `StatusUpdateEvents` | `UposStatusUpdateEventArgs` | デバイスの状態 (電源状態など) が変化したときに発火します。 |
-| `DirectIoEvents` | `UposDirectIoEventArgs` | デバイス固有の DirectIO イベントが発生したときに発火します。 |
-| `OutputCompleteEvents` | `UposOutputCompleteEventArgs` | 非同期の出力操作が完了したときに発火します。 |
+| `[DataEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.DataEvents)` | `[UposDataEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDataEventArgs)` | デバイスから入力データを受信したときに発火します。 |
+| `[ErrorEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ErrorEvents)` | `[UposErrorEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDataEventArgs)` | 非同期処理中などにエラーが発生したときに発火します。 |
+| `[StatusUpdateEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.StatusUpdateEvents)` | `[UposStatusUpdateEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposStatusUpdateEventArgs)` | デバイスの状態 (電源状態など) が変化したときに発火します。 |
+| `[DirectIoEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.DirectIoEvents)` | `[UposDirectIoEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDirectIoEventArgs)` | デバイス固有の DirectIO イベントが発生したときに発火します。 |
+| `[OutputCompleteEvents](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OutputCompleteEvents)` | `[UposOutputCompleteEventArgs](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposOutputCompleteEventArgs)` | 非同期の出力操作が完了したときに発火します。 |
 
 ### プロパティ (Properties)
 
-`IUposDevice` で提供される主要なプロパティです。多くのプロパティは [R3](https://github.com/Cysharp/R3) のリアクティブプロパティとして提供されており、リアルタイムな監視が可能です。
+`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)` で提供される主要なプロパティです。多くのプロパティは [R3](https://github.com/Cysharp/R3) のリアクティブプロパティとして提供されており、リアルタイムな監視が可能です。
 
 #### 状態・制御
 
@@ -51,27 +50,28 @@
 | `DataEventEnabled` | `bool` | データイベントの通知が有効かどうか。 |
 | `DataCount` | `int` | 現在キューに溜まっているデータイベントの数。 |
 | `AutoDisable` | `bool` | イベント発火後に自動で `DataEventEnabled` を false にするか。 |
-| `CheckHealthText` | `string` | `CheckHealthAsync` 実行後の診断結果テキスト。 |
+| `CheckHealthText` | `string` | `[CheckHealthAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.CheckHealthAsync(PosSharp.Abstractions.HealthCheckLevel,System.Threading.CancellationToken))` 実行後の診断結果テキスト。 |
 
 #### 電源・情報
 
 | プロパティ名 | 型 | 説明 |
 | :--- | :--- | :--- |
-| `PowerState` | `ReadOnlyReactiveProperty<PowerState>` | デバイスの現在の電源状態。 |
-| `PowerNotify` | `PowerNotify` | 電源状態の通知モード (Disabled/Enabled)。 |
-| `CapPowerReporting` | `PowerReporting` | デバイスの電源報告能力。 |
+| `PowerState` | `ReadOnlyReactiveProperty<[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)>` | デバイスの現在の電源状態。 |
+| `PowerNotify` | `[PowerNotify](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify)` | 電源状態の通知モード (Disabled/Enabled)。 |
+| `CapPowerReporting` | `[PowerReporting](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting)` | デバイスの電源報告能力。 |
 | `DeviceName` | `string` | デバイスの論理名。 |
 | `DeviceDescription` | `string` | デバイスの説明。 |
+| `Capabilities` | `[UposCapabilities](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities)` | デバイスの固定的な機能定義。 |
 | `ServiceObjectDescription` | `string` | サービスオブジェクトの説明。 |
 | `ServiceObjectVersion` | `string` | サービスオブジェクトのバージョン。 |
 
 ### 列挙型 (Enums)
 
-- **`ControlState`**: デバイスの基本状態 (`Closed`, `Idle`, `Busy`)。
-- **`UposErrorCode`**: 標準 UPOS エラーコード (`Success`, `Closed`, `Claimed`, `Enabled`, `Failure` 等)。
-- **`PowerState`**: 電源状態 (`Unknown`, `Online`, `Off`, `Offline`, `OffOffline`)。
-- **`PowerNotify`**: 電源通知設定 (`Disabled`, `Enabled`)。
-- **`HealthCheckLevel`**: ヘルスチェックレベル (`Internal`, `External`, `Interactive`)。
+- **`[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)`**: デバイスの基本状態 (`Closed`, `Idle`, `Busy`)。
+- **`[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)`**: 標準 UPOS エラーコード (`Success`, `Closed`, `Claimed`, `Enabled`, `Failure` 等)。
+- **`[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)`**: 電源状態 (`Unknown`, `Online`, `Off`, `Offline`, `OffOffline`)。
+- **`[PowerNotify](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify)`**: 電源通知設定 (`Disabled`, `Enabled`)。
+- **`[HealthCheckLevel](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.HealthCheckLevel)`**: ヘルスチェックレベル (`Internal`, `External`, `Interactive`)。
 
 ---
 

@@ -20,7 +20,7 @@
 - **Modern C# Implementation**: Fully utilizes C# 12+ features (Primary Constructors, etc.) and targets `.net10.0`. Supports older platforms via [PolySharp](https://github.com/Sergio0694/PolySharp).
 - **Reactive State Management**: Built-in state synchronization using [R3](https://github.com/Cysharp/R3). Properties like `State`, `PowerState`, and `ResultCode` are exposed as reactive observables.
 - **Mediator Architecture**: Centralized "Single Source of Truth" via the Mediator pattern, ensuring all properties (`DataCount`, `IsOpen`, etc.) stay perfectly in sync across asynchronous operations.
-- **Task-Based Asynchronous API**: Modern asynchronous implementation of standard UPOS operations (`OpenAsync`, `ClaimAsync`, `SetEnabledAsync`).
+- **Task-Based Asynchronous API**: Modern asynchronous implementation of standard UPOS operations (`[OpenAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken))`, `[ClaimAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken))`, `[SetEnabledAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.SetEnabledAsync(bool,System.Threading.CancellationToken))`).
 - **Power Management**: Comprehensive support for power reporting and state notifications (`PowerNotify`) integrated directly into the base abstraction.
 - **Zero Build Warnings**: Maintained at the highest quality with 100% XML documentation and strict static analysis.
 
