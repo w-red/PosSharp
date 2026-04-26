@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - **State Validation Helpers**: Added `UposMediatorExtensions` with methods like `ValidateOpen()`, `ValidateClaimed()`, etc., to simplify device state checks.
 - **Enhanced Exception**: Added `ErrorCode` property to `UposStateException` for direct access to standard UPOS error codes.
+- **Test Infrastructure Modernization**: Upgraded test suite to **xUnit v3** (v3.2.2) and updated various NuGet packages (Microsoft.NET.Test.Sdk, SonarAnalyzer, etc.) to their latest versions for better performance and stability.
 
 ### Changed
 - **Documentation Overhaul**: Migrated all API reference links to GitHub Wiki for comprehensive technical details.

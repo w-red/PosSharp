@@ -13,6 +13,7 @@
 ### 追加 (Added)
 - **状態検証ヘルパー**: デバイスの状態チェックを簡略化する `ValidateOpen()` や `ValidateClaimed()` などのメソッドを含む `UposMediatorExtensions` を追加しました。
 - **例外の強化**: `UposStateException` に `ErrorCode` プロパティを追加し、標準 UPOS エラーコードへ直接アクセスできるようにしました。
+- **テスト基盤のモダン化**: テストスイートを **xUnit v3** (v3.2.2) へアップグレードしました。あわせて各種 NuGet パッケージ (Microsoft.NET.Test.Sdk, SonarAnalyzer 等) を最新バージョンに更新し、パフォーマンスと安定性を向上させました。
 
 ### 変更 (Changed)
 - **ドキュメントの刷新**: すべての API リファレンスのリンク先を GitHub Wiki へ移行し、詳細な技術情報を参照可能にしました。
