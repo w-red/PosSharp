@@ -9,9 +9,13 @@
 
 サポートされている UPOS 共通プロパティ、メソッド、イベントの詳細な一覧です。
 
-### [API リファレンス](api_list.jp.md)
+### [API リファレンス (概要)](api_list.jp.md)
 
-パブリックなクラス、インターフェース、列挙型、イベント型の一覧です。詳細な自動生成リファレンスは **[完全な API リファレンス](../api/index.md)** を参照してください。
+主要な公開クラスとリアクティブストリームの概要です。
+- **`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)`**: すべてのデバイスのコアとなるインターフェース。
+- **`[UposDeviceBase](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)`**: 共通ロジックを提供する基底クラス。
+
+自動生成された完全な技術リファレンスについては、**[Full API Reference (GitHub Wiki)](https://github.com/w-red/PosSharp/wiki)** を参照してください。
 
 ### [POS for .NET 対応表](pos_for_dotnet.jp.md)
 

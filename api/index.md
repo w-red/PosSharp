@@ -1,16 +1,17 @@
-# PosSharp API Reference
+# PosSharp API Reference (Wiki)
 
-This section provides detailed API documentation for the PosSharp framework, generated from the source code.
+The full, auto-generated technical API reference for PosSharp is now hosted on the **[GitHub Wiki](https://github.com/w-red/PosSharp/wiki)**.
 
-## Core Components
+## 📖 Direct Links
 
-- **[PosSharp.Abstractions](../src/PosSharp.Abstractions/)**: Fundamental interfaces and types for UPOS devices.
-- **[PosSharp.Core](../src/PosSharp.Core/)**: Base classes and common implementations for building UPOS devices.
+- **[PosSharp.Abstractions](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions)**: Fundamental interfaces and types.
+- **[PosSharp.Core](https://github.com/w-red/PosSharp/wiki/PosSharp.Core)**: Implementation details and base classes.
 
-## Namespaces
+---
 
-- **[PosSharp.Abstractions](../src/PosSharp.Abstractions/)**: The root namespace for all PosSharp abstractions.
-- **[PosSharp.Core](../src/PosSharp.Core/)**: The root namespace for core framework logic.
-- **[PosSharp.Core.Lifecycle](../src/PosSharp.Core/Lifecycle/)**: Classes for managing device lifecycle and state transitions.
+### Looking for source code?
+You can also browse the source code directly in the repository:
+- [src/PosSharp.Abstractions](../src/PosSharp.Abstractions/)
+- [src/PosSharp.Core](../src/PosSharp.Core/)
 
 Refer to the [Documentation Index](../docs/index.md) for high-level guides and examples.
