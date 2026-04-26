@@ -20,7 +20,7 @@
 - **Modern C# Implementation**: Fully utilizes C# 12+ features (Primary Constructors, etc.) and targets `.net10.0`. Supports older platforms via [PolySharp](https://github.com/Sergio0694/PolySharp).
 - **Reactive State Management**: Built-in state synchronization using [R3](https://github.com/Cysharp/R3). Properties like `State`, `PowerState`, and `ResultCode` are exposed as reactive observables.
 - **Mediator Architecture**: Centralized "Single Source of Truth" via the Mediator pattern, ensuring all properties (`DataCount`, `IsOpen`, etc.) stay perfectly in sync across asynchronous operations.
-- **Task-Based Asynchronous API**: Modern asynchronous implementation of standard UPOS operations (`[OpenAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken))`, `[ClaimAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken))`, `[SetEnabledAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.SetEnabledAsync(bool,System.Threading.CancellationToken))`).
+- **Task-Based Asynchronous API**: Modern asynchronous implementation of standard UPOS operations ([`OpenAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken)), [`ClaimAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken)), [`SetEnabledAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.SetEnabledAsync(bool,System.Threading.CancellationToken))).
 - **Power Management**: Comprehensive support for power reporting and state notifications (`PowerNotify`) integrated directly into the base abstraction.
 - **Zero Build Warnings**: Maintained at the highest quality with 100% XML documentation and strict static analysis.
 
@@ -46,10 +46,10 @@ dotnet add package PosSharp.Abstractions
 PosSharp utilizes a sophisticated architecture to handle the complexity of the UPOS standard while maintaining clean, maintainable code.
 
 ### Mediator-Based State Management
-Each device delegates its state and property management to a `[UposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)`. This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically.
+Each device delegates its state and property management to a [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator). This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically.
 
 ### Flexible Lifecycle Management
-Device transitions are governed by a `[UposLifecycleManager](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)`, allowing developers to implement custom lifecycle handlers or use the `[StandardLifecycleHandler](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler)` for typical UPOS compliance.
+Device transitions are governed by a [`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager), allowing developers to implement custom lifecycle handlers or use the [`StandardLifecycleHandler`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler) for typical UPOS compliance.
 
 ```mermaid
 graph TD
@@ -62,7 +62,7 @@ graph TD
 
 ## 🛠️ Usage
 
-To create a new UPOS device, simply inherit from `[UposDeviceBase](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)`:
+To create a new UPOS device, simply inherit from [`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase):
 
 ```csharp
 using PosSharp.Abstractions;
