@@ -17,7 +17,7 @@ Core interfaces and types with zero dependencies on the implementation.
 
 ### Events (Reactive Streams)
 
-Standard UPOS event streams provided by `[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)` and their corresponding argument types.
+Standard UPOS event streams provided by [`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice) and their corresponding argument types.
 
 | Event Stream | Corresponding Event Args | Description |
 | :--- | :--- | :--- |
@@ -29,15 +29,15 @@ Standard UPOS event streams provided by `[IUposDevice](https://github.com/w-red/
 
 ### Properties
 
-Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)`. Many are exposed as [R3](https://github.com/Cysharp/R3) reactive properties for real-time monitoring.
+Main properties provided by [`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice). Many are exposed as [R3](https://github.com/Cysharp/R3) reactive properties for real-time monitoring.
 
 #### Status & Control
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `State` | `ReadOnlyReactiveProperty<[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)>` | Current logical state (Closed, Idle, Busy). |
+| `State` | `ReadOnlyReactiveProperty<`[`ControlState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)`>` | Current logical state (Closed, Idle, Busy). |
 | `IsBusy` | `ReadOnlyReactiveProperty<bool>` | Indicates if an operation is currently in progress. |
-| `LastError` | `ReadOnlyReactiveProperty<[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)>` | Result code of the last completed operation. |
+| `LastError` | `ReadOnlyReactiveProperty<`[`UposErrorCode`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)`>` | Result code of the last completed operation. |
 | `ResultCodeExtended` | `int` | Extended result code of the last completed operation. |
 | `IsOpen` | `bool` | Indicates if the device is open. |
 | `IsClaimed` | `bool` | Indicates if the device is claimed. |
@@ -50,18 +50,18 @@ Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wik
 | `DataEventEnabled` | `bool` | Whether data event notifications are enabled. |
 | `DataCount` | `int` | Number of data events currently queued. |
 | `AutoDisable` | `bool` | If true, automatically sets `DataEventEnabled` to false after an event. |
-| `CheckHealthText` | `string` | Result text of the `[CheckHealthAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.CheckHealthAsync(PosSharp.Abstractions.HealthCheckLevel,System.Threading.CancellationToken))` operation. |
+| `CheckHealthText` | `string` | Result text of the [`CheckHealthAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.CheckHealthAsync(PosSharp.Abstractions.HealthCheckLevel,System.Threading.CancellationToken)) operation. |
 
 #### Power & Information
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `PowerState` | `ReadOnlyReactiveProperty<[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)>` | Current power state of the device. |
-| `PowerNotify` | `[PowerNotify](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify)` | Power notification mode (Disabled/Enabled). |
-| `CapPowerReporting` | `[PowerReporting](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting)` | Power reporting capabilities. |
+| `PowerState` | `ReadOnlyReactiveProperty<`[`PowerState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)`>` | Current power state of the device. |
+| `PowerNotify` | [`PowerNotify`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify) | Power notification mode (Disabled/Enabled). |
+| `CapPowerReporting` | [`PowerReporting`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting) | Power reporting capabilities. |
 | `DeviceName` | `string` | Logical name of the device. |
 | `DeviceDescription` | `string` | Description of the device. |
-| `Capabilities` | `[UposCapabilities](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities)` | Frozen capabilities of the device. |
+| `Capabilities` | [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | Frozen capabilities of the device. |
 | `ServiceObjectDescription` | `string` | Description of the Service Object. |
 | `ServiceObjectVersion` | `string` | Version of the Service Object. |
 

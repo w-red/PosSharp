@@ -17,7 +17,7 @@
 
 ### イベント (リアクティブストリーム)
 
-`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)` で提供される標準的な UPOS イベントのストリームと、それに対応する引数の型です。
+[`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice) で提供される標準的な UPOS イベントのストリームと、それに対応する引数の型です。
 
 | イベントストリーム | 対応するイベント引数 | 説明 |
 | :--- | :--- | :--- |
@@ -29,15 +29,15 @@
 
 ### プロパティ (Properties)
 
-`[IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)` で提供される主要なプロパティです。多くのプロパティは [R3](https://github.com/Cysharp/R3) のリアクティブプロパティとして提供されており、リアルタイムな監視が可能です。
+[`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice) で提供される主要なプロパティです。多くのプロパティは [R3](https://github.com/Cysharp/R3) のリアクティブプロパティとして提供されており、リアルタイムな監視が可能です。
 
 #### 状態・制御
 
 | プロパティ名 | 型 | 説明 |
 | :--- | :--- | :--- |
-| `State` | `ReadOnlyReactiveProperty<[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)>` | デバイスの現在の論理状態 (Closed, Idle, Busy)。 |
+| `State` | `ReadOnlyReactiveProperty<`[`ControlState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)`>` | デバイスの現在の論理状態 (Closed, Idle, Busy)。 |
 | `IsBusy` | `ReadOnlyReactiveProperty<bool>` | デバイスが現在操作を実行中かどうか。 |
-| `LastError` | `ReadOnlyReactiveProperty<[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)>` | 最後に実行された操作の結果コード。 |
+| `LastError` | `ReadOnlyReactiveProperty<`[`UposErrorCode`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)`>` | 最後に実行された操作の結果コード。 |
 | `ResultCodeExtended` | `int` | 最後に実行された操作の拡張結果コード。 |
 | `IsOpen` | `bool` | デバイスがオープンされているか。 |
 | `IsClaimed` | `bool` | デバイスが排他占有されているか。 |
@@ -50,18 +50,18 @@
 | `DataEventEnabled` | `bool` | データイベントの通知が有効かどうか。 |
 | `DataCount` | `int` | 現在キューに溜まっているデータイベントの数。 |
 | `AutoDisable` | `bool` | イベント発火後に自動で `DataEventEnabled` を false にするか。 |
-| `CheckHealthText` | `string` | `[CheckHealthAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.CheckHealthAsync(PosSharp.Abstractions.HealthCheckLevel,System.Threading.CancellationToken))` 実行後の診断結果テキスト。 |
+| `CheckHealthText` | `string` | [`CheckHealthAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.CheckHealthAsync(PosSharp.Abstractions.HealthCheckLevel,System.Threading.CancellationToken)) 実行後の診断結果テキスト。 |
 
 #### 電源・情報
 
 | プロパティ名 | 型 | 説明 |
 | :--- | :--- | :--- |
-| `PowerState` | `ReadOnlyReactiveProperty<[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)>` | デバイスの現在の電源状態。 |
-| `PowerNotify` | `[PowerNotify](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify)` | 電源状態の通知モード (Disabled/Enabled)。 |
-| `CapPowerReporting` | `[PowerReporting](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting)` | デバイスの電源報告能力。 |
+| `PowerState` | `ReadOnlyReactiveProperty<`[`PowerState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)`>` | デバイスの現在の電源状態。 |
+| `PowerNotify` | [`PowerNotify`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify) | 電源状態の通知モード (Disabled/Enabled)。 |
+| `CapPowerReporting` | [`PowerReporting`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting) | デバイスの電源報告能力。 |
 | `DeviceName` | `string` | デバイスの論理名。 |
 | `DeviceDescription` | `string` | デバイスの説明。 |
-| `Capabilities` | `[UposCapabilities](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities)` | デバイスの固定的な機能定義。 |
+| `Capabilities` | [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | デバイスの固定的な機能定義。 |
 | `ServiceObjectDescription` | `string` | サービスオブジェクトの説明。 |
 | `ServiceObjectVersion` | `string` | サービスオブジェクトのバージョン。 |
 
