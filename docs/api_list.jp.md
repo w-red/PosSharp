@@ -35,9 +35,9 @@
 
 | プロパティ名 | 型 | 説明 |
 | :--- | :--- | :--- |
-| `State` | `ReadOnlyReactiveProperty<ControlState>` | デバイスの現在の論理状態 (Closed, Idle, Busy)。 |
+| `State` | `ReadOnlyReactiveProperty<[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)>` | デバイスの現在の論理状態 (Closed, Idle, Busy)。 |
 | `IsBusy` | `ReadOnlyReactiveProperty<bool>` | デバイスが現在操作を実行中かどうか。 |
-| `LastError` | `ReadOnlyReactiveProperty<UposErrorCode>` | 最後に実行された操作の結果コード。 |
+| `LastError` | `ReadOnlyReactiveProperty<[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)>` | 最後に実行された操作の結果コード。 |
 | `ResultCodeExtended` | `int` | 最後に実行された操作の拡張結果コード。 |
 | `IsOpen` | `bool` | デバイスがオープンされているか。 |
 | `IsClaimed` | `bool` | デバイスが排他占有されているか。 |
@@ -81,19 +81,18 @@
 
 ### 基底クラス
 
-- **`UposDeviceBase`** [[ソース]](../src/PosSharp.Core/UposDeviceBase.cs): UPOS デバイス実装の基底となる抽象クラス。
-  プロパティの自動同期、電源管理、ライフサイクル制御を提供します。
-- **`UposMediator`** [[ソース]](../src/PosSharp.Core/UposMediator.cs): 状態メディエーターの標準実装。
-- **`UposLifecycleManager`** [[ソース]](../src/PosSharp.Core/Lifecycle/UposLifecycleManager.cs): ライフサイクルコーディネーターの標準実装。
+- **`[UposDeviceBase](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)`**: UPOS デバイスを実装するための基底となる抽象クラス。プロパティの自動同期、電源管理、ライフサイクル制御を提供します。
+- **`[UposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)`**: 状態メディエーターの標準実装。
+- **`[UposLifecycleManager](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)`**: ライフサイクルコーディネーターの標準実装。
 
 ### ライフサイクルハンドラー
 
-- **`StandardLifecycleHandler`**: 標準的な UPOS デバイス用の遷移ロジック実装。
+- **`[StandardLifecycleHandler](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler)`**: 標準的な UPOS デバイス用の遷移ロジック実装。
 
 ### 例外 (Exceptions)
 
-- **`UposException`**: UPOS 操作が失敗した際にスローされる基底例外です。`ErrorCode` (標準エラー) および `ExtendedErrorCode` (拡張エラー) を保持します。
-- **`UposStateException`**: 不正なデバイス状態 (例：`OpenAsync` 前に `ClaimAsync` を呼ぶなど) でメソッドが実行された場合にスローされます。`InvalidOperationException` を継承しており、`CurrentState` や `AllowedStates` を参照してデバッグが可能です。
+- **`[UposException](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposException)`**: UPOS 操作が失敗した際にスローされる基底例外です。`ErrorCode` (標準エラー) および `ExtendedErrorCode` (拡張エラー) を保持します。
+- **`[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)`**: 不正なデバイス状態 (例：`OpenAsync` 前に `ClaimAsync` を呼ぶなど) でメソッドが実行された場合にスローされます。`InvalidOperationException` を継承しており、`CurrentState` や `AllowedStates` を参照してデバッグが可能です。
 - **`OperationCanceledException`**: 非同期メソッド (`OpenAsync` 等) に渡された `CancellationToken` がキャンセルされた場合にスローされます。
 
 ---
@@ -171,11 +170,11 @@ if (currentState == ControlState.Idle)
 
 ## 拡張メソッド
 
-- **`UposMediatorExtensions`**: メディエーター内での状態検証を補助するヘルパーメソッド。
-  - `ValidateOpen()`: デバイスが Open 状態か確認。失敗時は `UposErrorCode.Closed` を保持した `UposStateException` をスロー。
-  - `ValidateClaimed()`: デバイスが Claimed 状態か確認。失敗時は `UposErrorCode.NotClaimed` を保持した `UposStateException` をスロー。
-  - `ValidateEnabled()`: デバイスが Enabled 状態か確認。失敗時は `UposErrorCode.Disabled` を保持した `UposStateException` をスロー。
-  - `ValidateNotBusy()`: デバイスが Busy 状態でないか確認。失敗時は `UposErrorCode.Busy` を保持した `UposStateException` をスロー。
+- **`[UposMediatorExtensions](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediatorExtensions)`**: `[UposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)` 内での状態検証を補助するヘルパーメソッド。
+  - `ValidateOpen()`: デバイスが Open 状態か確認。失敗時は `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).Closed` を保持した `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` をスロー。
+  - `ValidateClaimed()`: デバイスが Claimed 状態か確認。失敗時は `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).NotClaimed` を保持した `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` をスロー。
+  - `ValidateEnabled()`: デバイスが Enabled 状態か確認。失敗時は `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).Disabled` を保持した `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` をスロー。
+  - `ValidateNotBusy()`: デバイスが Busy 状態でないか確認。失敗時は `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).Busy` を保持した `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` をスロー。
 
 ### 利用例
 

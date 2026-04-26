@@ -46,10 +46,10 @@ dotnet add package PosSharp.Abstractions
 PosSharp utilizes a sophisticated architecture to handle the complexity of the UPOS standard while maintaining clean, maintainable code.
 
 ### Mediator-Based State Management
-Each device delegates its state and property management to a `UposMediator`. This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically.
+Each device delegates its state and property management to a `[UposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)`. This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically.
 
 ### Flexible Lifecycle Management
-Device transitions are governed by a `UposLifecycleManager`, allowing developers to implement custom lifecycle handlers or use the `StandardLifecycleHandler` for typical UPOS compliance.
+Device transitions are governed by a `[UposLifecycleManager](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)`, allowing developers to implement custom lifecycle handlers or use the `[StandardLifecycleHandler](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler)` for typical UPOS compliance.
 
 ```mermaid
 graph TD
@@ -62,14 +62,14 @@ graph TD
 
 ## 🛠️ Usage
 
-To create a new UPOS device, simply inherit from `UposDeviceBase`:
+To create a new UPOS device, simply inherit from `[UposDeviceBase](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)`:
 
 ```csharp
 using PosSharp.Abstractions;
 using PosSharp.Core;
 
 // Example implementation of a CashChanger
-public class MyCashChanger : UposDeviceBase
+public class MyCashChanger : [UposDeviceBase](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)
 {
     // Override required abstract members
     protected override Task OnOpenAsync(CancellationToken ct) => Task.CompletedTask;
@@ -105,7 +105,7 @@ If you are just consuming a device (e.g., in a UI or business logic layer), you 
 using PosSharp.Abstractions;
 using R3;
 
-public class DeviceMonitor(IUposDevice device)
+public class DeviceMonitor([IUposDevice](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice) device)
 {
     public void Initialize()
     {

@@ -35,9 +35,9 @@ Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wik
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `State` | `ReadOnlyReactiveProperty<ControlState>` | Current logical state (Closed, Idle, Busy). |
+| `State` | `ReadOnlyReactiveProperty<[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)>` | Current logical state (Closed, Idle, Busy). |
 | `IsBusy` | `ReadOnlyReactiveProperty<bool>` | Indicates if an operation is currently in progress. |
-| `LastError` | `ReadOnlyReactiveProperty<UposErrorCode>` | Result code of the last completed operation. |
+| `LastError` | `ReadOnlyReactiveProperty<[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)>` | Result code of the last completed operation. |
 | `ResultCodeExtended` | `int` | Extended result code of the last completed operation. |
 | `IsOpen` | `bool` | Indicates if the device is open. |
 | `IsClaimed` | `bool` | Indicates if the device is claimed. |
@@ -50,15 +50,15 @@ Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wik
 | `DataEventEnabled` | `bool` | Whether data event notifications are enabled. |
 | `DataCount` | `int` | Number of data events currently queued. |
 | `AutoDisable` | `bool` | If true, automatically sets `DataEventEnabled` to false after an event. |
-| `CheckHealthText` | `string` | Result text from the last `CheckHealthAsync` call. |
+| `CheckHealthText` | `string` | Result text of the `[CheckHealthAsync](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.CheckHealthAsync(PosSharp.Abstractions.HealthCheckLevel,System.Threading.CancellationToken))` operation. |
 
 #### Power & Information
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| `PowerState` | `ReadOnlyReactiveProperty<PowerState>` | Current power state of the device. |
-| `PowerNotify` | `PowerNotify` | Power notification mode (Disabled/Enabled). |
-| `CapPowerReporting` | `PowerReporting` | Power reporting capabilities. |
+| `PowerState` | `ReadOnlyReactiveProperty<[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)>` | Current power state of the device. |
+| `PowerNotify` | `[PowerNotify](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify)` | Power notification mode (Disabled/Enabled). |
+| `CapPowerReporting` | `[PowerReporting](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting)` | Power reporting capabilities. |
 | `DeviceName` | `string` | Logical name of the device. |
 | `DeviceDescription` | `string` | Description of the device. |
 | `ServiceObjectDescription` | `string` | Description of the Service Object. |
@@ -66,11 +66,11 @@ Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wik
 
 ### Enumerations
 
-- **`ControlState`**: `Closed`, `Idle`, `Busy`.
-- **`UposErrorCode`**: Standard UPOS error codes (`Success`, `Closed`, `Claimed`, `Enabled`, `Failure`, etc.).
-- **`PowerState`**: `Unknown`, `Online`, `Off`, `Offline`, `OffOffline`.
-- **`PowerNotify`**: `Disabled`, `Enabled`.
-- **`HealthCheckLevel`**: `Internal`, `External`, `Interactive`.
+- **`[ControlState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)`**: `Closed`, `Idle`, `Busy`.
+- **`[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)`**: Standard UPOS error codes (`Success`, `Closed`, `Claimed`, `Enabled`, `Failure`, etc.).
+- **`[PowerState](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)`**: `Unknown`, `Online`, `Off`, `Offline`, `OffOffline`.
+- **`[PowerNotify](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify)`**: `Disabled`, `Enabled`.
+- **`[HealthCheckLevel](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.HealthCheckLevel)`**: `Internal`, `External`, `Interactive`.
 
 ---
 
@@ -80,19 +80,18 @@ Standard implementation of the framework.
 
 ### Base Classes
 
-- **`UposDeviceBase`** [[Source]](../src/PosSharp.Core/UposDeviceBase.cs): The base class for implementing any UPOS device.
-  Provides automatic property synchronization, power management, and lifecycle handling.
-- **`UposMediator`** [[Source]](../src/PosSharp.Core/UposMediator.cs): Standard implementation of the state mediator.
-- **`UposLifecycleManager`** [[Source]](../src/PosSharp.Core/Lifecycle/UposLifecycleManager.cs): Standard implementation of the lifecycle coordinator.
+- **`[UposDeviceBase](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)`**: The base abstract class for implementing UPOS devices. Provides automatic property synchronization, power management, and lifecycle control.
+- **`[UposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)`**: Standard implementation of the state mediator.
+- **`[UposLifecycleManager](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)`**: Standard implementation of the lifecycle coordinator.
 
 ### Lifecycle Handlers
 
-- **`StandardLifecycleHandler`**: Default transition logic for standard UPOS devices.
+- **`[StandardLifecycleHandler](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler)`**: Implementation of transition logic for standard UPOS devices.
 
 ### Exceptions
 
-- **`UposException`**: The base exception thrown when a UPOS operation fails. Contains `ErrorCode` (standard error) and `ExtendedErrorCode` (extended error).
-- **`UposStateException`**: Thrown when a method is executed in an invalid device state (e.g., calling `ClaimAsync` before `OpenAsync`). It inherits from `InvalidOperationException` and provides `CurrentState` and `AllowedStates` for debugging.
+- **`[UposException](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposException)`**: The base exception thrown when a UPOS operation fails. Contains `ErrorCode` (standard error) and `ExtendedErrorCode` (extended error).
+- **`[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)`**: Thrown when a method is executed in an invalid device state (e.g., calling `ClaimAsync` before `OpenAsync`). It inherits from `InvalidOperationException` and provides `CurrentState` and `AllowedStates` for debugging.
 - **`OperationCanceledException`**: Thrown when the `CancellationToken` passed to an asynchronous method (e.g., `OpenAsync`) is canceled.
 
 ---
@@ -170,11 +169,11 @@ if (currentState == ControlState.Idle)
 
 ## Extension Methods
 
-- **`UposMediatorExtensions`**: Helper methods for state validation within the mediator.
-  - `ValidateOpen()`: Checks if the device is Open. Throws `UposStateException` with `UposErrorCode.Closed` on failure.
-  - `ValidateClaimed()`: Checks if the device is Claimed. Throws `UposStateException` with `UposErrorCode.NotClaimed` on failure.
-  - `ValidateEnabled()`: Checks if the device is Enabled. Throws `UposStateException` with `UposErrorCode.Disabled` on failure.
-  - `ValidateNotBusy()`: Checks if the device is not Busy. Throws `UposStateException` with `UposErrorCode.Busy` on failure.
+- **`[UposMediatorExtensions](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediatorExtensions)`**: Helper methods for state validation within the `[UposMediator](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)`.
+  - `ValidateOpen()`: Checks if the device is Open. Throws `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` with `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).Closed` on failure.
+  - `ValidateClaimed()`: Checks if the device is Claimed. Throws `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` with `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).NotClaimed` on failure.
+  - `ValidateEnabled()`: Checks if the device is Enabled. Throws `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` with `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).Disabled` on failure.
+  - `ValidateNotBusy()`: Checks if the device is not Busy. Throws `[UposStateException](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)` with `[UposErrorCode](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode).Busy` on failure.
 
 ### Usage Example
 
