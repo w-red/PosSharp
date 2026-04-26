@@ -61,6 +61,7 @@ Main properties provided by `[IUposDevice](https://github.com/w-red/PosSharp/wik
 | `CapPowerReporting` | `[PowerReporting](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting)` | Power reporting capabilities. |
 | `DeviceName` | `string` | Logical name of the device. |
 | `DeviceDescription` | `string` | Description of the device. |
+| `Capabilities` | `[UposCapabilities](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities)` | Frozen capabilities of the device. |
 | `ServiceObjectDescription` | `string` | Description of the Service Object. |
 | `ServiceObjectVersion` | `string` | Version of the Service Object. |
 
