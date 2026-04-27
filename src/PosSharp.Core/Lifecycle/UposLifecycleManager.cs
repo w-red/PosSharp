@@ -114,6 +114,12 @@ public sealed class UposLifecycleManager(IUposMediator mediator, IUposLifecycleH
             return;
         }
 
+        if (allowedStates.Length == 1)
+        {
+            handler.VerifyState(mediator.CurrentState, allowedStates[0]);
+            return;
+        }
+
         if (!allowedStates.Contains(mediator.CurrentState))
         {
             throw new UposStateException(mediator.CurrentState, allowedStates);

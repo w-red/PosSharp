@@ -132,11 +132,11 @@ public class UposMediator : IUposMediator
 
         try
         {
-            if (currentState != (int)ControlState.Enabled)
+            if (CurrentStateInternal != ControlState.Enabled)
             {
                 // Stryker disable all : Exception message
                 throw new UposStateException(
-                    $"Operation requires Enabled state, but current state is {(ControlState)currentState}.",
+                    $"Operation requires Enabled state, but current state is {CurrentStateInternal}.",
                     UposErrorCode.Disabled
                 );
                 // Stryker restore all
