@@ -26,7 +26,7 @@ public sealed class CancellationTests
     {
         // Arrange
         using var device = new CancellableStubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
         using var cts = new CancellationTokenSource();
         await cts.CancelAsync();
 

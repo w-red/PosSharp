@@ -16,7 +16,7 @@ public sealed class LifecycleTests
         device.State.CurrentValue.ShouldBe(ControlState.Closed);
 
         // Act
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.State.CurrentValue.ShouldBe(ControlState.Idle);
@@ -28,10 +28,10 @@ public sealed class LifecycleTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act
-        await device.ClaimAsync(timeout: 1000);
+        await device.ClaimAsync(timeout: 1000, TestContext.Current.CancellationToken);
 
         // Assert
         device.State.CurrentValue.ShouldBe(ControlState.Claimed);
@@ -43,11 +43,11 @@ public sealed class LifecycleTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(timeout: 1000);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(timeout: 1000, TestContext.Current.CancellationToken);
 
         // Act
-        await device.SetEnabledAsync(true);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         // Assert
         device.State.CurrentValue.ShouldBe(ControlState.Enabled);
@@ -59,12 +59,12 @@ public sealed class LifecycleTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(timeout: 1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(timeout: 1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         // Act
-        await device.SetEnabledAsync(false);
+        await device.SetEnabledAsync(false, TestContext.Current.CancellationToken);
 
         // Assert
         device.State.CurrentValue.ShouldBe(ControlState.Claimed);
@@ -76,11 +76,11 @@ public sealed class LifecycleTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(timeout: 1000);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(timeout: 1000, TestContext.Current.CancellationToken);
 
         // Act
-        await device.ReleaseAsync();
+        await device.ReleaseAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.State.CurrentValue.ShouldBe(ControlState.Idle);
@@ -92,10 +92,10 @@ public sealed class LifecycleTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act
-        await device.CloseAsync();
+        await device.CloseAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.State.CurrentValue.ShouldBe(ControlState.Closed);
@@ -107,16 +107,16 @@ public sealed class LifecycleTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(timeout: 1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(timeout: 1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         using (device.TestBeginOperation())
         {
             device.TestUpdateError(UposErrorCode.Failure);
 
             // Act
-            await device.CloseAsync();
+            await device.CloseAsync(TestContext.Current.CancellationToken);
         }
 
         // Assert

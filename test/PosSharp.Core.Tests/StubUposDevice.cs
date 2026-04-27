@@ -18,6 +18,9 @@ internal class StubUposDevice : UposDeviceBase
     /// <summary>Gets the protected Lifecycle manager for testing.</summary>
     public new UposLifecycleManager Lifecycle => base.Lifecycle;
 
+    /// <summary>Gets the internal mediator for testing.</summary>
+    public new IUposMediator Mediator => base.Mediator;
+
     /// <summary>Gets a value indicating whether buffered data events are currently being flushed.</summary>
     public new bool IsFlushing => base.IsFlushing;
 
@@ -90,6 +93,11 @@ internal class StubUposDevice : UposDeviceBase
     /// <param name="args">Event args.</param>
     public void TestPublishErrorEvent(UposErrorEventArgs args) => PublishErrorEvent(args);
 
+    /// <summary>Exposes the protected PublishErrorEvent method for testing.</summary>
+    /// <param name="code">Error code.</param>
+    /// <param name="extendedCode">Extended error code.</param>
+    public void TestPublishErrorEvent(UposErrorCode code, int extendedCode = 0) => Mediator.ReportError(code, extendedCode);
+
     /// <summary>Exposes the protected UpdatePowerState method for testing.</summary>
     /// <param name="newState">New power state.</param>
     public void TestUpdatePowerState(PowerState newState) => UpdatePowerState(newState);
@@ -97,6 +105,14 @@ internal class StubUposDevice : UposDeviceBase
     /// <summary>Updates the last error for testing.</summary>
     /// <param name="code">Error code.</param>
     public void TestUpdateError(UposErrorCode code) => Mediator.ReportError(code);
+
+    /// <summary>Exposes the protected AddDisposable method for testing.</summary>
+    /// <param name="disposable">The disposable to add.</param>
+    public void TestAddDisposable(IDisposable disposable) => AddDisposable(disposable);
+
+    /// <summary>Exposes the protected AddDisposables method for testing.</summary>
+    /// <param name="disposables">The disposables to add.</param>
+    public void TestAddDisposables(params IDisposable[] disposables) => AddDisposables(disposables);
 
     /// <inheritdoc/>
     protected override Task<string> OnCheckHealthAsync(HealthCheckLevel level, CancellationToken ct)

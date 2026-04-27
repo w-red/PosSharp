@@ -89,12 +89,12 @@ public sealed class DeviceDisposeTests
             .Message.ShouldContain(ExpectedMessage);
 
         // Act & Assert - Async Methods
-        (await Should.ThrowAsync<ObjectDisposedException>(async () => await device.OpenAsync())).Message.ShouldContain(
+        (await Should.ThrowAsync<ObjectDisposedException>(async () => await device.OpenAsync(TestContext.Current.CancellationToken))).Message.ShouldContain(
             ExpectedMessage
         );
         device.OpenCalled.ShouldBeFalse();
 
-        (await Should.ThrowAsync<ObjectDisposedException>(async () => await device.CloseAsync())).Message.ShouldContain(
+        (await Should.ThrowAsync<ObjectDisposedException>(async () => await device.CloseAsync(TestContext.Current.CancellationToken))).Message.ShouldContain(
             ExpectedMessage
         );
         device.CloseCalled.ShouldBeFalse();
@@ -105,7 +105,7 @@ public sealed class DeviceDisposeTests
         device.ClaimCalled.ShouldBeFalse();
 
         (
-            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ReleaseAsync())
+            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ReleaseAsync(TestContext.Current.CancellationToken))
         ).Message.ShouldContain(ExpectedMessage);
         device.ReleaseCalled.ShouldBeFalse();
 
@@ -127,12 +127,12 @@ public sealed class DeviceDisposeTests
         device.DirectIOCalled.ShouldBeFalse();
 
         (
-            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ClearInputAsync())
+            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ClearInputAsync(TestContext.Current.CancellationToken))
         ).Message.ShouldContain(ExpectedMessage);
         device.ClearInputCalled.ShouldBeFalse();
 
         (
-            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ClearOutputAsync())
+            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ClearOutputAsync(TestContext.Current.CancellationToken))
         ).Message.ShouldContain(ExpectedMessage);
         device.ClearOutputCalled.ShouldBeFalse();
     }

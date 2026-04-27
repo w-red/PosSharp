@@ -40,6 +40,22 @@ public sealed class EventTests
         received.ShouldBeTrue();
     }
 
+    /// <summary>Verifies that PublishDataEvent updates the DataCount in the mediator when events are buffered.</summary>
+    [Fact]
+    public void PublishDataEvent_UpdatesDataCount()
+    {
+        // Arrange
+        using var device = new StubUposDevice();
+        device.DataEventEnabled = false; // Buffer it
+
+        // Act
+        device.TestPublishDataEvent(new UposDataEventArgs(1));
+        device.TestPublishDataEvent(new UposDataEventArgs(2));
+
+        // Assert
+        device.Mediator.DataCount.CurrentValue.ShouldBe(2);
+    }
+
     /// <summary>Verifies that a subscriber receives an ErrorEvent when published.</summary>
     [Fact]
     public void PublishErrorEventSubscriberReceivesEvent()

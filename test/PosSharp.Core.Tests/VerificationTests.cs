@@ -20,14 +20,14 @@ public sealed class VerificationTests
         // Calling it while Closed should fail if verification is enabled.
         await Should.ThrowAsync<UposStateException>(async () =>
         {
-            await device.ClaimAsync(timeout: 0);
+            await device.ClaimAsync(timeout: 0, TestContext.Current.CancellationToken);
         });
 
         // Now disable verification
         device.IsStateVerificationEnabled = false;
 
         // Should NOT throw now
-        await device.ClaimAsync(timeout: 0);
+        await device.ClaimAsync(timeout: 0, TestContext.Current.CancellationToken);
 
         // State is updated by PostClaim anyway
         device.State.CurrentValue.ShouldBe(ControlState.Claimed);
@@ -82,28 +82,28 @@ public sealed class VerificationTests
         using var device = new StubUposDevice();
 
         // Act (Open)
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
         device.IsOpen.ShouldBeTrue();
         device.IsClaimed.ShouldBeFalse();
         device.IsEnabled.ShouldBeFalse();
 
         // Act (Claim)
-        await device.ClaimAsync(100);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
         device.IsClaimed.ShouldBeTrue();
         device.IsEnabled.ShouldBeFalse();
 
         // Act (Enable)
-        await device.SetEnabledAsync(true);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
         device.IsClaimed.ShouldBeTrue();
         device.IsEnabled.ShouldBeTrue();
 
         // Act (Disable)
-        await device.SetEnabledAsync(false);
+        await device.SetEnabledAsync(false, TestContext.Current.CancellationToken);
         device.IsClaimed.ShouldBeTrue();
         device.IsEnabled.ShouldBeFalse();
 
         // Act (Close)
-        await device.CloseAsync();
+        await device.CloseAsync(TestContext.Current.CancellationToken);
         device.IsOpen.ShouldBeFalse();
     }
 }

@@ -28,7 +28,7 @@ public class ConcurrencyTests
                     using (mediator.BeginOperation())
                     {
                         // Simulate some work
-                        await Task.Delay(10);
+                        await Task.Delay(100, TestContext.Current.CancellationToken);
                         Interlocked.Increment(ref successCount);
                         return true;
                     }
@@ -98,15 +98,15 @@ public class ConcurrencyTests
     {
         // Arrange
         var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(0);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(0, TestContext.Current.CancellationToken);
         device.DataEventEnabled = false;
 
         device.TestPublishDataEvent(new UposDataEventArgs(1));
         Assert.Equal(1, device.DataCount);
 
         // Act
-        await device.ClearInputAsync();
+        await device.ClearInputAsync(TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(0, device.DataCount);

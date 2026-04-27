@@ -13,10 +13,10 @@ public sealed class StateExceptionTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act & Assert
-        var ex = await Should.ThrowAsync<UposStateException>(() => device.OpenAsync());
+        var ex = await Should.ThrowAsync<UposStateException>(() => device.OpenAsync(TestContext.Current.CancellationToken));
         ex.CurrentState.ShouldBe(ControlState.Idle);
         ex.AllowedStates.ShouldContain(ControlState.Closed);
     }
@@ -29,7 +29,7 @@ public sealed class StateExceptionTests
         using var device = new StubUposDevice();
 
         // Act & Assert
-        var ex = await Should.ThrowAsync<UposStateException>(() => device.ClaimAsync(1000));
+        var ex = await Should.ThrowAsync<UposStateException>(() => device.ClaimAsync(1000, TestContext.Current.CancellationToken));
         ex.CurrentState.ShouldBe(ControlState.Closed);
         ex.AllowedStates.ShouldContain(ControlState.Idle);
     }
@@ -40,10 +40,10 @@ public sealed class StateExceptionTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act & Assert
-        var ex = await Should.ThrowAsync<UposStateException>(() => device.SetEnabledAsync(true));
+        var ex = await Should.ThrowAsync<UposStateException>(() => device.SetEnabledAsync(true, TestContext.Current.CancellationToken));
         ex.CurrentState.ShouldBe(ControlState.Idle);
         ex.AllowedStates.ShouldContain(ControlState.Claimed);
     }
@@ -54,10 +54,10 @@ public sealed class StateExceptionTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act & Assert
-        var ex = await Should.ThrowAsync<UposStateException>(() => device.ReleaseAsync());
+        var ex = await Should.ThrowAsync<UposStateException>(() => device.ReleaseAsync(TestContext.Current.CancellationToken));
         ex.CurrentState.ShouldBe(ControlState.Idle);
         ex.AllowedStates.ShouldContain(ControlState.Claimed);
         ex.AllowedStates.ShouldContain(ControlState.Enabled);
@@ -69,10 +69,10 @@ public sealed class StateExceptionTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act & Assert
-        var ex = await Should.ThrowAsync<UposStateException>(() => device.SetEnabledAsync(true));
+        var ex = await Should.ThrowAsync<UposStateException>(() => device.SetEnabledAsync(true, TestContext.Current.CancellationToken));
         ex.CurrentState.ShouldBe(ControlState.Idle);
         ex.AllowedStates.ShouldBe(new[] { ControlState.Claimed });
     }

@@ -12,7 +12,7 @@ public sealed class PowerManagementTests
     {
         using var device = new StubUposDevice();
         device.TestCapPowerReporting = PowerReporting.Standard;
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
         device.PowerNotify = PowerNotify.Enabled;
 
         // Act
@@ -28,7 +28,7 @@ public sealed class PowerManagementTests
     {
         using var device = new StubUposDevice();
         device.TestCapPowerReporting = PowerReporting.Standard;
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
         device.PowerNotify = PowerNotify.Disabled;
 
         // Act
@@ -44,7 +44,7 @@ public sealed class PowerManagementTests
     {
         using var device = new StubUposDevice();
         device.TestCapPowerReporting = PowerReporting.Standard;
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
         device.PowerNotify = PowerNotify.Enabled;
 
         device.TestUpdatePowerState(PowerState.Online);

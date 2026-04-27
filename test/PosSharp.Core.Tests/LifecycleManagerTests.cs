@@ -13,9 +13,9 @@ public sealed class LifecycleManagerTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
         device.TestUpdateError(UposErrorCode.Failure);
 
         using (device.TestBeginOperation())
@@ -75,7 +75,7 @@ public sealed class LifecycleManagerTests
         device.Lifecycle.IsStateVerificationEnabled = false;
 
         // Act & Assert (Should NOT throw even if in Closed state)
-        await Should.NotThrowAsync(() => device.SetEnabledAsync(true));
+        await Should.NotThrowAsync(() => device.SetEnabledAsync(true, TestContext.Current.CancellationToken));
     }
 
     /// <summary>Verifies that IsStateVerificationEnabled can be toggled correctly.</summary>

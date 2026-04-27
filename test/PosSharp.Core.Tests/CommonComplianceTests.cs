@@ -35,12 +35,15 @@ public sealed class CommonComplianceTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(0);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(0, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
+
+        // Assert
+        device.CheckHealthText.ShouldBe(string.Empty);
 
         // Act
-        await device.CheckHealthAsync(HealthCheckLevel.Internal);
+        await device.CheckHealthAsync(HealthCheckLevel.Internal, TestContext.Current.CancellationToken);
 
         // Assert
         device.CheckHealthText.ShouldBe("Internal:OK");
@@ -104,13 +107,13 @@ public sealed class CommonComplianceTests
     {
         // Arrange
         using var device = new StubUposDevice(); // This requires mediator access, but we'll simulate.
-        await device.OpenAsync();
-        await device.ClaimAsync(0);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(0, TestContext.Current.CancellationToken);
 
         // No easy way to set DataCount on Stub without exposing Mediator UpdateDataCount
         // But we can check ClearInputAsync calls it.
         // Act
-        await device.ClearInputAsync();
+        await device.ClearInputAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.DataCount.ShouldBe(0);

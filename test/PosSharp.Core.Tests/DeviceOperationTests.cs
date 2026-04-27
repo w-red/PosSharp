@@ -12,16 +12,16 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         const int command = 123;
         const int data = 456;
         const string obj = "TestData";
 
         // Act
-        await device.DirectIOAsync(command, data, obj);
+        await device.DirectIOAsync(command, data, obj, TestContext.Current.CancellationToken);
 
         // Assert
         device.LastDirectIOCommand.ShouldBe(command);
@@ -35,11 +35,11 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
 
         // Act
-        await device.ClearInputAsync();
+        await device.ClearInputAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.ClearInputCalled.ShouldBeTrue();
@@ -51,11 +51,11 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
 
         // Act
-        await device.ClearOutputAsync();
+        await device.ClearOutputAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.ClearOutputCalled.ShouldBeTrue();
@@ -70,9 +70,9 @@ public sealed class DeviceOperationTests
 
         // remains in Closed state
         // Assert
-        await Should.ThrowAsync<UposStateException>(() => device.DirectIOAsync(1, 1, string.Empty));
-        await Should.ThrowAsync<UposStateException>(() => device.ClearInputAsync());
-        await Should.ThrowAsync<UposStateException>(() => device.ClearOutputAsync());
+        await Should.ThrowAsync<UposStateException>(() => device.DirectIOAsync(1, 1, string.Empty, TestContext.Current.CancellationToken));
+        await Should.ThrowAsync<UposStateException>(() => device.ClearInputAsync(TestContext.Current.CancellationToken));
+        await Should.ThrowAsync<UposStateException>(() => device.ClearOutputAsync(TestContext.Current.CancellationToken));
     }
 
     /// <summary>Verifies that OpenAsync calls the internal hook method when the device is closed.</summary>
@@ -83,7 +83,7 @@ public sealed class DeviceOperationTests
         using var device = new StubUposDevice();
 
         // Act
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.OpenCalled.ShouldBeTrue();
@@ -97,7 +97,7 @@ public sealed class DeviceOperationTests
         using var device = new StubUposDevice();
 
         // Act
-        await device.CloseAsync();
+        await device.CloseAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.CloseCalled.ShouldBeFalse();
@@ -109,10 +109,10 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act
-        await device.CloseAsync();
+        await device.CloseAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.CloseCalled.ShouldBeTrue();
@@ -124,27 +124,27 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
+        await device.OpenAsync(TestContext.Current.CancellationToken);
 
         // Act
-        await device.ClaimAsync(100);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
 
         // Assert
         device.ClaimCalled.ShouldBeTrue();
         device.ClaimCallCount.ShouldBe(1);
 
         // Act - Second claim (already claimed) -> should early return
-        await device.ClaimAsync(100);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
 
         // Assert
         device.ClaimCallCount.ShouldBe(1); // Still 1
 
         // Enable
-        await device.SetEnabledAsync(true);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
         device.EnableCallCount.ShouldBe(1);
 
         // Act - Claim while enabled -> should early return
-        await device.ClaimAsync(100);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
 
         // Assert
         device.ClaimCallCount.ShouldBe(1); // Still 1
@@ -156,12 +156,12 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(100);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
         device.ReleaseCalled.ShouldBeFalse();
 
         // Act
-        await device.ReleaseAsync();
+        await device.ReleaseAsync(TestContext.Current.CancellationToken);
 
         // Assert
         device.ReleaseCalled.ShouldBeTrue();
@@ -173,32 +173,38 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(100);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
+
+        // Assert - Initial state
+        device.EnableCallCount.ShouldBe(0);
+        device.DisableCallCount.ShouldBe(0);
 
         // Act - Enable
-        await device.SetEnabledAsync(true);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         // Assert
         device.EnableCalled.ShouldBeTrue();
         device.EnableCallCount.ShouldBe(1);
 
         // Act - Call again with true (already enabled) -> should early return
-        await device.SetEnabledAsync(true);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         // Assert - EnableCallCount should still be 1
         device.EnableCallCount.ShouldBe(1);
         device.DisableCallCount.ShouldBe(0);
 
         // Act - Disable
-        await device.SetEnabledAsync(false);
+        await device.SetEnabledAsync(false, TestContext.Current.CancellationToken);
 
         // Assert
         device.DisableCalled.ShouldBeTrue();
         device.DisableCallCount.ShouldBe(1);
+        device.IsClaimed.ShouldBeTrue();
+        device.IsEnabled.ShouldBeFalse();
 
         // Act - Call again with false (already disabled/claimed) -> should early return
-        await device.SetEnabledAsync(false);
+        await device.SetEnabledAsync(false, TestContext.Current.CancellationToken);
 
         // Assert
         device.DisableCallCount.ShouldBe(1); // Still 1
@@ -210,12 +216,12 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(100);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(100, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         // Act
-        await device.CheckHealthAsync(HealthCheckLevel.Internal);
+        await device.CheckHealthAsync(HealthCheckLevel.Internal, TestContext.Current.CancellationToken);
 
         // Assert
         device.CheckHealthCalled.ShouldBeTrue();
@@ -227,9 +233,9 @@ public sealed class DeviceOperationTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         using var cts = new CancellationTokenSource();
         await cts.CancelAsync();
@@ -265,5 +271,47 @@ public sealed class DeviceOperationTests
         // Setting to Enabled should throw when reporting is None
         var ex = Should.Throw<UposException>(() => device.PowerNotify = PowerNotify.Enabled);
         ex.ErrorCode.ShouldBe(UposErrorCode.Illegal);
+    }
+
+    [Fact]
+    public void AddDisposable_DisposesWithDevice()
+    {
+        // Arrange
+        var device = new StubUposDevice();
+        var disposable = new StubDisposable();
+        device.TestAddDisposable(disposable);
+
+        // Act
+        device.Dispose();
+
+        // Assert
+        disposable.IsDisposed.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void AddDisposables_DisposesAllWithDevice()
+    {
+        // Arrange
+        var device = new StubUposDevice();
+        var d1 = new StubDisposable();
+        var d2 = new StubDisposable();
+        device.TestAddDisposables(d1, d2);
+
+        // Act
+        device.Dispose();
+
+        // Assert
+        d1.IsDisposed.ShouldBeTrue();
+        d2.IsDisposed.ShouldBeTrue();
+    }
+
+    private sealed class StubDisposable : IDisposable
+    {
+        public bool IsDisposed { get; private set; }
+        public void Dispose()
+        {
+            IsDisposed = true;
+            GC.SuppressFinalize(this);
+        }
     }
 }

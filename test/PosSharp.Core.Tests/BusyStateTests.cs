@@ -11,9 +11,9 @@ public sealed class BusyStateTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         // Act
         using (device.TestBeginOperation())
@@ -32,8 +32,8 @@ public sealed class BusyStateTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
 
         // Act & Assert
         await Should.ThrowAsync<UposStateException>(() => Task.FromResult(device.TestBeginOperation()));
@@ -45,9 +45,9 @@ public sealed class BusyStateTests
     {
         // Arrange
         using var device = new StubUposDevice();
-        await device.OpenAsync();
-        await device.ClaimAsync(1000);
-        await device.SetEnabledAsync(true);
+        await device.OpenAsync(TestContext.Current.CancellationToken);
+        await device.ClaimAsync(1000, TestContext.Current.CancellationToken);
+        await device.SetEnabledAsync(true, TestContext.Current.CancellationToken);
 
         using var guard = device.TestBeginOperation();
 
