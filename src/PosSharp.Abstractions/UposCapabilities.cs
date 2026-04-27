@@ -24,4 +24,22 @@ public sealed class UposCapabilities(IDictionary<string, object> capabilities)
     {
         return storage.TryGetValue(key, out var value) ? (T)value : defaultValue;
     }
+
+    /// <summary>Gets a string capability value.</summary>
+    /// <param name="key">The key.</param>
+    /// <param name="defaultValue">The default value.</param>
+    /// <returns>The string value.</returns>
+    public string GetString(string key, string defaultValue = "") => Get(key, defaultValue);
+
+    /// <summary>Gets an integer capability value.</summary>
+    /// <param name="key">The key.</param>
+    /// <param name="defaultValue">The default value.</param>
+    /// <returns>The integer value.</returns>
+    public int GetInt(string key, int defaultValue = 0) => Get(key, defaultValue);
+
+    /// <summary>Gets a boolean capability value.</summary>
+    /// <param name="key">The key.</param>
+    /// <param name="defaultValue">The default value.</param>
+    /// <returns>The boolean value.</returns>
+    public bool GetBool(string key, bool defaultValue = false) => Get(key, defaultValue);
 }
