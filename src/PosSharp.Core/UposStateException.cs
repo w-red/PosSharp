@@ -8,6 +8,7 @@ public sealed class UposStateException : InvalidOperationException
     /// <summary>Initializes a new instance of the <see cref="UposStateException"/> class.</summary>
     /// <param name="message">The exception message.</param>
     /// <param name="errorCode">The UPOS error code associated with this state exception.</param>
+    // Stryker disable once all : Boilerplate
     public UposStateException(string message, UposErrorCode errorCode = UposErrorCode.Failure)
         : base(message)
     {
@@ -20,7 +21,7 @@ public sealed class UposStateException : InvalidOperationException
     /// <param name="currentState">The current state of the device.</param>
     /// <param name="allowedStates">The states that would have been valid for the operation.</param>
     /// <param name="errorCode">The UPOS error code associated with this state exception.</param>
-    // Stryker disable all : Exception message
+    // Stryker disable once String : Exception message
     public UposStateException(ControlState currentState, IReadOnlyList<ControlState> allowedStates, UposErrorCode errorCode = UposErrorCode.Failure)
         : base($"Invalid state transition from {currentState}. Allowed: {string.Join(", ", allowedStates)}")
     {
