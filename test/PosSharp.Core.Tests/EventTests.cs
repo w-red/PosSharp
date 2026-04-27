@@ -82,10 +82,9 @@ public sealed class EventTests
     public void EventsAfterDisposeDoNotFire()
     {
         // Arrange
-        var device = new StubUposDevice();
-        var sink = (IUposEventSink)device;
+        using var device = new StubUposDevice();
         var received = false;
-        using var sub = sink.DataEvents.Subscribe(_ => received = true);
+        using var sub = device.DataEvents.Subscribe(_ => received = true);
 
         // Act
         device.Dispose();
@@ -150,8 +149,10 @@ public sealed class EventTests
     public void FlushDataEvents_AutoDisable_Works()
     {
         // Arrange
-        var device = new StubUposDevice();
-        device.AutoDisable = true;
+        var device = new StubUposDevice
+        {
+            AutoDisable = true
+        };
         var eventCount = 0;
         device.DataEvents.Subscribe(_ => eventCount++);
 
@@ -166,5 +167,3 @@ public sealed class EventTests
         device.DataEventEnabled.ShouldBeFalse();
     }
 }
-
-
