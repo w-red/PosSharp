@@ -61,7 +61,7 @@
 | `CapPowerReporting` | [`PowerReporting`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting) | デバイスの電源報告能力。 |
 | `DeviceName` | `string` | デバイスの論理名。 |
 | `DeviceDescription` | `string` | デバイスの説明。 |
-| `Capabilities` | [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | デバイスの固定的な機能定義。 |
+| `Capabilities` | [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | デバイスの固定的な機能定義。`AsString`, `AsInt`, `AsBool`, `As<T>` メソッドにより、型安全に値を取得可能です。 |
 | `ServiceObjectDescription` | `string` | サービスオブジェクトの説明。 |
 | `ServiceObjectVersion` | `string` | サービスオブジェクトのバージョン。 |
 
@@ -128,6 +128,26 @@ public class PosService([FromKeyedServices("CashChanger1")] IUposDevice device)
         await device.OpenAsync();
     }
 }
+```
+
+---
+
+## デバイス機能 (Capabilities) の利用
+
+`Capabilities` プロパティからは、デバイス固有の固定的な設定値や能力（例：`CapPowerReporting` 等）を型安全に取得できます。
+
+```csharp
+// 文字列として取得 (デフォルト値を指定可能)
+string deviceModel = device.Capabilities.AsString("ModelName", "Generic Device");
+
+// 数値として取得
+int maxDataLength = device.Capabilities.AsInt("MaxDataLength");
+
+// 真偽値として取得
+bool supportsSpecialFeature = device.Capabilities.AsBool("CapSpecialFeature");
+
+// 汎用的な型指定取得
+var complexConfig = device.Capabilities.As<MyConfig>("CustomConfig");
 ```
 
 ---

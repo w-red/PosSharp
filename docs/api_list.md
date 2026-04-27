@@ -61,7 +61,7 @@ Main properties provided by [`IUposDevice`](https://github.com/w-red/PosSharp/wi
 | `CapPowerReporting` | [`PowerReporting`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerReporting) | Power reporting capabilities. |
 | `DeviceName` | `string` | Logical name of the device. |
 | `DeviceDescription` | `string` | Description of the device. |
-| `Capabilities` | [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | Frozen capabilities of the device. |
+| `Capabilities` | [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | Frozen capabilities of the device. Values can be retrieved type-safely via `AsString`, `AsInt`, `AsBool`, and `As<T>` methods. |
 | `ServiceObjectDescription` | `string` | Description of the Service Object. |
 | `ServiceObjectVersion` | `string` | Version of the Service Object. |
 
@@ -128,6 +128,26 @@ public class PosService([FromKeyedServices("CashChanger1")] IUposDevice device)
         await device.OpenAsync();
     }
 }
+```
+
+---
+
+## Working with Device Capabilities
+
+The `Capabilities` property allows you to retrieve device-specific settings and features in a type-safe manner.
+
+```csharp
+// Get as string (with an optional default value)
+string deviceModel = device.Capabilities.AsString("ModelName", "Generic Device");
+
+// Get as integer
+int maxDataLength = device.Capabilities.AsInt("MaxDataLength");
+
+// Get as boolean
+bool supportsSpecialFeature = device.Capabilities.AsBool("CapSpecialFeature");
+
+// Generic type-safe retrieval
+var complexConfig = device.Capabilities.As<MyConfig>("CustomConfig");
 ```
 
 ---
