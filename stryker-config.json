@@ -18,10 +18,12 @@
       "json"
     ],
     "thresholds": {
-      "break": 80,
+      "break": 85,
       "low": 90,
       "high": 95
     },
-    "concurrency": 4
+    "concurrency": 4,
+    "test-runner": "mtp",
+    "coverage-analysis": "all"
   }
 }
