@@ -197,8 +197,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task OpenAsync(CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         Lifecycle.PreOpen();
         await OnOpenAsync(ct);
@@ -208,8 +207,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task CloseAsync(CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         if (Mediator.CurrentState == ControlState.Closed)
         {
@@ -224,8 +222,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task ClaimAsync(int timeout, CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         var currentState = Mediator.CurrentState;
         if (currentState is
@@ -243,8 +240,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task ReleaseAsync(CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         Lifecycle.PreRelease();
         await OnReleaseAsync(ct);
@@ -254,8 +250,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task SetEnabledAsync(bool enabled, CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         var currentState = Mediator.CurrentState;
         if (enabled && currentState == ControlState.Enabled)
@@ -285,8 +280,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task CheckHealthAsync(HealthCheckLevel level, CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         VerifyState(ControlState.Enabled);
         using (BeginOperation())
@@ -299,8 +293,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task DirectIOAsync(int command, int data, object obj, CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         // DirectIO normally allowed in Claimed or Enabled states
         VerifyState(ControlState.Claimed, ControlState.Enabled);
@@ -310,8 +303,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task ClearInputAsync(CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnClearInputAsync(ct);
@@ -326,8 +318,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
     /// <inheritdoc/>
     public async Task ClearOutputAsync(CancellationToken ct = default)
     {
-        ThrowIfDisposed();
-        ct.ThrowIfCancellationRequested();
+        await PrepareAsync(ct);
 
         VerifyState(ControlState.Claimed, ControlState.Enabled);
         await OnClearOutputAsync(ct);
@@ -378,6 +369,16 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
                 "The UPOS device has been disposed and cannot be accessed."
             );
         }
+    }
+
+    /// <summary>Ensures the device is not disposed and the cancellation token is not cancelled.</summary>
+    /// <param name="ct">The cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    protected Task PrepareAsync(CancellationToken ct)
+    {
+        ThrowIfDisposed();
+        ct.ThrowIfCancellationRequested();
+        return Task.CompletedTask;
     }
 
     // ------------------------------------------------------------------
@@ -444,7 +445,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
 
         try
         {
-            while (true)
+            do
             {
                 while (DataEventEnabled && dataEventQueue.TryDequeue(out var args))
                 {
@@ -459,12 +460,7 @@ public abstract class UposDeviceBase : IUposDevice, IUposEventSink
                 }
 
                 IsFlushing = false;
-
-                if (!DataEventEnabled || dataEventQueue.IsEmpty || !TryBeginFlushing())
-                {
-                    break;
-                }
-            }
+            } while (DataEventEnabled && !dataEventQueue.IsEmpty && TryBeginFlushing());
         }
         finally
         {
