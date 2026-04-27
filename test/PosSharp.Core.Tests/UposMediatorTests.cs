@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
@@ -145,3 +146,5 @@ public sealed class UposMediatorTests
         callCount.ShouldBe(2); // Initial (0) + Change (5)
     }
 }
+
+

@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -57,3 +58,5 @@ public sealed class PowerManagementTests
         device.PowerState.ShouldBe(PowerState.Online);
     }
 }
+
+

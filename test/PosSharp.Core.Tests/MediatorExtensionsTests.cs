@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -81,3 +82,5 @@ public class MediatorExtensionsTests
         mediator.ValidateNotBusy(); // Should not throw
     }
 }
+
+

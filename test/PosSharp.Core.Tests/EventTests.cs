@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
@@ -165,3 +166,5 @@ public sealed class EventTests
         device.DataEventEnabled.ShouldBeFalse();
     }
 }
+
+

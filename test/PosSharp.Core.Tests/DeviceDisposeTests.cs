@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
@@ -55,10 +56,6 @@ public sealed class DeviceDisposeTests
     [Fact]
     public void Dispose_WithFalse_DoesNotCompleteStreams()
     {
-        // This tests the protected Dispose(bool disposing) where disposing = false
-        // Since we can't easily call protected methods from outside,
-        // we rely on the finalizer if implemented, but UposDeviceBase uses a simple Dispose pattern.
-        // For mutation testing purposes, we ensure that a standard Dispose(true) works.
         // Arrange
         var device = new StubUposDevice();
         bool dataCompleted = false;
@@ -100,7 +97,7 @@ public sealed class DeviceDisposeTests
         device.CloseCalled.ShouldBeFalse();
 
         (
-            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ClaimAsync(0))
+            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.ClaimAsync(0, TestContext.Current.CancellationToken))
         ).Message.ShouldContain(ExpectedMessage);
         device.ClaimCalled.ShouldBeFalse();
 
@@ -110,19 +107,19 @@ public sealed class DeviceDisposeTests
         device.ReleaseCalled.ShouldBeFalse();
 
         (
-            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.SetEnabledAsync(true))
+            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.SetEnabledAsync(true, TestContext.Current.CancellationToken))
         ).Message.ShouldContain(ExpectedMessage);
         device.EnableCalled.ShouldBeFalse();
 
         (
             await Should.ThrowAsync<ObjectDisposedException>(async () =>
-                await device.CheckHealthAsync(HealthCheckLevel.Internal)
+                await device.CheckHealthAsync(HealthCheckLevel.Internal, TestContext.Current.CancellationToken)
             )
         ).Message.ShouldContain(ExpectedMessage);
         device.CheckHealthCalled.ShouldBeFalse();
 
         (
-            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.DirectIOAsync(0, 0, new object()))
+            await Should.ThrowAsync<ObjectDisposedException>(async () => await device.DirectIOAsync(0, 0, new object(), TestContext.Current.CancellationToken))
         ).Message.ShouldContain(ExpectedMessage);
         device.DirectIOCalled.ShouldBeFalse();
 
@@ -137,3 +134,4 @@ public sealed class DeviceDisposeTests
         device.ClearOutputCalled.ShouldBeFalse();
     }
 }
+

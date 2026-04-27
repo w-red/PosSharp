@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
@@ -310,4 +311,6 @@ public sealed class LifecycleTests
         Should.NotThrow(() => device.Lifecycle.PreClose());
     }
 }
+
+
 

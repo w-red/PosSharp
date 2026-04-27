@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using R3;
 
@@ -136,3 +137,5 @@ public class ConcurrencyTests
         Assert.Equal(1, device.DataCount); // One remains in queue
     }
 }
+
+

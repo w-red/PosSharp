@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -315,3 +316,6 @@ public sealed class DeviceOperationTests
         }
     }
 }
+
+
+

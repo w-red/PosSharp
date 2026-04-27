@@ -25,3 +25,4 @@ internal sealed class CancellableStubUposDevice : StubUposDevice
         ct.ThrowIfCancellationRequested();
     }
 }
+

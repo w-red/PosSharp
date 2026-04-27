@@ -1,3 +1,4 @@
+using Xunit;
 using Shouldly;
 
 namespace PosSharp.Core.Tests;
@@ -52,3 +53,5 @@ public sealed class ResourceManagementTests
         });
     }
 }
+
+

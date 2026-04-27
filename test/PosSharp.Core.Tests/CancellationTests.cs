@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using Shouldly;
 
@@ -35,3 +36,6 @@ public sealed class CancellationTests
         device.State.CurrentValue.ShouldBe(ControlState.Idle);
     }
 }
+
+
+

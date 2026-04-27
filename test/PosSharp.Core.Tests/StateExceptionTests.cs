@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using PosSharp.Core.Lifecycle;
 using Shouldly;
@@ -99,3 +100,5 @@ public sealed class StateExceptionTests
         ex.Message.ShouldContain("Operation requires Enabled state, but current state is Idle.");
     }
 }
+
+

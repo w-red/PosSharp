@@ -1,3 +1,4 @@
+using Xunit;
 using Shouldly;
 
 namespace PosSharp.Core.Tests;
@@ -56,3 +57,5 @@ public sealed class BusyStateTests
         ex.Message.ShouldBe("Device is already busy.");
     }
 }
+
+

@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using R3;
 using Shouldly;
@@ -119,3 +120,5 @@ public sealed class CommonComplianceTests
         device.DataCount.ShouldBe(0);
     }
 }
+
+

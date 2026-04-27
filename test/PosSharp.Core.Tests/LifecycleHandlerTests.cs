@@ -1,3 +1,4 @@
+using Xunit;
 using PosSharp.Abstractions;
 using PosSharp.Core.Lifecycle;
 using Shouldly;
@@ -84,3 +85,5 @@ public sealed class LifecycleHandlerTests
         }
     }
 }
+
+
