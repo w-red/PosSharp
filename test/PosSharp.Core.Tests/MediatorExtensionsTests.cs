@@ -82,5 +82,3 @@ public class MediatorExtensionsTests
         mediator.ValidateNotBusy(); // Should not throw
     }
 }
-
-

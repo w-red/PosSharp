@@ -56,8 +56,10 @@ public class ConcurrencyTests
     public void PublishDataEvent_WhenDisabled_QueuesEvents()
     {
         // Arrange
-        var device = new StubUposDevice();
-        device.DataEventEnabled = false;
+        var device = new StubUposDevice
+        {
+            DataEventEnabled = false
+        };
         int eventCount = 0;
         device.DataEvents.Subscribe(_ => eventCount++);
 
@@ -75,8 +77,10 @@ public class ConcurrencyTests
     public void DataEventEnabled_SetToTrue_FlushesQueue()
     {
         // Arrange
-        var device = new StubUposDevice();
-        device.DataEventEnabled = false;
+        var device = new StubUposDevice
+        {
+            DataEventEnabled = false
+        };
         var receivedStatuses = new List<int>();
         device.DataEvents.Subscribe(e => receivedStatuses.Add(e.Status));
 
@@ -118,10 +122,12 @@ public class ConcurrencyTests
     public void AutoDisable_WorksWithQueuedEvents()
     {
         // Arrange
-        var device = new StubUposDevice();
-        device.AutoDisable = true;
-        device.DataEventEnabled = false;
-        
+        var device = new StubUposDevice
+        {
+            AutoDisable = true,
+            DataEventEnabled = false
+        };
+
         int eventCount = 0;
         device.DataEvents.Subscribe(_ => eventCount++);
 
@@ -137,5 +143,3 @@ public class ConcurrencyTests
         Assert.Equal(1, device.DataCount); // One remains in queue
     }
 }
-
-

@@ -36,6 +36,3 @@ public sealed class CancellationTests
         device.State.CurrentValue.ShouldBe(ControlState.Idle);
     }
 }
-
-
-

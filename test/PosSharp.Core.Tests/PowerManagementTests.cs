@@ -58,5 +58,3 @@ public sealed class PowerManagementTests
         device.PowerState.ShouldBe(PowerState.Online);
     }
 }
-
-

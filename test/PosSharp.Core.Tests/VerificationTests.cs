@@ -108,5 +108,3 @@ public sealed class VerificationTests
         device.IsOpen.ShouldBeFalse();
     }
 }
-
-

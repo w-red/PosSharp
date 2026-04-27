@@ -75,7 +75,7 @@ public sealed class StateExceptionTests
         // Act & Assert
         var ex = await Should.ThrowAsync<UposStateException>(() => device.SetEnabledAsync(true, TestContext.Current.CancellationToken));
         ex.CurrentState.ShouldBe(ControlState.Idle);
-        ex.AllowedStates.ShouldBe(new[] { ControlState.Claimed });
+        ex.AllowedStates.ShouldBe([ControlState.Claimed]);
     }
 
     /// <summary>Verifies that StandardLifecycleHandler.ValidateTransition throws UposStateException for invalid transitions.</summary>
@@ -100,5 +100,3 @@ public sealed class StateExceptionTests
         ex.Message.ShouldContain("Operation requires Enabled state, but current state is Idle.");
     }
 }
-
-

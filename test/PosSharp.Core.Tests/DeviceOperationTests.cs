@@ -316,6 +316,3 @@ public sealed class DeviceOperationTests
         }
     }
 }
-
-
-

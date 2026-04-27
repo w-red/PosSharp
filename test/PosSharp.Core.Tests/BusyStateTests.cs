@@ -57,5 +57,3 @@ public sealed class BusyStateTests
         ex.Message.ShouldBe("Device is already busy.");
     }
 }
-
-

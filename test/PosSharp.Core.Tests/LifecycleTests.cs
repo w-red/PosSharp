@@ -311,6 +311,3 @@ public sealed class LifecycleTests
         Should.NotThrow(() => device.Lifecycle.PreClose());
     }
 }
-
-
-

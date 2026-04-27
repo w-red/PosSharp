@@ -56,8 +56,10 @@ public sealed class LifecycleManagerTests
         // Arrange
         var mediator = new UposMediator();
         var handler = new StandardLifecycleHandler();
-        var manager = new UposLifecycleManager(mediator, handler);
-        manager.IsStateVerificationEnabled = false;
+        var manager = new UposLifecycleManager(mediator, handler)
+        {
+            IsStateVerificationEnabled = false
+        };
 
         // Act & Assert (Closed -> Enabled is normally illegal)
         Should.NotThrow(() => manager.TransitionTo(ControlState.Enabled));
@@ -99,8 +101,10 @@ public sealed class LifecycleManagerTests
         // Arrange
         var mediator = new UposMediator();
         var handler = new StandardLifecycleHandler();
-        var manager = new UposLifecycleManager(mediator, handler);
-        manager.IsStateVerificationEnabled = false;
+        var manager = new UposLifecycleManager(mediator, handler)
+        {
+            IsStateVerificationEnabled = false
+        };
 
         // Act & Assert (Should not throw even if Closed < Enabled)
         Should.NotThrow(() => manager.VerifyState(ControlState.Enabled));
@@ -120,7 +124,7 @@ public sealed class LifecycleManagerTests
             manager.VerifyState(ControlState.Claimed, ControlState.Enabled)
         );
         ex.CurrentState.ShouldBe(ControlState.Closed);
-        ex.AllowedStates.ShouldBe(new[] { ControlState.Claimed, ControlState.Enabled });
+        ex.AllowedStates.ShouldBe([ControlState.Claimed, ControlState.Enabled]);
     }
 
     /// <summary>Verifies that VerifyState succeeds when the current state is among the multiple allowed states.</summary>
@@ -177,8 +181,10 @@ public sealed class LifecycleManagerTests
         // Arrange
         var mediator = new UposMediator();
         var handler = new StandardLifecycleHandler();
-        var manager = new UposLifecycleManager(mediator, handler);
-        manager.IsStateVerificationEnabled = false;
+        var manager = new UposLifecycleManager(mediator, handler)
+        {
+            IsStateVerificationEnabled = false
+        };
 
         // Act & Assert (Should NOT throw even if state is invalid)
         Should.NotThrow(() => manager.PreClaim()); // Closed -> Claimed is normally invalid
@@ -232,8 +238,10 @@ public sealed class LifecycleManagerTests
         // Arrange
         var mediator = new UposMediator();
         var handler = new MockLifecycleHandler();
-        var manager = new UposLifecycleManager(mediator, handler);
-        manager.IsStateVerificationEnabled = false;
+        var manager = new UposLifecycleManager(mediator, handler)
+        {
+            IsStateVerificationEnabled = false
+        };
 
         // Act
         manager.VerifyState(ControlState.Idle, ControlState.Busy);
@@ -274,8 +282,8 @@ public sealed class LifecycleManagerTests
     /// <summary>A mock implementation of <see cref="IUposLifecycleHandler"/> for testing purpose.</summary>
     private sealed class MockLifecycleHandler : IUposLifecycleHandler
     {
-        public List<(ControlState Current, ControlState Target)> ValidatedTransitions { get; } = new();
-        public List<(ControlState Current, ControlState Required)> StateVerifications { get; } = new();
+        public List<(ControlState Current, ControlState Target)> ValidatedTransitions { get; } = [];
+        public List<(ControlState Current, ControlState Required)> StateVerifications { get; } = [];
 
         public void ValidateTransition(ControlState currentState, ControlState targetState)
         {
@@ -288,5 +296,3 @@ public sealed class LifecycleManagerTests
         }
     }
 }
-
-

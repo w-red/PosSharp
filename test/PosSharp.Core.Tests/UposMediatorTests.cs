@@ -146,5 +146,3 @@ public sealed class UposMediatorTests
         callCount.ShouldBe(2); // Initial (0) + Change (5)
     }
 }
-
-
