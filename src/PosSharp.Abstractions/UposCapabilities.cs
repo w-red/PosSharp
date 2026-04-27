@@ -43,4 +43,3 @@ public sealed class UposCapabilities(IDictionary<string, object> capabilities)
     /// <returns>The boolean value.</returns>
     public bool AsBool(string key, bool defaultValue = false) => As(key, defaultValue);
 }
-分析。
