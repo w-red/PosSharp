@@ -1,11 +1,14 @@
-# PosSharp Documentation
+﻿# PosSharp Documentation
 
-[日本語](index.jp.md)
+[English](index.md) | [日本語](index.jp.md)
+
+---
+
 
 Official documentation for **PosSharp**, the platform-agnostic, reactive UPOS framework
 for .NET.
 
-## 📚 Table of Contents
+## 答 Table of Contents
 
 ### [Compliance Matrix](compliance.md)
 

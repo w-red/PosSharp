@@ -1,6 +1,9 @@
-# OPOS (OLE for Retail POS) Mapping Table
+﻿# OPOS (OLE for Retail POS) Mapping Table
 
-[Japanese (日本誁E](opos.jp.md)
+[English](opos.md) | [日本語](opos.jp.md)
+
+---
+
 
 Official migration guide for developers moving from legacy **OPOS (ActiveX/OCX)** controls to **PosSharp**.
 
