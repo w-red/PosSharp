@@ -1,5 +1,7 @@
 # PosSharp Documentation
 
+[Japanese (日本語)](index.jp.md)
+
 Official documentation for **PosSharp**, the platform-agnostic, reactive UPOS framework
 for .NET.
 
@@ -30,8 +32,3 @@ Translation guide for developers moving from legacy OPOS (ActiveX/OCX) controls 
 Mapping between JavaPOS standards and PosSharp equivalents for developers from the Java ecosystem.
 
 ---
-
-## 🌐 Language Versions
-
-- [English (Current)](index.md)
-- [日本語 (Japanese)](index.jp.md)

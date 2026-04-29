@@ -1,5 +1,7 @@
 # PosSharp ドキュメント
 
+[English (英語)](index.md)
+
 本書は、**PosSharp** (プラットフォーム非依存・リアクティブ .NET 用 UPOS フレームワーク)
 の公式ドキュメントです。
 
@@ -30,8 +32,3 @@ Microsoft POS for .NET (Point of Service SDK) のクラスや概念と、PosShar
 JavaPOS 規格と PosSharp における対応関係をまとめています。
 
 ---
-
-## 🌐 言語 / Language
-
-- [English (英語)](index.md)
-- [日本語 (Japanese) (現在のページ)](index.jp.md)
