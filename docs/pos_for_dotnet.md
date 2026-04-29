@@ -1,6 +1,6 @@
 # POS for .NET Compatibility Matrix
 
-[Japanese (日本語)](pos_for_dotnet.jp.md)
+[Japanese (日本誁E](pos_for_dotnet.jp.md)
 
 This document provides a mapping between **Microsoft POS for .NET SDK** concepts
 and **PosSharp** equivalents.

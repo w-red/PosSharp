@@ -1,6 +1,6 @@
 # PosSharp ドキュメント
 
-[English (英語)](index.md)
+[English](index.md)
 
 本書は、**PosSharp** (プラットフォーム非依存・リアクティブ .NET 用 UPOS フレームワーク)
 の公式ドキュメントです。

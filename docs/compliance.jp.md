@@ -1,6 +1,6 @@
 # UPOS 準拠性マトリクス
 
-[English (英語)](compliance.md)
+[English](compliance.md)
 
 本書は、共通プロパティおよびメソッドにおける **UnifiedPOS (UPOS) v1.16** 仕様への準拠状況をまとめたものです。
 

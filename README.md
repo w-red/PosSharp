@@ -2,7 +2,7 @@
 
 <img src="docs/images/mainlogo.svg" style="width: 80px !important; height: auto !important;" alt="PosSharp Logo" />
 
-[Documentation Index](docs/index.md) | [日本語ドキュメント](README.jp.md) | [API Reference (Wiki)](https://github.com/w-red/PosSharp/wiki)
+[Documentation Index](docs/index.md) | [日本語](README.jp.md) | [API Reference (Wiki)](https://github.com/w-red/PosSharp/wiki)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Core](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download)

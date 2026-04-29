@@ -1,6 +1,6 @@
 # JavaPOS (JPOS) Mapping Matrix
 
-[Japanese (日本語)](jpos.jp.md)
+[Japanese (日本誁E](jpos.jp.md)
 
 This document provides a mapping between **JavaPOS (JPOS)** standards and **PosSharp** equivalents for developers coming from the Java ecosystem.
 

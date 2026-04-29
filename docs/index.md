@@ -1,6 +1,6 @@
 # PosSharp Documentation
 
-[Japanese (日本語)](index.jp.md)
+[日本語](index.jp.md)
 
 Official documentation for **PosSharp**, the platform-agnostic, reactive UPOS framework
 for .NET.
