@@ -1,6 +1,10 @@
 # PosSharp (日本語)
 
-[ドキュメント目次](docs/index.jp.md) | [English](README.md)
+[日本語](README.jp.md) | [English](README.md)
+
+---
+
+[ドキュメント目次](docs/index.jp.md) | [API Reference (Wiki)](https://github.com/w-red/PosSharp/wiki)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Core](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download)
