@@ -82,8 +82,13 @@ Standard implementation of the framework.
 ### Base Classes
 
 - **[`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)**: The base abstract class for implementing UPOS devices. Provides automatic property synchronization, power management, and lifecycle control.
-- **[`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)**: Standard implementation of the state mediator.
+- **[`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)**: Standard implementation of the state mediator. Provides lock-free, thread-safe state updates using `AtomicState<T>`.
 - **[`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)**: Standard implementation of the lifecycle coordinator.
+
+### Utilities & Infrastructure
+
+- **[`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1)**: A lock-free, CAS (Compare-And-Swap) based atomic state management component.
+- **[`MediatorSnapshot`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.MediatorSnapshot)**: An immutable record that holds all state fields (State, IsBusy, LastError, etc.) of the `UposMediator` in a single snapshot.
 
 ### Lifecycle Handlers
 

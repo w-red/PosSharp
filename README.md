@@ -22,6 +22,7 @@
 - **Mediator Architecture**: Centralized "Single Source of Truth" via the Mediator pattern, ensuring all properties (`DataCount`, `IsOpen`, etc.) stay perfectly in sync across asynchronous operations.
 - **Task-Based Asynchronous API**: Modern asynchronous implementation of standard UPOS operations ([`OpenAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken)), [`ClaimAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken)), [`SetEnabledAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.SetEnabledAsync(bool,System.Threading.CancellationToken))).
 - **Power Management**: Comprehensive support for power reporting and state notifications (`PowerNotify`) integrated directly into the base abstraction.
+- **Lock-Free Thread-Safety**: Optimized for high-concurrency environments using CAS (Compare-And-Swap) base atomic state management via `AtomicState<T>`.
 - **Zero Build Warnings**: Maintained at the highest quality with 100% XML documentation and strict static analysis.
 
 ## 📦 Packages
@@ -46,7 +47,7 @@ dotnet add package PosSharp.Abstractions
 PosSharp utilizes a sophisticated architecture to handle the complexity of the UPOS standard while maintaining clean, maintainable code.
 
 ### Mediator-Based State Management
-Each device delegates its state and property management to a [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator). This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically.
+Each device delegates its state and property management to a [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator), which leverages [`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1) for lock-free state transitions. This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically and thread-safely.
 
 ### Flexible Lifecycle Management
 Device transitions are governed by a [`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager), allowing developers to implement custom lifecycle handlers or use the [`StandardLifecycleHandler`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler) for typical UPOS compliance.

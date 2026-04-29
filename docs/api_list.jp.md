@@ -82,8 +82,13 @@
 ### 基底クラス
 
 - **[`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)**: UPOS デバイスを実装するための基底となる抽象クラス。プロパティの自動同期、電源管理、ライフサイクル制御を提供します。
-- **[`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)**: 状態メディエーターの標準実装。
+- **[`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)**: 状態メディエーターの標準実装。`AtomicState<T>` を利用したロックフリーでスレッドセーフな状態更新を実現しています。
 - **[`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)**: ライフサイクルコーディネーターの標準実装。
+
+### ユーティリティ・基盤
+
+- **[`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1)**: Lock を使用しない、CAS (Compare-And-Swap) ベースのアトミックな状態管理コンポーネント。
+- **[`MediatorSnapshot`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.MediatorSnapshot)**: `UposMediator` の状態（State, IsBusy, LastError 等）を一括で保持する不変のレコード。
 
 ### ライフサイクルハンドラー
 
