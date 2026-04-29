@@ -8,7 +8,7 @@
     <RepositoryUrl>https://github.com/w-red/PosSharp</RepositoryUrl>
     <PackageProjectUrl>https://github.com/w-red/PosSharp</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.1</Version>
+    <Version>1.2.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>pos;upos;retail;reactive;dotnet;csharp;opos;unifiedpos;r3;platform-agnostic</PackageTags>
 
