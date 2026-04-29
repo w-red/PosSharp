@@ -27,6 +27,13 @@ internal class StubUposDevice : UposDeviceBase
     /// <summary>Tries to acquire the flushing lock atomically for testing.</summary>
     public bool TestTryBeginFlushing() => TryBeginFlushing();
 
+    /// <summary>Exposes the protected InitializeCapabilities method for testing.</summary>
+    /// <param name="caps">The capabilities to freeze.</param>
+    public void TestInitializeCapabilities(IDictionary<string, object> caps) => InitializeCapabilities(caps);
+
+    /// <summary>Exposes the protected FlushDataEvents method for testing.</summary>
+    public void TestFlushDataEvents() => FlushDataEvents();
+
     /// <summary>Gets the last DirectIO command.</summary>
     public int LastDirectIOCommand { get; private set; }
 

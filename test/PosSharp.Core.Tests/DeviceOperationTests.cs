@@ -315,4 +315,22 @@ public sealed class DeviceOperationTests
             GC.SuppressFinalize(this);
         }
     }
+
+    [Fact]
+    public void InitializeCapabilities_UpdatesCapabilitiesProperty()
+    {
+        // Arrange
+        using var device = new StubUposDevice();
+        var caps = new Dictionary<string, object>
+        {
+            { "TestCap", 123 }
+        };
+
+        // Act
+        device.TestInitializeCapabilities(caps);
+
+        // Assert
+        device.Capabilities.ShouldNotBeNull();
+        device.Capabilities.AsInt("TestCap").ShouldBe(123);
+    }
 }

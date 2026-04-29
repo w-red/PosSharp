@@ -166,4 +166,25 @@ public sealed class EventTests
         eventCount.ShouldBe(1);
         device.DataEventEnabled.ShouldBeFalse();
     }
+
+    /// <summary>Verifies that FlushDataEvents returns early if another thread is already flushing.</summary>
+    [Fact]
+    public void FlushDataEvents_EarlyReturns_WhenAlreadyFlushing()
+    {
+        // Arrange
+        using var device = new StubUposDevice();
+
+        // Manually acquire the flushing lock to simulate another thread
+        device.TestTryBeginFlushing().ShouldBeTrue();
+        device.IsFlushing.ShouldBeTrue();
+
+        // Act
+        // This should return early because the lock is already held.
+        // If the 'return;' statement is removed (mutated), it will proceed and erroneously set IsFlushing to false in its finally block.
+        device.TestFlushDataEvents();
+
+        // Assert
+        // The lock should still be held by us.
+        device.IsFlushing.ShouldBeTrue();
+    }
 }
