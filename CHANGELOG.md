@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.2.0] - 2026-04-30
+
+### Added
+- **Lock-Free State Management**: Introduced `AtomicState<T>` for high-concurrency, CAS-based (Compare-And-Swap) state transitions.
+- **Mediator Snapshot**: Added `MediatorSnapshot` record to capture all mediator properties in a single, atomic operation.
+- **Enhanced Testing Stubs**: Extended `StubUposDevice` to expose protected members for rigorous white-box testing.
+
+### Changed
+- **Architecture Refactoring**: Refactored `UposMediator` to use `AtomicState<MediatorSnapshot>`, ensuring thread-safe property updates without manual locks.
+- **Fluent Capabilities API**: Renamed `UposCapabilities` methods from `Get*` to `As*` (e.g., `AsInt()`, `AsString()`) for a cleaner and more intuitive interface.
+- **Documentation**: Updated README, API Reference, and Wiki to reflect the new architecture and API changes.
+
+### Fixed
+- **Mutation Testing Survivors**: Achieved a **100% mutation testing score** for `UposDeviceBase`. Resolved surviving mutants related to capability initialization and data event flushing.
+
+---
+
 ## [1.1.0] - 2026-04-27
 
 ### Added
