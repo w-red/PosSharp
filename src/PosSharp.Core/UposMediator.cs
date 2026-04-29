@@ -15,11 +15,7 @@ public class UposMediator : IUposMediator
     private readonly ReactiveProperty<int> dataCount = new(0);
     private readonly IDisposable disposables;
 
-    private int currentState = (int)ControlState.Closed;
-    private int currentLastError = (int)UposErrorCode.Success;
-    private int currentLastErrorExtended;
-    private int currentDataCount;
-    private int isBusyFlag;
+    private readonly AtomicState<MediatorSnapshot> snapshot = new(MediatorSnapshot.Initial);
     private int disposedFlag;
 
     /// <summary>Initializes a new instance of the <see cref="UposMediator"/> class.</summary>
@@ -40,21 +36,13 @@ public class UposMediator : IUposMediator
     public virtual ReadOnlyReactiveProperty<ControlState> State => state;
 
     /// <inheritdoc />
-    public virtual ControlState CurrentState => CurrentStateInternal;
+    public virtual ControlState CurrentState => snapshot.Current.State;
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<bool> IsBusy => isBusy;
 
     /// <inheritdoc />
-    public virtual bool IsBusyValue
-    {
-        get => Volatile.Read(ref isBusyFlag) == 1;
-        private set => Interlocked.Exchange(ref isBusyFlag, value ? 1 : 0);
-    }
-
-    /// <summary>Tries to acquire the busy lock atomically.</summary>
-    /// <returns>True if the lock was acquired; otherwise, false.</returns>
-    protected bool TryAcquireBusyLock() => Interlocked.CompareExchange(ref isBusyFlag, 1, 0) == 0;
+    public virtual bool IsBusyValue => snapshot.Current.IsBusy;
 
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<UposErrorCode> LastError => lastError;
@@ -71,40 +59,12 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual ReadOnlyReactiveProperty<int> DataCount => dataCount;
 
-    /// <summary>Gets the current logical state of the device.</summary>
-    protected ControlState CurrentStateInternal
-    {
-        get => (ControlState)Volatile.Read(ref currentState);
-        set => Interlocked.Exchange(ref currentState, (int)value);
-    }
-
-    /// <summary>Gets the last error code encountered by the device.</summary>
-    protected UposErrorCode LastErrorInternal
-    {
-        get => (UposErrorCode)Volatile.Read(ref currentLastError);
-        set => Interlocked.Exchange(ref currentLastError, (int)value);
-    }
-
-    /// <summary>Gets the extended result code of the last completed operation.</summary>
-    protected int LastErrorExtendedInternal
-    {
-        get => Volatile.Read(ref currentLastErrorExtended);
-        set => Interlocked.Exchange(ref currentLastErrorExtended, value);
-    }
-
-    /// <summary>Gets the current count of queued data events.</summary>
-    protected int DataCountInternal
-    {
-        get => Volatile.Read(ref currentDataCount);
-        set => Interlocked.Exchange(ref currentDataCount, value);
-    }
-
     /// <inheritdoc />
     public virtual void UpdateState(ControlState state)
     {
-        if (CurrentStateInternal != state)
+        var result = snapshot.Transition(s => s.State == state ? s : s with { State = state });
+        if (result.Changed)
         {
-            CurrentStateInternal = state;
             this.state.Value = state;
         }
     }
@@ -112,9 +72,9 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void SetBusy(bool isBusy)
     {
-        if (IsBusyValue != isBusy)
+        var result = snapshot.Transition(s => s.IsBusy == isBusy ? s : s with { IsBusy = isBusy });
+        if (result.Changed)
         {
-            IsBusyValue = isBusy;
             this.isBusy.Value = isBusy;
         }
     }
@@ -122,21 +82,23 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual IDisposable BeginOperation()
     {
-        if (!TryAcquireBusyLock())
+        var result = snapshot.Transition(s => s.IsBusy ? s : s with { IsBusy = true });
+
+        if (!result.Changed)
         {
             throw new UposStateException("Device is already busy.", UposErrorCode.Busy);
         }
 
-        // Now we are atomically marked as busy.
+        // Now we are atomically marked as busy in the snapshot.
         isBusy.Value = true;
 
         try
         {
-            if (CurrentStateInternal != ControlState.Enabled)
+            if (result.NewState.State != ControlState.Enabled)
             {
                 // Stryker disable all : Exception message
                 throw new UposStateException(
-                    $"Operation requires Enabled state, but current state is {CurrentStateInternal}.",
+                    $"Operation requires Enabled state, but current state is {result.NewState.State}.",
                     UposErrorCode.Disabled
                 );
                 // Stryker restore all
@@ -145,14 +107,14 @@ public class UposMediator : IUposMediator
         catch
         {
             // Reset if validation fails
-            IsBusyValue = false;
+            snapshot.Transition(s => s with { IsBusy = false });
             isBusy.Value = false;
             throw;
         }
 
         return Disposable.Create(() =>
         {
-            IsBusyValue = false;
+            snapshot.Transition(s => s with { IsBusy = false });
             isBusy.Value = false;
         });
     }
@@ -160,16 +122,22 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void ReportError(UposErrorCode errorCode, int extendedCode = 0)
     {
-        if (LastErrorInternal != errorCode)
-        {
-            LastErrorInternal = errorCode;
-            lastError.Value = errorCode;
-        }
+        var result = snapshot.Transition(s =>
+            s.LastError == errorCode && s.LastErrorExtended == extendedCode
+                ? s
+                : s with { LastError = errorCode, LastErrorExtended = extendedCode });
 
-        if (LastErrorExtendedInternal != extendedCode)
+        if (result.Changed)
         {
-            LastErrorExtendedInternal = extendedCode;
-            lastErrorExtended.Value = extendedCode;
+            if (result.OldState.LastError != result.NewState.LastError)
+            {
+                lastError.Value = errorCode;
+            }
+
+            if (result.OldState.LastErrorExtended != result.NewState.LastErrorExtended)
+            {
+                lastErrorExtended.Value = extendedCode;
+            }
         }
     }
 
@@ -188,9 +156,9 @@ public class UposMediator : IUposMediator
     /// <inheritdoc />
     public virtual void UpdateDataCount(int count)
     {
-        if (DataCountInternal != count)
+        var result = snapshot.Transition(s => s.DataCount == count ? s : s with { DataCount = count });
+        if (result.Changed)
         {
-            DataCountInternal = count;
             dataCount.Value = count;
         }
     }
