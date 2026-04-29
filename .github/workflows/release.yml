@@ -34,7 +34,16 @@ jobs:
       run: dotnet test --no-build -c Release
 
     - name: Pack
-      run: dotnet pack --no-build -c Release -o out /p:Version=${GITHUB_REF_NAME#v}
+      run: |
+        # 手動実行時は inputs.tag、タグプッシュ時は GITHUB_REF_NAME を使用
+        VERSION="${{ github.event.inputs.tag }}"
+        if [ -z "$VERSION" ]; then
+          VERSION="${GITHUB_REF_NAME#v}"
+        else
+          VERSION="${VERSION#v}"
+        fi
+        echo "Packaging version: $VERSION"
+        dotnet pack --no-build -c Release -o out /p:Version=$VERSION
 
     - name: Push to NuGet
       run: dotnet nuget push out/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
