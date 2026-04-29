@@ -19,15 +19,6 @@
 
 **PosSharp** is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET. It provides a modern implementation of the UPOS standard, decoupling core POS logic from platform-specific SDK dependencies like the legacy POS for .NET (OPOS) or Windows-only components.
 
-## ✨ What's New in v1.2.0
-
-- **Lock-Free State Management**: Replaced manual locks with `AtomicState<T>` (CAS-based) for high-concurrency safety.
-- **Fluent Capabilities API**: Rebranded `Get<T>` to `As<T>` (e.g., `AsInt()`, `AsString()`) for a cleaner, fluent interface.
-- **100% Mutation Score**: Achieved a perfect mutation testing score for the core device logic, ensuring maximum reliability.
-- **Mediator Snapshots**: Introduced atomic property snapshots for consistent multi-property reads.
-
-[Read the full CHANGELOG](CHANGELOG.md)
-
 ## 🚀 Key Features
 
 - **Modern C# Implementation**: Fully utilizes C# 12+ features (Primary Constructors, etc.) and targets `.net10.0`. Supports older platforms via [PolySharp](https://github.com/Sergio0694/PolySharp).
@@ -148,6 +139,15 @@ PosSharp is built with testability in mind. It includes a comprehensive test sui
 ```bash
 dotnet test
 ```
+
+## ✨ What's New in v1.2.0
+
+- **Lock-Free State Management**: Replaced manual locks with `AtomicState<T>` (CAS-based) for high-concurrency safety.
+- **Fluent Capabilities API**: Rebranded `Get<T>` to `As<T>` (e.g., `AsInt()`, `AsString()`) for a cleaner, fluent interface.
+- **100% Mutation Score**: Achieved a perfect mutation testing score for the core device logic, ensuring maximum reliability.
+- **Mediator Snapshots**: Introduced atomic property snapshots for consistent multi-property reads.
+
+[Read the full CHANGELOG](CHANGELOG.md)
 
 ## 📄 License
 
