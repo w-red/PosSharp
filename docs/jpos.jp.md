@@ -1,6 +1,10 @@
-# JavaPOS (JPOS) 対応表
+# JavaPOS との連携
 
-[English (英語)](jpos.md)
+[日本語](jpos.jp.md) | [English](jpos.md)
+
+---
+
+**PosSharp** は、JavaPOS の経験を持つ開発者にとって馴染みのあるインタラクションパターンを提供します。
 
 本書は、**JavaPOS (JPOS)** 規格と **PosSharp** における対応関係をまとめたものです。Java エコシステムから移行する開発者のためのガイドです。
 

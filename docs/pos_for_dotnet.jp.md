@@ -1,6 +1,10 @@
-# POS for .NET 対応表
+# POS for .NET からの移行
 
-[English (英語)](pos_for_dotnet.md)
+[日本語](pos_for_dotnet.jp.md) | [English](pos_for_dotnet.md)
+
+---
+
+**PosSharp** は、レガシーな Microsoft POS for .NET SDK の現代的な後継となるよう設計されています。
 
 本書は、**Microsoft POS for .NET SDK** の概念と **PosSharp** における対応関係をまとめたものです。
 

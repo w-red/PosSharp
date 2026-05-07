@@ -1,8 +1,10 @@
-# JavaPOS (JPOS) Mapping Matrix
+# JavaPOS Interaction
 
-[Japanese (日本語)](jpos.jp.md)
+[English](jpos.md) | [日本語](jpos.jp.md)
 
-This document provides a mapping between **JavaPOS (JPOS)** standards and **PosSharp** equivalents for developers coming from the Java ecosystem.
+---
+
+**PosSharp** provides seamless interaction patterns for developers coming from a JavaPOS background.
 
 ## External References
 

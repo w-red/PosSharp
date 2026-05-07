@@ -1,6 +1,10 @@
-# OPOS (OLE for Retail POS) Mapping Table
+# OPOS (OLE for Retail POS) Comparison
 
-[Japanese (日本語)](opos.jp.md)
+[English](opos.md) | [日本語](opos.jp.md)
+
+---
+
+This document compares **PosSharp** with the traditional OPOS (ActiveX) standard.
 
 Official migration guide for developers moving from legacy **OPOS (ActiveX/OCX)** controls to **PosSharp**.
 

@@ -1,7 +1,10 @@
-# OPOS 対応表
+# OPOS (OLE for Retail POS) との比較
 
-[English (英語)](opos.md)
+[日本語](opos.jp.md) | [English](opos.md)
 
+---
+
+本書では、**PosSharp** と従来の OPOS (ActiveX) 標準の比較について説明します。
 本書は、レガシーな **OPOS (ActiveX/OCX)** コントロールから **PosSharp** へ移行する開発者のための変換ガイドです。
 
 ## 外部リファレンス

@@ -1,6 +1,10 @@
-# UPOS Compliance Matrix
+# UPOS Compliance
 
-[Japanese (日本語)](compliance.jp.md)
+[English](compliance.md) | [日本語](compliance.jp.md)
+
+---
+
+**PosSharp** is designed with high compliance to the UPOS (Unified POS) standard.
 
 This document outlines the level of compliance with the **UnifiedPOS (UPOS) v1.16** specification for common properties and methods.
 

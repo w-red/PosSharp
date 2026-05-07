@@ -1,6 +1,10 @@
-# UPOS 準拠性マトリクス
+# UPOS 準拠状況
 
-[English (英語)](compliance.md)
+[日本語](compliance.jp.md) | [English](compliance.md)
+
+---
+
+**PosSharp** は、UPOS (Unified POS) 標準への高い準拠性を目指して設計されています。
 
 本書は、共通プロパティおよびメソッドにおける **UnifiedPOS (UPOS) v1.16** 仕様への準拠状況をまとめたものです。
 

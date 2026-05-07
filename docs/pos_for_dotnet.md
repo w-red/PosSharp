@@ -1,9 +1,10 @@
-# POS for .NET Compatibility Matrix
+# POS for .NET Migration
 
-[Japanese (日本語)](pos_for_dotnet.jp.md)
+[English](pos_for_dotnet.md) | [日本語](pos_for_dotnet.jp.md)
 
-This document provides a mapping between **Microsoft POS for .NET SDK** concepts
-and **PosSharp** equivalents.
+---
+
+**PosSharp** is designed to be a modern successor to the legacy Microsoft POS for .NET SDK.
 
 ## External References
 
