@@ -10,12 +10,27 @@
 
 実装に依存しない、コアとなるインターフェースおよび型定義群です。
 
-### インターフェース
+### インターフェース (Interfaces)
 
-- **[`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)**: すべての UPOS デバイスの主要なインターフェース。リアクティブなプロパティ (`State`, `Claimed` 等) と非同期メソッド ([`OpenAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.OpenAsync(System.Threading.CancellationToken)), [`ClaimAsync`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice#PosSharp.Abstractions.IUposDevice.ClaimAsync(int,System.Threading.CancellationToken)) 等) を含みます。
-- **[`IUposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposMediator)**: 同期に使用される内部状態管理インターフェース。
-- **[`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)**: デバイスの状態遷移を管理するクラス。
-- **[`IUposEventSink`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposEventSink)**: UPOS イベントを受信して処理できるデバイス用のインターフェース。
+#### [`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)
+すべての UPOS デバイスの主要なインターフェース。リアクティブなプロパティ (`State`, `Claimed` 等) と非同期メソッドを含みます。
+
+#### [`IUposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposMediator)
+同期に使用される内部状態管理インターフェース。
+
+#### [`IUposEventSink`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposEventSink)
+UPOS イベントを受信して処理できるデバイス用のインターフェース。
+
+### クラスとデータ型 (Classes & Data Types)
+
+#### [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities)
+デバイス固有の機能を型安全に保持するコンテナ。
+
+#### [`UposCommandResult`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCommandResult)
+デバイスコマンドの結果を表すレコード。
+
+#### [`UposException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposException)
+UPOS 操作が失敗したときにスローされる基本例外。
 
 ### イベント (リアクティブストリーム)
 
@@ -81,22 +96,25 @@
 
 フレームワークの標準実装クラス群です。
 
-### 基底クラス
+### クラス (Classes)
 
-- **[`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)**: UPOS デバイスを実装するための基底となる抽象クラス。プロパティの自動同期、電源管理、ライフサイクル制御を提供します。
-- **[`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)**: 状態メディエーターの標準実装。`AtomicState<T>` を利用したロックフリーでスレッドセーフな状態更新を実現しています。
-- **[`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)**: ライフサイクルコーディネーターの標準実装。
+#### [`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)
+UPOS デバイスを実装するための基底となる抽象クラス。プロパティの自動同期、電源管理、ライフサイクル制御を提供します。
 
-### ユーティリティ・基盤
+#### [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)
+`AtomicState<T>` を利用したロックフリーでスレッドセーフな状態更新を実現する、状態メディエーターの標準実装。
 
-- **[`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1)**: Lock を使用しない、CAS (Compare-And-Swap) ベースのアトミックな状態管理コンポーネント。
-- **[`MediatorSnapshot`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.MediatorSnapshot)**: `UposMediator` の状態（State, IsBusy, LastError 等）を一括で保持する不変のレコード。
+#### [`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)
+ライフサイクルコーディネーターの標準実装。
 
-### ライフサイクルハンドラー
+#### [`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1)
+Lock を使用しない、CAS (Compare-And-Swap) ベースのアトミックな状態管理コンポーネント。
 
-- **[`StandardLifecycleHandler`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler)**: 標準的な UPOS デバイス用の遷移ロジック実装。
+#### [`MediatorSnapshot`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.MediatorSnapshot)
+状態（State, IsBusy, LastError 等）を一括で保持する不変のレコード。
 
-### 例外 (Exceptions)
+#### [`UposStateException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)
+無効なデバイス状態でメソッドが実行されたときにスローされます。
 
 - **[`UposException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposException)**: UPOS 操作が失敗した際にスローされる基底例外です。`ErrorCode` (標準エラー) および `ExtendedErrorCode` (拡張エラー) を保持します。
 - **[`UposStateException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)**: 不正なデバイス状態 (例：`OpenAsync` 前に `ClaimAsync` を呼ぶなど) でメソッドが実行された場合にスローされます。`InvalidOperationException` を継承しており、`CurrentState` や `AllowedStates` を参照してデバッグが可能です。
