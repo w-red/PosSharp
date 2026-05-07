@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'docs/**'
+      - 'src/**'
       - 'README*.md'
   workflow_dispatch:
 
@@ -25,13 +26,33 @@ jobs:
         repository: ${{ github.repository }}.wiki
         path: wiki
 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore tools and dependencies
+      run: |
+        dotnet tool restore
+        dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Generate API Documentation
+      run: |
+        # DefaultDocumentation を使用して temp_wiki にドキュメントを生成
+        dotnet defaultdocumentation --output temp_wiki
+
     - name: Sync files to wiki
       run: |
-        # docs 配下の md ファイルをコピー
-        # index.md, Home.md, _Sidebar.md は Wiki 側の管理とするため同期しない
+        # 生成された Markdown を Wiki にコピー（管理用ファイルは除外）
+        find temp_wiki -maxdepth 1 -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
+        
+        # 手動管理ドキュメント（docs/）も同期（index.md 等は除外）
         find docs -maxdepth 1 -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
         
-        # 不要なファイルを Wiki から削除（もし誤って存在していれば）
+        # 不要なファイルを Wiki から削除
         rm -f wiki/index.md wiki/index.jp.md
         
         # 画像ディレクトリがあればコピー
