@@ -1,6 +1,8 @@
 # API リファレンス (概要)
 
-[English (英語)](api_list.md)
+[日本語](api_list.jp.md) | [English](api_list.md)
+
+---
 
 本書は、**PosSharp** フレームワークで公開されているパブリック API のリファレンスです。
 

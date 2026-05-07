@@ -1,8 +1,10 @@
 # API Reference (Overview)
 
-[Japanese (日本語)](api_list.jp.md)
+[English](api_list.md) | [日本語](api_list.jp.md)
 
-Reference guide for public APIs in the **PosSharp** framework.
+---
+
+This document provides an overview of the public API exposed by the **PosSharp** framework.
 
 ## PosSharp.Abstractions
 
