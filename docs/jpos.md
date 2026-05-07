@@ -8,7 +8,7 @@
 
 ## External References
 
-- [JavaPOS Official Site](http://www.javapos.com/)
+- [JavaPOS (GitHub)](https://github.com/JavaPOSWorkingGroup/javapos)
 - [UnifiedPOS Specification (OMG)](https://www.omg.org/spec/UPOS/)
 
 ## Method Mapping

@@ -10,7 +10,7 @@
 
 ## 外部リファレンス
 
-- [JavaPOS 公式サイト](http://www.javapos.com/)
+- [JavaPOS (GitHub)](https://github.com/JavaPOSWorkingGroup/javapos)
 - [UnifiedPOS 公式仕様書 (OMG)](https://www.omg.org/spec/UPOS/)
 
 ## メソッドの対応
