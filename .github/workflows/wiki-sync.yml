@@ -31,6 +31,9 @@ jobs:
         cp docs/api_list.md wiki/Home.md
         cp docs/api_list.jp.md wiki/Home.jp.md
         
+        # 不要なファイルを Wiki から削除（もし存在すれば）
+        rm -f wiki/index.md wiki/index.jp.md
+        
         # docs 配下の md ファイルをコピー（index.md を除く）
         find docs -maxdepth 1 -name "*.md" ! -name "index*.md" -exec cp {} wiki/ \;
         
