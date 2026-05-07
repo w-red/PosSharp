@@ -12,36 +12,37 @@ Core interfaces and types with zero dependencies on the implementation.
 
 ### Interfaces
 
-#### [`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice)
-The primary interface for all UPOS devices. Includes reactive properties (`State`, `Claimed`, etc.) and asynchronous methods.
+| Name | Description |
+| :--- | :--- |
+| [`IUposDevice`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposDevice) | Basic interface for all UPOS devices, providing common lifecycle and state management. |
+| [`IUposEventSink`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposEventSink) | Defines an interface for a component that produces UPOS events. |
+| [`IUposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposMediator) | Defines a mediator that coordinates state, busy status, and error reporting for a UPOS device. |
 
-#### [`IUposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposMediator)
-Internal state management interface used for synchronization.
+### Classes & Records
 
-#### [`IUposEventSink`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.IUposEventSink)
-Interface for devices that can receive and process UPOS events.
-
-### Classes & Data Types
-
-#### [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities)
-A type-safe capability container for device-specific features.
-
-#### [`UposCommandResult`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCommandResult)
-Record representing the result of a device command.
-
-#### [`UposException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposException)
-The base exception thrown when a UPOS operation fails.
+| Name | Description |
+| :--- | :--- |
+| [`OposCodes`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.OposCodes) | Legacy OPOS/UPOS constants for specific device classes. |
+| [`UposCapabilities`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCapabilities) | Represents a set of frozen device capabilities for high-performance lookup. |
+| [`UposCommandResult`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCommandResult) | Represents the result of a UPOS command execution. |
+| [`UposCommonCodes`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposCommonCodes) | Provides common status codes used across multiple UPOS device categories. |
+| [`UposEventArgs`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposEventArgs) | Represents the base record for all UPOS event arguments. |
+| [`UposDataEventArgs`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDataEventArgs) | Arguments for a DataEvent. |
+| [`UposErrorEventArgs`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorEventArgs) | Arguments for an ErrorEvent. |
+| [`UposStatusUpdateEventArgs`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposStatusUpdateEventArgs) | Arguments for a StatusUpdateEvent. |
+| [`UposOutputCompleteEventArgs`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposOutputCompleteEventArgs) | Arguments for an OutputCompleteEvent. |
+| [`UposDirectIoEventArgs`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposDirectIoEventArgs) | Arguments for a DirectIOEvent. |
+| [`UposException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposException) | Exception thrown when a UPOS operation fails with a specific result code. |
 
 ### Enumerations
 
-#### [`ControlState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState)
-`Closed`, `Idle`, `Busy`.
-
-#### [`UposErrorCode`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode)
-Standard UPOS error codes (`Success`, `Failure`, etc.).
-
-#### [`PowerState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState)
-`Online`, `Off`, `Offline`, etc.
+| Name | Description |
+| :--- | :--- |
+| [`ControlState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.ControlState) | Defines logical device states: `Closed`, `Idle`, `Busy`. |
+| [`UposErrorCode`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.UposErrorCode) | Standard UPOS error codes (`Success`, `Failure`, etc.). |
+| [`PowerState`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerState) | Current power status of the device (`Online`, `Off`, etc.). |
+| [`PowerNotify`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.PowerNotify) | Power notification mode (Disabled/Enabled). |
+| [`HealthCheckLevel`](https://github.com/w-red/PosSharp/wiki/PosSharp.Abstractions.HealthCheckLevel) | Level of diagnostic test to perform. |
 
 ### Events (Reactive Streams)
 
@@ -105,27 +106,19 @@ Main properties provided by [`IUposDevice`](https://github.com/w-red/PosSharp/wi
 
 ## PosSharp.Core
 
-Standard implementation of the framework.
+Standard implementation classes of the framework.
 
 ### Classes
 
-#### [`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase)
-The base abstract class for implementing UPOS devices. Provides automatic property synchronization, power management, and lifecycle control.
-
-#### [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator)
-Standard implementation of the state mediator using `AtomicState<T>`.
-
-#### [`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager)
-Standard implementation of the lifecycle coordinator.
-
-#### [`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1)
-A lock-free, CAS (Compare-And-Swap) based atomic state management component.
-
-#### [`MediatorSnapshot`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.MediatorSnapshot)
-An immutable record that holds all state fields in a single snapshot.
-
-#### [`UposStateException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException)
-Thrown when a method is executed in an invalid device state.
+| Name | Description |
+| :--- | :--- |
+| [`UposDeviceBase`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposDeviceBase) | Abstract base class for implementing UPOS devices. Automates property synchronization, power management, and lifecycle control. |
+| [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator) | Standard implementation of a state mediator using `AtomicState<T>` for lock-free updates. |
+| [`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager) | Standard implementation of a lifecycle coordinator. |
+| [`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_1) | Lock-free, CAS-based atomic state management component. |
+| [`MediatorSnapshot`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.MediatorSnapshot) | Immutable record holding all state fields from a `UposMediator`. |
+| [`StandardLifecycleHandler`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler) | Implementation of standard UPOS device transition logic. |
+| [`UposStateException`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposStateException) | Thrown when a method is called in an invalid device state. |
 
 ---
 
