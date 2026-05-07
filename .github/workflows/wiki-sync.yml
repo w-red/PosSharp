@@ -27,15 +27,12 @@ jobs:
 
     - name: Sync files to wiki
       run: |
-        # API リストを Wiki のトップページ (Home.md) として配置
-        cp docs/api_list.md wiki/Home.md
-        cp docs/api_list.jp.md wiki/Home.jp.md
+        # docs 配下の md ファイルをコピー
+        # index.md, Home.md, _Sidebar.md は Wiki 側の管理とするため同期しない
+        find docs -maxdepth 1 -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
         
-        # 不要なファイルを Wiki から削除（もし存在すれば）
+        # 不要なファイルを Wiki から削除（もし誤って存在していれば）
         rm -f wiki/index.md wiki/index.jp.md
-        
-        # docs 配下の md ファイルをコピー（index.md を除く）
-        find docs -maxdepth 1 -name "*.md" ! -name "index*.md" -exec cp {} wiki/ \;
         
         # 画像ディレクトリがあればコピー
         if [ -d "docs/images" ]; then
