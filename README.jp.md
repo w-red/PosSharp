@@ -44,13 +44,38 @@ dotnet add package PosSharp.Abstractions
 
 ## 🏗️ アーキテクチャ
 
-PosSharp は、UPOS 規格の複雑さを整理し、保守性の高いコードを維持するために洗練されたアーキテクチャを採用しています。
+PosSharp は、高い柔軟性とテスト容易性を実現するために、明確にレイヤー化されたアーキテクチャを採用しています。
 
-### Mediator による状態管理
-各デバイスは、状態とプロパティの管理を `UposMediator` に委譲します。これにより、デバイスの状態（例: `Idle` から `Enabled` へ）が遷移した際、関連するプロパティや Reactive ストリームがアトミックに更新されることを保証します。
+### パッケージ構成（概要）
+クライアント側の依存関係を最小限に抑えるため、フレームワークは大きく 2 つのパッケージに分かれています：
 
-### 柔軟なライフサイクル管理
-デバイスの遷移ルールは `UposLifecycleManager` によって制御されます。開発者はカスタムのライフサイクルハンドラーを実装することも、標準的な `StandardLifecycleHandler` をそのまま利用することも可能です。
+```mermaid
+graph TD
+    subgraph Core ["PosSharp.Core (実装)"]
+        CoreLogic[基底クラス / エンジン]
+        MediatorImpl[UposMediator]
+        LifecycleLogic[ライフサイクル管理]
+    end
+
+    subgraph Abstractions ["PosSharp.Abstractions (契約)"]
+        Interfaces[インターフェース / 契約]
+        Reactive[リアクティブ型 / R3]
+        Enums[エラーコード / 定数]
+    end
+
+    %% 依存関係
+    Core -.->|依存| Abstractions
+    
+    %% 利用パターン
+    App([あなたのアプリ]) -.->|利用| Abstractions
+    Dev([あなたのデバイス]) -.->|実装| Core
+```
+
+- **PosSharp.Abstractions**: 純粋な「契約（インターフェース）」と「型定義」を含みます。デバイスを利用する側のアプリケーションは、このパッケージのみに依存すれば十分です。
+- **PosSharp.Core**: フレームワークの「エンジン」と「リファレンス実装」を含みます。新しいデバイスドライバやシミュレータを実装する場合にのみ必要となります。
+
+### 内部コンポーネント構造
+各デバイス実装は、スレッドセーフティとリアクティブな一貫性を担保するために、以下の内部パターンを組み合わせて動作します：
 
 ```mermaid
 graph TD
@@ -60,6 +85,9 @@ graph TD
     Mediator -- Syncs --> Props[Reactive Properties]
     Mediator -- Pushes --> Events[Reactive Events]
 ```
+
+#### Mediator による状態管理
+各デバイスは、状態とプロパティの管理を [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator) に委譲します。
 
 ## 🛠️ 使い方
 
