@@ -48,13 +48,38 @@ dotnet add package PosSharp.Abstractions
 
 ## 🏗️ Architecture
 
-PosSharp utilizes a sophisticated architecture to handle the complexity of the UPOS standard while maintaining clean, maintainable code.
+PosSharp utilizes a sophisticated, layered architecture designed for maximum decoupling and testability.
 
-### Mediator-Based State Management
-Each device delegates its state and property management to a [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator), which leverages [`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_Generic) for lock-free state transitions. This ensures that when a device transitions (e.g., from `Idle` to `Enabled`), all related properties and reactive event streams are updated atomically and thread-safely.
+### Package Architecture
+The framework is divided into two primary layers to minimize client-side dependencies:
 
-### Flexible Lifecycle Management
-Device transitions are governed by a [`UposLifecycleManager`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.UposLifecycleManager), allowing developers to implement custom lifecycle handlers or use the [`StandardLifecycleHandler`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.Lifecycle.StandardLifecycleHandler) for typical UPOS compliance.
+```mermaid
+graph TD
+    subgraph Core ["PosSharp.Core (Implementations)"]
+        CoreLogic[Base Implementation]
+        MediatorImpl[UposMediator]
+        LifecycleLogic[Lifecycle Orchestration]
+    end
+
+    subgraph Abstractions ["PosSharp.Abstractions (Contracts)"]
+        Interfaces[IUposDevice / IUposMediator]
+        Reactive[Reactive Streams / R3]
+        Enums[Error Codes / Constants]
+    end
+
+    %% Dependency relationship
+    Core -.->|Depends on| Abstractions
+    
+    %% Usage Patterns
+    App([Your Application]) -.->|Uses| Abstractions
+    Sim([Device Simulator]) -.->|Implements| Core
+```
+
+- **PosSharp.Abstractions**: Pure contracts and types. Applications only need to depend on this package to consume devices.
+- **PosSharp.Core**: Reference implementations and engine logic. Required only when developing new device simulators.
+
+### Internal Component Structure
+Each device implementation leverages the following internal patterns for thread-safety and reactive consistency:
 
 ```mermaid
 graph TD
@@ -64,6 +89,9 @@ graph TD
     Mediator -- Syncs --> Props[Reactive Properties]
     Mediator -- Pushes --> Events[Reactive Events]
 ```
+
+#### Mediator-Based State Management
+Each device delegates its state and property management to a [`UposMediator`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.UposMediator), which leverages [`AtomicState<T>`](https://github.com/w-red/PosSharp/wiki/PosSharp.Core.AtomicState_Generic) for lock-free state transitions.
 
 ## 🛠️ Usage
 
