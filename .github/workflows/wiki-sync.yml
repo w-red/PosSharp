@@ -45,12 +45,12 @@ jobs:
         dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_wiki
         dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_wiki
         
-        # すべての生成ファイルにプレミアム・ヘッダーを挿入
+        # すべての生成ファイルにプレミアム・ヘッダーを挿入（BOM 対策含む）
         HEADER='<p align="left"><a href="Home"><img src="images/mainlogo.png" width="40" vertical-align="middle"></a> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n'
         for f in temp_wiki/*.md; do
-          # 既存の内容の前にヘッダーを結合
+          # BOM を除去しながらヘッダーを結合
           echo -e "$HEADER" > "$f.tmp"
-          cat "$f" >> "$f.tmp"
+          sed '1s/^\xEF\xBB\xBF//' "$f" >> "$f.tmp"
           mv "$f.tmp" "$f"
         done
 
