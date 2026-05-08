@@ -41,8 +41,9 @@ jobs:
 
     - name: Generate API Documentation
       run: |
-        # DefaultDocumentation を使用して temp_wiki にドキュメントを生成
-        dotnet defaultdocumentation --OutputDirectoryPath temp_wiki
+        # 各アセンブリに対してドキュメントを生成し temp_wiki に集約
+        dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_wiki
+        dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_wiki
         
         # すべての生成ファイルにプレミアム・ヘッダーを挿入
         HEADER='<p align="left"><a href="Home"><img src="images/mainlogo.png" width="40" vertical-align="middle"></a> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n'
