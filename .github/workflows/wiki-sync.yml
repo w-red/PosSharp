@@ -42,7 +42,7 @@ jobs:
     - name: Generate API Documentation
       run: |
         # DefaultDocumentation を使用して temp_wiki にドキュメントを生成
-        dotnet defaultdocumentation --output temp_wiki
+        dotnet defaultdocumentation --OutputDirectoryPath temp_wiki
         
         # すべての生成ファイルにプレミアム・ヘッダーを挿入
         HEADER='<p align="left"><a href="Home"><img src="images/mainlogo.png" width="40" vertical-align="middle"></a> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n'
@@ -57,12 +57,6 @@ jobs:
       run: |
         # 生成された Markdown を Wiki にコピー（管理用ファイルは除外）
         find temp_wiki -maxdepth 1 -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
-        
-        # 手動管理ドキュメント（docs/）も同期（index.md 等は除外）
-        find docs -maxdepth 1 -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
-        
-        # 不要なファイルを Wiki から削除
-        rm -f wiki/index.md wiki/index.jp.md
         
         # 画像ディレクトリがあればコピー
         if [ -d "docs/images" ]; then
