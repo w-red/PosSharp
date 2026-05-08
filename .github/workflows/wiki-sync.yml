@@ -43,8 +43,9 @@ jobs:
     - name: Generate API Documentation
       run: |
         # 各アセンブリごとに別フォルダに出力（上書き防止）
-        dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_abs
-        dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_core
+        # --AssemblyPageName を指定して、index.md ではなくアセンブリ名のファイルを作成させる
+        dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_abs --AssemblyPageName PosSharp.Abstractions
+        dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_core --AssemblyPageName PosSharp.Core
         
         # Python を使用して BOM 除去、ヘッダー挿入、および Wiki リンクの調整を行う
         python3 -c '
