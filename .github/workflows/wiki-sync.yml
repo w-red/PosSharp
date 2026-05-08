@@ -43,6 +43,15 @@ jobs:
       run: |
         # DefaultDocumentation を使用して temp_wiki にドキュメントを生成
         dotnet defaultdocumentation --output temp_wiki
+        
+        # すべての生成ファイルにプレミアム・ヘッダーを挿入
+        HEADER='<p align="left"><img src="images/mainlogo.png" width="40" vertical-align="middle"> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n'
+        for f in temp_wiki/*.md; do
+          # 既存の内容の前にヘッダーを結合
+          echo -e "$HEADER" > "$f.tmp"
+          cat "$f" >> "$f.tmp"
+          mv "$f.tmp" "$f"
+        done
 
     - name: Sync files to wiki
       run: |
