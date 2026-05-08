@@ -46,14 +46,20 @@ jobs:
         dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_wiki
         dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_wiki
         
-        # すべての生成ファイルにプレミアム・ヘッダーを挿入（BOM 対策含む）
-        HEADER='<p align="left"><a href="Home"><img src="images/mainlogo.png" width="40" vertical-align="middle"></a> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n'
-        for f in temp_wiki/*.md; do
-          # BOM を除去しながらヘッダーを結合
-          echo -e "$HEADER" > "$f.tmp"
-          sed '1s/^\xEF\xBB\xBF//' "$f" >> "$f.tmp"
-          mv "$f.tmp" "$f"
-        done
+        # Python を使用して BOM 除去とプレミアム・ヘッダーの挿入を確実に行う
+        python3 -c '
+        import os, glob
+        header = """<p align="left"><a href="Home"><img src="images/mainlogo.png" width="40" vertical-align="middle"></a> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n\n"""
+        for fpath in glob.glob("temp_wiki/*.md"):
+            with open(fpath, "rb") as f:
+                content = f.read()
+            # UTF-8 BOM (0xEF 0xBB 0xBF) を除去
+            if content.startswith(b"\xef\xbb\xbf"):
+                content = content[3:]
+            # ヘッダーを結合して上書き保存
+            with open(fpath, "w", encoding="utf-8") as f:
+                f.write(header + content.decode("utf-8", errors="ignore"))
+        '
 
     - name: Sync files to wiki
       run: |
