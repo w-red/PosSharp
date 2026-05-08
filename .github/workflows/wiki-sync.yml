@@ -42,16 +42,16 @@ jobs:
 
     - name: Generate API Documentation
       run: |
-        # 各アセンブリに対してドキュメントを生成し temp_wiki に集約
-        dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_wiki
-        dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_wiki
+        # 各アセンブリごとに別フォルダに出力（上書き防止）
+        dotnet defaultdocumentation -a src/PosSharp.Abstractions/bin/Release/net10.0/PosSharp.Abstractions.dll --OutputDirectoryPath temp_abs
+        dotnet defaultdocumentation -a src/PosSharp.Core/bin/Release/net10.0/PosSharp.Core.dll --OutputDirectoryPath temp_core
         
         # Python を使用して BOM 除去、ヘッダー挿入、および Wiki リンクの調整を行う
         python3 -c '
         import os, glob, re
         header = """<p align="left"><a href="Home"><img src="images/mainlogo.png" width="40" vertical-align="middle"></a> <b>PosSharp v1.2.0 API Reference</b></p>\n\n---\n\n"""
-        # 再帰的に全ての .md ファイルを処理
-        for fpath in glob.glob("temp_wiki/**/*.md", recursive=True):
+        # temp_abs と temp_core の両方を処理
+        for fpath in glob.glob("temp_*/**/*.md", recursive=True):
             if os.path.isdir(fpath): continue
             with open(fpath, "rb") as f:
                 content = f.read()
@@ -66,12 +66,11 @@ jobs:
 
     - name: Sync files to wiki
       run: |
-        # Wiki 内の既存の API 関連ファイルを一度削除（クリーンな状態にする）
-        # ただし Home.md, _Sidebar.md, images フォルダなどは守る
+        # Wiki 内の既存の API 関連ファイルを一度削除
         find wiki -maxdepth 1 -name "PosSharp.*.md" -delete
         
         # 生成された全 Markdown を Wiki のルートにフラットにコピー
-        find temp_wiki -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
+        find temp_abs temp_core -name "*.md" ! -name "index*.md" ! -name "Home.md" ! -name "_Sidebar.md" -exec cp {} wiki/ \;
         
         # 画像ディレクトリがあればコピー
         if [ -d "docs/images" ]; then
