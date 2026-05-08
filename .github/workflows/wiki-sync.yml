@@ -58,9 +58,9 @@ jobs:
                 content = content[3:]
             
             text = content.decode("utf-8", errors="ignore")
-            # 内部リンクから .md 拡張子を除去 ( [text](path.md) -> [text](path) )
-            # 外部サイトへのリンク (http...) は除外
-            text = re.sub(r"\]\((?!http)([^)]+)\.md", r"](\1", text)
+            # 内部リンクから .md 拡張子を除去
+            # スペース（タイトル）や #（アンカー）の手前にある .md を消去する
+            text = re.sub(r"(\]\((?!http)[^)# ]+)\.md", r"\1", text)
             
             # ヘッダーを結合して上書き保存
             with open(fpath, "w", encoding="utf-8") as f:
