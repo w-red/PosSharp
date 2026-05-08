@@ -1,21 +1,50 @@
-# PosSharp API Documentation
+# PosSharp Documentation Portal
 
 <img src="docs/images/mainlogo.svg" style="width: 80px !important; height: auto !important;" alt="PosSharp Logo" />
 
-Welcome to the PosSharp API documentation. This library provides a modern, reactive, and platform-agnostic framework for UPOS (UnifiedPOS) device development in .NET.
+[English](index.md) | [日本語](index.jp.md)
 
-## Quick Links
+Welcome to the **PosSharp** documentation. PosSharp is a platform-agnostic, reactive UPOS (Unified POS) framework for .NET.
 
-- <a href="https://www.nuget.org/packages/PosSharp.Core"><img src="docs/images/nugetlogo.png" style="height: 24px !important; width: auto !important; vertical-align: middle;" alt="NuGet" /></a> **NuGet**: Get the latest version.
-- <a href="https://github.com/w-red/PosSharp"><img src="docs/images/githublogo.png" style="height: 24px !important; width: auto !important; vertical-align: middle;" alt="GitHub" /></a> **GitHub**: Source code and issues.
-- **[API Reference](api/index.md)**: Explore the namespaces, classes, and interfaces.
+## 🏗️ Architecture Overview
+
+PosSharp is designed with a clear separation between contracts and implementations.
+
+```mermaid
+graph TD
+    subgraph Core ["PosSharp.Core (Implementations)"]
+        CoreLogic[Base Implementation]
+        MediatorImpl[UposMediator]
+        LifecycleLogic[Lifecycle Orchestration]
+    end
+
+    subgraph Abstractions ["PosSharp.Abstractions (Contracts)"]
+        Interfaces[IUposDevice / IUposMediator]
+        Reactive[Reactive Streams / R3]
+        Enums[Error Codes / Constants]
+    end
+
+    %% Dependency relationship
+    Core -.->|Depends on| Abstractions
+
+    %% Usage Patterns
+    App([Your Application]) -.->|Uses| Abstractions
+    Dev([Your Device]) -.->|Implements| Core
+```
+
+## 🔗 Quick Links
+
+- **[Full API Reference (GitHub Wiki)](https://github.com/w-red/PosSharp/wiki)**: Comprehensive technical reference for all classes and interfaces.
+- **[Documentation Index (Main Repo)](docs/index.md)**: Manuals, migration guides, and compliance matrices.
+- **[GitHub Repository](https://github.com/w-red/PosSharp)**: Source code, issue tracking, and contributions.
+- **[NuGet Packages](https://www.nuget.org/packages?q=PosSharp)**: Latest stable releases.
 
 ---
 
-## Key Features
+## ✨ Key Features
 
 - **Reactive State Management**: Built on top of R3 for powerful state synchronization.
 - **Platform Agnostic**: Pure C# abstractions independent of specific SDKs.
 - **UPOS Compliance**: Designed to follow the UnifiedPOS specification closely.
 
-For detailed migration guides and compliance information, please refer to the original documentation in the `docs/` folder.
+For detailed migration guides and compliance information, please refer to the [Documentation Index](docs/index.md).
