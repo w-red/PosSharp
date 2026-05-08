@@ -72,7 +72,7 @@ graph TD
     
     %% Usage Patterns
     App([Your Application]) -.->|Uses| Abstractions
-    Sim([Device Simulator]) -.->|Implements| Core
+    Dev([Your Device]) -.->|Implements| Core
 ```
 
 - **PosSharp.Abstractions**: Pure contracts and types. Applications only need to depend on this package to consume devices.
