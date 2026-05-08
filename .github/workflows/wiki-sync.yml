@@ -8,6 +8,7 @@ on:
       - 'docs/**'
       - 'src/**'
       - 'README*.md'
+      - '.github/workflows/wiki-sync.yml'
   workflow_dispatch:
 
 jobs:
