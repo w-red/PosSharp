@@ -33,7 +33,7 @@
 
 | Package | Description |
 | ------- | ----------- |
-| **PosSharp.Abstractions** | Core interfaces, enums, and event records. Perfect for client-side dependencies. |
+| **PosSharp.Abstractions** | Core interfaces, enums, and event records. Perfect for application-side dependencies. |
 | **PosSharp.Core** | The engine. Includes base classes, lifecycle management, and reactive mediator. |
 
 ### Installation
@@ -51,7 +51,7 @@ dotnet add package PosSharp.Abstractions
 PosSharp utilizes a sophisticated, layered architecture designed for maximum decoupling and testability.
 
 ### Package Architecture
-The framework is divided into two primary layers to minimize client-side dependencies:
+The framework is divided into two primary layers to minimize application-side dependencies:
 
 ```mermaid
 graph TD
@@ -130,7 +130,7 @@ public class MyCashChanger : [UposDeviceBase](https://github.com/w-red/PosSharp/
 }
 ```
 
-### Consuming a Device (Client-Side)
+### Consuming a Device (Application-Side)
 
 If you are just consuming a device (e.g., in a UI or business logic layer), you only need to depend on **PosSharp.Abstractions** and use the reactive interfaces:
 
