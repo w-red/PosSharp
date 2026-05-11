@@ -168,12 +168,12 @@ PosSharp is built with testability in mind. It includes a comprehensive test sui
 dotnet test
 ```
 
-## ✨ What's New in v1.2.0
+## ✨ What's New in v1.2.1
 
-- **Lock-Free State Management**: Replaced manual locks with `AtomicState<T>` (CAS-based) for high-concurrency safety.
-- **Fluent Capabilities API**: Rebranded `Get<T>` to `As<T>` (e.g., `AsInt()`, `AsString()`) for a cleaner, fluent interface.
-- **100% Mutation Score**: Achieved a perfect mutation testing score for the core device logic, ensuring maximum reliability.
-- **Mediator Snapshots**: Introduced atomic property snapshots for consistent multi-property reads.
+- **Documentation Pipeline Fixed**: Resolved multiple CI/CD issues in the automated Wiki sync workflow (BOM removal, internal link extension stripping, recursive API doc processing).
+- **Improved Release Workflow**: Fixed version parsing for manual triggers and GitHub Packages authentication.
+- **README Modernization**: Added architecture diagrams, language switcher, and improved onboarding flow.
+- **Terminology Clarification**: Replaced "client-side" with "application-side" to better reflect the framework's usage context.
 
 [Read the full CHANGELOG](CHANGELOG.md)
 

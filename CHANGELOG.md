@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.2.1] - 2026-05-11
+
+### Fixed
+- **Documentation Pipeline**: Fixed multiple issues in the automated Wiki sync workflow, including BOM removal, internal link extension stripping, and recursive processing of generated API docs.
+- **CI/CD**: Improved release workflow reliability with correct version parsing for manual triggers and proper GitHub Packages authentication.
+
+### Changed
+- **Documentation**: Modernized README with architecture diagrams, language switcher navigation, and a relocated "What's New" section for better onboarding flow.
+- **Terminology**: Replaced "client-side" with "application-side" throughout README (EN/JP) to eliminate web-centric ambiguity and align with the architecture diagram language.
+
+---
+
 ## [1.2.0] - 2026-04-30
 
 ### Added
